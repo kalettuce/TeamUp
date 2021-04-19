@@ -1,13 +1,13 @@
 package com.teamup.teamupbackend.dao.entity;
 
-import com.teamup.teamupbackend.dao.pojo.JoinRequest;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.teamup.teamupbackend.dao.pojo.ProjectRequest;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,18 +35,16 @@ public class Project implements Serializable {
 
     @Type(type = "json")
     @Column(columnDefinition = "json")
-    private List<JoinRequest> joinRequests;
-
-    public Project() { }
+    private List<ProjectRequest> projectRequests;
 
     public Project(String projectName, List<String> projectTags, int owner, List<Integer> otherMembers,
-                   String description, List<JoinRequest> joinRequests) {
+                   String description, List<ProjectRequest> projectRequests) {
         this.projectName = projectName;
         this.projectTags = projectTags;
         this.owner = owner;
         this.otherMembers = otherMembers;
         this.description = description;
-        this.joinRequests = joinRequests;
+        this.projectRequests = projectRequests;
     }
 
     public int getPid() {
@@ -97,11 +95,11 @@ public class Project implements Serializable {
         this.description = description;
     }
 
-    public List<JoinRequest> getJoinRequests() {
-        return joinRequests;
+    public List<ProjectRequest> getProjectRequests() {
+        return projectRequests;
     }
 
-    public void setJoinRequests(List<JoinRequest> joinRequests) {
-        this.joinRequests = joinRequests;
+    public void setProjectRequests(List<ProjectRequest> projectRequests) {
+        this.projectRequests = projectRequests;
     }
 }

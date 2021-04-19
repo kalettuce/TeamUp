@@ -2,18 +2,18 @@ package com.teamup.teamupbackend.dao.pojo;
 
 import java.io.Serializable;
 
-public class JoinRequest implements Serializable {
+public class ProjectInvitation implements Serializable {
 
-    private int uid;
+    private int pid;
 
     private String message;
 
-    public int getUid() {
-        return uid;
+    public int getPid() {
+        return pid;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setPid(int pid) {
+        this.pid = pid;
     }
 
     public String getMessage() {
