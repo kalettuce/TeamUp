@@ -8,8 +8,8 @@ It is challenging for small teams to recruit new members for projects; many must
 Our repository has a basic structure with the generic files stored in the top-level directory and all of the major files contained in the team-up directory.
 
 * TeamUp/ (top level directory)
-* README.md
-* team-up/ (React app)
-* public/ (stores public files for when the website is deployed)
-* src/ (stores source code)
-* components/ (stores app components)
+	* README.md
+	* team-up/ (React app)
+		* public/ (stores public files for when the website is deployed)
+		* src/ (stores source code)
+			* components/ (stores app components)
