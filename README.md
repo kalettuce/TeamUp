@@ -9,7 +9,12 @@ Our repository has a basic structure with the generic files stored in the top-le
 
 * TeamUp/ (top level directory)
 	* README.md
-	* team-up/ (React app)
+	* team-up-app/ (React app)
 		* public/ (stores public files for when the website is deployed)
 		* src/ (stores source code)
 			* components/ (stores app components)
+
+## Build instructions
+Make sure npm and firebase are installed and set up. TODO: write instructions for this part
+
+Now that everything is set up, just go to the `team-up-app` directory and run the script `./deploy` whenever you want to deploy the app. If you're on Windows, run `bash deploy` instead. I think this requires you to have WSL enabled.
