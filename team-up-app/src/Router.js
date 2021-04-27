@@ -4,7 +4,6 @@ import LandingPage from "./components/pages/LandingPage";
 import FindAProjectPage from "./components/pages/FindAProjectPage";
 import UserProfilePage from "./components/pages/UserProfilePage";
 import UsersListPage from "./components/pages/UsersListPage";
-import UserProfilePage from "./components/pages/UserProfilePage";
 import ProjectDetailsPage from "./components/pages/ProjectDetailsPage";
 
 // Import page component and add its routes here
