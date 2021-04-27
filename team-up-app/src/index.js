@@ -16,9 +16,11 @@ firebase.initializeApp({
   appId: "1:783661806569:web:4d91e5e58d3835b497d178"
 });
 
+let database = firebase.database();
+
 ReactDOM.render(
   <BrowserRouter>
-      <App />
+      <App database={database}/>
   </BrowserRouter>,
   document.getElementById('root')
 );

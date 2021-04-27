@@ -1,10 +1,10 @@
 import Router from "./Router";
 import './App.css';
 
-function App() {
+function App(props) {
   return (
     <div>
-      <Router />
+      <Router database={props.database}/>
     </div>
   );
 }
