@@ -45,5 +45,6 @@ jobs:
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
+          path: ./team-up-app
         env:
           FIREBASE_TOKEN: 1//06H0HFRw8Nl22CgYIARAAGAYSNwF-L9IruwF6iWjcO2s8GTfHjxHgkl4wm2es4-Ena-2BvzEPsJ6pUK4hFCGzDPIt3O3Eoo_Z1rQ
