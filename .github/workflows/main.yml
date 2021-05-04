@@ -7,11 +7,14 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./team-up-app
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2.3.2
       - name: Install Dependencies
-        run: cd team-up-app && npm install
+        run: npm install
       - name: Run Tests
         env:
           CI: true
