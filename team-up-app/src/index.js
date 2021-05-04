@@ -17,7 +17,7 @@ firebase.initializeApp({
 });
 
 let database = firebase.database();
-
+//let database = ""
 ReactDOM.render(
   <BrowserRouter>
       <App database={database}/>

@@ -1,7 +1,12 @@
-function ProjectDetailsPage() {
+import { useParams } from 'react-router-dom';
+
+function ProjectDetailsPage(props) {
+    const {project} = useParams();
+    const title = "PROJECT DETAILS";
+    
     return (
         <div>
-            project details page
+            Project details for: {project}
         </div>
     );
 }
