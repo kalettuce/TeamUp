@@ -20,11 +20,10 @@ firebase.initializeApp({
 let database = firebase.database();
 
 ReactDOM.render(
-  /*
+
   <BrowserRouter>
       <App database={database}/>
-  </BrowserRouter>*/ 
-  <LandingPage />,
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

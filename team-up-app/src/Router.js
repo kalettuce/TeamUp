@@ -6,15 +6,27 @@ import UserProfilePage from "./components/pages/UserProfilePage";
 import UsersListPage from "./components/pages/UsersListPage";
 import ProjectDetailsPage from "./components/pages/ProjectDetailsPage";
 
-// Import page component and add its routes here
+// Import page component and add its routes here.
+// URL parameters are denoted by : for non-exact paths/
+// Use useParams() in the child component to retrieve the parameter.
 function Router(props) {
     return (
         <Switch>
-            <Route exact path='/' component={ <LandingPage database={props.database}/> }/>
-            <Route exact path='/projects' component={ FindAProjectPage }/>
-            <Route exact path='/profile' component={ UserProfilePage }/>
-            <Route exact path='/allusers' component={ UsersListPage }/>
-            <Route exact path='/projectdetails' component={ ProjectDetailsPage }/>
+            <Route exact path='/'>
+                <LandingPage database={props.database}/>
+            </Route>
+            <Route exact path='/projects'>
+                <FindAProjectPage database={props.database} />
+            </Route>
+            <Route path='/projects/:project'>
+                <ProjectDetailsPage database={props.database} />
+            </Route>
+            <Route exact path='/users'>
+                <UsersListPage database={props.database}/>
+            </Route>
+            <Route path='/users/:username'>
+                <UserProfilePage database={props.database}/>
+            </Route>
         </Switch>
     );
 }
