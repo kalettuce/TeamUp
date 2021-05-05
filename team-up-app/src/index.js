@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
 import firebase from 'firebase';
+
+import LandingPage from './components/pages/LandingPage';
 
 firebase.initializeApp({
   apiKey: "AIzaSyCm49QK8-v7YtTf4oEgPSrLJsr5YVNbiTw",
@@ -19,9 +20,11 @@ firebase.initializeApp({
 let database = firebase.database();
 
 ReactDOM.render(
+  /*
   <BrowserRouter>
       <App database={database}/>
-  </BrowserRouter>,
+  </BrowserRouter>*/ 
+  <LandingPage />,
   document.getElementById('root')
 );
 

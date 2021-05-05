@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
+import NavigationBar from '../NavigationBar';
 
 function FindAProjectPage() {
     const classes = useStyles();
@@ -20,6 +21,7 @@ function FindAProjectPage() {
 
     return (
         <div>
+            <NavigationBar />
             <Grid container className={classes.root}>
                 <Grid item xs={7} className={classes.grid}>
                     <Typography className={classes.title}>{title}</Typography>
