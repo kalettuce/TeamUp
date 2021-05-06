@@ -17,6 +17,7 @@ firebase.initializeApp({
 });
 
 let database = firebase.database();
+export default database;
 //let database = ""
 ReactDOM.render(
   <BrowserRouter>
