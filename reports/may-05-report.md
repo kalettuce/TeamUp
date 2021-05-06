@@ -19,7 +19,7 @@ Finalize and one single functionality in preparation for the beta release.
 * Brandon: Finish another website page/component. Figure out how the components will talk to each other. Create basic functions for database interaction and tests for them. 
 
 ## Progress and issues
-* Chandra: Created the projects list page
+* Chandra: Created the projects list page with pagination functionality and added dynamic URL.
 * Keith: Added dummy data for testing purposes. 
 * Brian: Edited the database schema to be more redundant but able to more efficiently find the information we need, and added some mock data for testing purposes.
 * Brandon: Created a navigation bar for the frontend. 
