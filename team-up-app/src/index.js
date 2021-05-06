@@ -17,13 +17,12 @@ firebase.initializeApp({
 });
 
 let database = firebase.database();
-export default database;
-//let database = ""
 ReactDOM.render(
   <BrowserRouter>
-      <App database={database}/>
+      <App/>
   </BrowserRouter>,
   document.getElementById('root')
 );
 
 reportWebVitals();
+export default database;

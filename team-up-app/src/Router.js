@@ -13,19 +13,19 @@ function Router(props) {
     return (
         <Switch>
             <Route exact path='/'>
-                <LandingPage database={props.database}/>
+                <LandingPage />
             </Route>
             <Route exact path='/projects'>
-                <FindAProjectPage database={props.database} />
+                <FindAProjectPage />
             </Route>
             <Route path='/projects/:project'>
-                <ProjectDetailsPage database={props.database} />
+                <ProjectDetailsPage />
             </Route>
             <Route exact path='/users'>
-                <UsersListPage database={props.database}/>
+                <UsersListPage />
             </Route>
             <Route path='/users/:username'>
-                <UserProfilePage database={props.database}/>
+                <UserProfilePage />
             </Route>
         </Switch>
     );
