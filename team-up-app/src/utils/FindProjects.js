@@ -1,4 +1,4 @@
-import database from '../index.js';
+import { database } from '../App.js';
 
 // returns a JSON object as string, including info about all projects
 export function fetchAllProjects(callback) {
