@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ProjectCard from '../presentation/ProjectCard';
 import Pagination from '@material-ui/lab/Pagination';
+import SearchBar from '../containers/SearchBar';
 import { fetchAllProjects, fetchProjectPage } from '../../utils/FindProjects.js'
 
 function FindAProjectPage() {
@@ -11,43 +12,59 @@ function FindAProjectPage() {
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
+    const [projects, setProjects] = useState(null);
+    const [query, setQuery] = useState('');
     const itemsPerPage = 6;
     
-    // Sets the total number of pages (couldn't figure out how to just count
-    // children without fetching the entire list)
+    // Fetches projects list and number of projects
     useEffect(() => {
         fetchAllProjects((projectsList) => {
             setTotalPages(Math.ceil(projectsList.length / itemsPerPage));
+            setProjects(Object.entries(projectsList));
         });
     }, []);
 
-    // Gets the items of the next page
-    // Depends on projectID being an integer from [0..(projects.length - 1)]
     useEffect(() => {
-        const startItem = ((page - 1) * itemsPerPage).toString();
-        const endItem = ((page * itemsPerPage) - 1).toString();
-        fetchProjectPage(startItem, endItem, (projectsList) => {
-            setDom(Object.entries(projectsList)
-                        .map(([projectID, project]) => (
-                <Grid
-                    className={classes.card}
-                    key={projectID}
-                    item
-                    xs={4}>
-                    <ProjectCard
-                        projectTitle={project.name}
-                        projectDesc={project.description}
-                        projectID={projectID}
-                    />
-                </Grid>
+        // Projects loaded asyncrhonously
+        if (projects !== null) {
+            setDom(projects
+                    .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                    .map(([projectID, project]) => (
+            <Grid
+                className={classes.card}
+                key={projectID}
+                item
+                xs={4}>
+                <ProjectCard
+                    projectTitle={project.name}
+                    projectDesc={project.description}
+                    projectID={projectID}
+                />
+            </Grid>
             )));
-        });
-      }, [page]);
+        }
+    }, [projects, page]);
+
+    /*
+    // debugging
+    useEffect(() => {
+        if (projects !== null) {
+            for (const [key, value] of Object.entries(projects)) {
+                console.log(`${key}: ${JSON.stringify(value)}`);
+            } 
+        } else {
+            console.log("null");
+        }
+    }, [projects]);
+    */
 
     const handleChange = (newPage) => {
-      setPage(newPage);
+        setPage(newPage);
     };
   
+    const handleSearchBarChange = (e) => {
+        setQuery(e.value)
+    }
     const title = "FIND A PROJECT";
 
     return (
@@ -56,6 +73,10 @@ function FindAProjectPage() {
                 container
                 className={classes.root}>
                 <Typography className={classes.title}>{title}</Typography>
+                <SearchBar
+                    placeholder="Search for projects"
+                    onChange={handleSearchBarChange}
+                    value={query}/>
                 <Grid container spacing={3} justify="left" >
                     {dom}
                 </Grid>
