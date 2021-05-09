@@ -1,51 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ProjectCard from '../presentation/ProjectCard';
 import Pagination from '@material-ui/lab/Pagination';
-import { fetchAllProjects } from '../../utils/FindProjects.js'
+import { fetchAllProjects, fetchProjectPage } from '../../utils/FindProjects.js'
 
-// props: 
-// database: the firebase rtdb
-function FindAProjectPage(props) {
+function FindAProjectPage() {
     const classes = useStyles();
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
-    // const projectsList = [0,1,2,3,4,5,6,7,8,9,10]; // sample
-    // const projectDesc = "Project description here" // sample
     const itemsPerPage = 6;
-  
-    const title = "FIND A PROJECT";
-    fetchAllProjects((projectsList) => {
-        setDom(Object.entries(projectsList)
-            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map(([projectID, project]) => (
-            <Grid key={projectID} item xs={4}>
-                <ProjectCard
-                    projectTitle={project.name}
-                    projectDesc={project.description}
-                    projectID={projectID}
-                />
-            </Grid>
-        )));
-        setTotalPages(Math.ceil(projectsList.length / itemsPerPage));
-    });
-    // projects.forEach(([projectID, project]) => {
-        // dom += <Grid key={projectID} item xs={4}>
-                 // <ProjectCard
-                     // projectTitle={project.name}
-                     // projectDesc={project.description}
-                     // projectID={projectID}
-                 // />
-               // <Grid />
-    // });
+    
+    // Sets the total number of pages (couldn't figure out how to just count
+    // children without fetching the entire list)
+    useEffect(() => {
+        fetchAllProjects((projectsList) => {
+            setTotalPages(Math.ceil(projectsList.length / itemsPerPage));
+        });
+    }, []);
+
+    // Gets the items of the next page
+    // Depends on projectID being an integer from [0..(projects.length - 1)]
+    useEffect(() => {
+        const startItem = ((page - 1) * itemsPerPage).toString();
+        const endItem = ((page * itemsPerPage) - 1).toString();
+        fetchProjectPage(startItem, endItem, (projectsList) => {
+            setDom(Object.entries(projectsList)
+                        .map(([projectID, project]) => (
+                <Grid
+                    className={classes.card}
+                    key={projectID}
+                    item
+                    xs={4}>
+                    <ProjectCard
+                        projectTitle={project.name}
+                        projectDesc={project.description}
+                        projectID={projectID}
+                    />
+                </Grid>
+            )));
+        });
+      }, [page]);
 
     const handleChange = (newPage) => {
       setPage(newPage);
     };
   
+    const title = "FIND A PROJECT";
+
     return (
         <div>
             <Grid
@@ -87,25 +91,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 40,
         paddingTop: '100px',
         paddingBottom: '15px',
+    },
+    card: {
+        minWidth: "250px",
     }
 }));
-
-
-
-
-
-
-
-
-
-                    /*{projectsList
-                        .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-                        .map(([projectID, project]) => (
-                        <Grid key={projectID} item xs={4}>
-                            <ProjectCard
-                                projectTitle={project.name}
-                                projectDesc={project.description}
-                                projectID={projectID}
-                            />
-                        </Grid>
-                    ))}*/

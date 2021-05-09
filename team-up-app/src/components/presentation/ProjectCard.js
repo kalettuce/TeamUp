@@ -12,7 +12,9 @@ function ProjectCard(props) {
     const changeRoute = useRouteChanger();
 
     return (
-        <Card onClick={() => changeRoute(`/projects/${props.projectTitle}`)}>
+        <Card 
+            onClick={() => changeRoute(`/projects/${props.projectTitle}`)}
+            height="500">
             <CardActionArea>
                 <CardMedia
                 component="img"
@@ -22,7 +24,7 @@ function ProjectCard(props) {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        Project {props.projectTitle}
+                        {props.projectTitle}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         {props.projectDesc}
