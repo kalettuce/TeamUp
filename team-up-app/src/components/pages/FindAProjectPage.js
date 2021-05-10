@@ -5,7 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import ProjectCard from '../presentation/ProjectCard';
 import Pagination from '@material-ui/lab/Pagination';
 import SearchBar from '../containers/SearchBar';
-import { fetchAllProjects, fetchProjectPage } from '../../utils/FindProjects.js'
+import { fetchAllProjects } from '../../utils/FindProjects.js'
+import Fuse from 'fuse.js';
 
 function FindAProjectPage() {
     const classes = useStyles();
@@ -13,21 +14,27 @@ function FindAProjectPage() {
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
     const [projects, setProjects] = useState(null);
-    const [query, setQuery] = useState('');
+    const [projectsToShow, setProjectsToShow] = useState(null);
     const itemsPerPage = 6;
     
     // Fetches projects list and number of projects
     useEffect(() => {
         fetchAllProjects((projectsList) => {
-            setTotalPages(Math.ceil(projectsList.length / itemsPerPage));
-            setProjects(Object.entries(projectsList));
+            setProjects(projectsList);
+            setProjectsToShow(Object.entries(projectsList));
         });
     }, []);
 
     useEffect(() => {
+        if (projectsToShow !== null) {
+            setTotalPages(Math.ceil(projectsToShow.length / itemsPerPage));
+        }
+    }, [projectsToShow]);
+
+    useEffect(() => {
         // Projects loaded asyncrhonously
-        if (projects !== null) {
-            setDom(projects
+        if (projectsToShow !== null) {
+            setDom(projectsToShow
                     .slice((page - 1) * itemsPerPage, page * itemsPerPage)
                     .map(([projectID, project]) => (
             <Grid
@@ -43,28 +50,40 @@ function FindAProjectPage() {
             </Grid>
             )));
         }
-    }, [projects, page]);
-
-    /*
-    // debugging
-    useEffect(() => {
-        if (projects !== null) {
-            for (const [key, value] of Object.entries(projects)) {
-                console.log(`${key}: ${JSON.stringify(value)}`);
-            } 
-        } else {
-            console.log("null");
-        }
-    }, [projects]);
-    */
+    }, [projectsToShow, page]);
 
     const handleChange = (newPage) => {
         setPage(newPage);
     };
-  
-    const handleSearchBarChange = (e) => {
-        setQuery(e.value)
+
+    const handleSearch = (query) => {
+        if (!query && projects !== null) {
+            setProjectsToShow(Object.entries(projects));
+        } else {
+            const options = {
+                findAllMatches: true,
+                threshold: 0.3,
+                keys: [
+                    {
+                        name: "name",
+                        weight: 2
+                    },
+                    "tags",
+                ]
+            };
+    
+            const fuse = new Fuse(projects, options);
+            const results = Object.entries(fuse.search(query));
+            const resultProjects = [];
+            results.map((result) => 
+                resultProjects.push(
+                    [(result[1].refIndex).toString(), result[1].item]
+                )
+            );
+            setProjectsToShow(resultProjects);
+        }
     }
+
     const title = "FIND A PROJECT";
 
     return (
@@ -75,9 +94,12 @@ function FindAProjectPage() {
                 <Typography className={classes.title}>{title}</Typography>
                 <SearchBar
                     placeholder="Search for projects"
-                    onChange={handleSearchBarChange}
-                    value={query}/>
-                <Grid container spacing={3} justify="left" >
+                    onSearch={handleSearch}/>
+                <Grid
+                    container
+                    spacing={3}
+                    justify="left">
+                    
                     {dom}
                 </Grid>
             </Grid>
