@@ -40,7 +40,7 @@ Please have the latest version of [NPM](https://www.npmjs.com/get-npm) set up on
 
 ### Running
 
-This app is deployed live [here](https://team-up-de57f.web.app/). Alternatively, you can run it locally using these steps:
+This app is deployed live at [team-up-de57f.web.app/](https://team-up-de57f.web.app/). Alternatively, you can run it locally using these steps:
 1. From the parent directory, navigate to the `team-up-app/` directory using `cd team-up-app`.
 2. Follow the **Build** instructions above to generate a development build.
 3. Run `npm start` to start the development server on `localhost:3000`.
