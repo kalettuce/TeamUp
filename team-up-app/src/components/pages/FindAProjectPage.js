@@ -53,7 +53,7 @@ function FindAProjectPage() {
             </Grid>
             )));
         }
-    }, [projectsToShow, page]);
+    }, [classes.card, projectsToShow, page]);
 
     const handleChange = (newPage) => {
         setPage(newPage);
@@ -139,5 +139,8 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '100px',
         paddingBottom: '15px',
         textAlign:'left',
+    },
+    card: {
+        minWidth: "250px",
     },
 }));
