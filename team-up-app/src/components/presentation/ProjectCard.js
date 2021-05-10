@@ -13,7 +13,7 @@ function ProjectCard(props) {
 
     return (
         <Card 
-            onClick={() => changeRoute(`/projects/${props.projectTitle}`)}
+            onClick={() => changeRoute(`/projects/${props.projectID}`)}
             height="500">
             <CardActionArea>
                 <CardMedia
@@ -26,16 +26,16 @@ function ProjectCard(props) {
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.projectTitle}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {props.projectDesc}
+                    <Typography variant="body1" color="textPrimary" component="p">
+                        {props.projectTagline}
                     </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary">
-                Learn More
-                </Button>
-            </CardActions>
+            <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+                        {`Tags: ${props.projectTags.toString()}`}
+                    </Typography>
+            </CardContent>
         </Card>
     );
 }

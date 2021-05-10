@@ -25,6 +25,8 @@ function FindAProjectPage() {
         });
     }, []);
 
+    // Sets total number of pages for pagination; updates
+    // whenever the list of projects to show changes
     useEffect(() => {
         if (projectsToShow !== null) {
             setTotalPages(Math.ceil(projectsToShow.length / itemsPerPage));
@@ -44,8 +46,9 @@ function FindAProjectPage() {
                 xs={4}>
                 <ProjectCard
                     projectTitle={project.name}
-                    projectDesc={project.description}
+                    projectTagline={project.tagline}
                     projectID={projectID}
+                    projectTags={project.tags}
                 />
             </Grid>
             )));
@@ -73,9 +76,9 @@ function FindAProjectPage() {
             };
     
             const fuse = new Fuse(projects, options);
-            const results = Object.entries(fuse.search(query));
             const resultProjects = [];
-            results.map((result) => 
+            Object.entries(fuse.search(query))
+                               .map((result) => 
                 resultProjects.push(
                     [(result[1].refIndex).toString(), result[1].item]
                 )
@@ -90,6 +93,7 @@ function FindAProjectPage() {
         <div>
             <Grid
                 container
+                justify="center"
                 className={classes.root}>
                 <Typography className={classes.title}>{title}</Typography>
                 <SearchBar
@@ -102,16 +106,16 @@ function FindAProjectPage() {
                     
                     {dom}
                 </Grid>
+                <Pagination
+                    count={totalPages}
+                    page={page}
+                    defaultPage={1}
+                    onChange={(e, newPage) => handleChange(newPage)}
+                    shape="rounded"
+                    size="large"
+                    showFirstButton
+                    showLastButton/>
             </Grid>
-            <Pagination
-                count={totalPages}
-                page={page}
-                defaultPage={1}
-                onChange={(e, newPage) => handleChange(newPage)}
-                shape="rounded"
-                size="large"
-                showFirstButton
-                showLastButton/>
         </div>
     );
 }
@@ -134,8 +138,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 40,
         paddingTop: '100px',
         paddingBottom: '15px',
+        textAlign:'left',
     },
     card: {
         minWidth: "250px",
-    }
+    },
 }));
