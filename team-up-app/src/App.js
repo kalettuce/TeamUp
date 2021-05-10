@@ -4,7 +4,7 @@ import './App.css';
 function App(props) {
   return (
     <div>
-      <Router database={props.database}/>
+      <Router/>
     </div>
   );
 }

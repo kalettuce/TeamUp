@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-function ProjectDetailsPage(props) {
+function ProjectDetailsPage() {
     const {project} = useParams();
     //const title = "PROJECT DETAILS";
     
