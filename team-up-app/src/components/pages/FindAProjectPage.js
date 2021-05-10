@@ -140,7 +140,4 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '15px',
         textAlign:'left',
     },
-    card: {
-        minWidth: "250px",
-    },
 }));
