@@ -18,7 +18,7 @@ function Router(props) {
             <Route exact path='/projects'>
                 <FindAProjectPage />
             </Route>
-            <Route path='/projects/:project'>
+            <Route path='/projects/:pid'>
                 <ProjectDetailsPage />
             </Route>
             <Route exact path='/users'>
