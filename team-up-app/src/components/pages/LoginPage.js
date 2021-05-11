@@ -4,7 +4,6 @@ import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../../utils/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import NavigationBar from '../containers/NavigationBar';
 
 export default function Login() {
     const classes = useStyles();
@@ -33,7 +32,6 @@ export default function Login() {
 
     return (
         <div>
-            <NavigationBar />
             <Container
             className="d-flex align-items-center justify-content-center"
             style={{ minHeight: "100vh" }}

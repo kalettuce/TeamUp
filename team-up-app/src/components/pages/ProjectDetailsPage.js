@@ -3,27 +3,59 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { fetchProjectById } from '../../utils/FindProjects.js'
+import { fetchUserById } from '../../utils/FindUsers.js'
+import { Typography, Card, CardMedia } from '@material-ui/core';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
     const {pid} = useParams();
     const [project, setProject] = useState(null);
+    const [user, setUser] = useState(null);
     const [dom, setDom] = useState('');
 
     useEffect(() => {
         fetchProjectById(pid, setProject);
     }, [pid]);
+
     useEffect(() => {
         if (project != null) {
+            fetchUserById(project.owner, setUser);
+        }
+    }, [project]);
+
+    useEffect(() => {
+        if (project != null && user != null) {
             setDom(
-                (<Paper elevation={3} className={classes.root}>
-                    <h2>{project.name}</h2>
-                    <p>Description: {project.description}</p>
-                    <p>Tags: {Object.entries(project.tags).map(([_, tag]) => <div>{tag}</div>)}</p>
-                </Paper>)
+                (<div>
+                    <Typography className={classes.title}>PROJECT DETAILS</Typography>
+                    <br/>
+                    <Paper elevation={3} className={classes.root}>
+                        <Card elevation={0}>
+                            <CardMedia
+                                component="img"
+                                height="200"
+                                image={project.image_url}
+                            />
+                        </Card>
+                        <br/>
+                        <Typography variant={'h4'}>{project.name}</Typography>
+                        <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
+                        <br/>
+                        <Typography variant={'h6'}>Owner: {user.name}</Typography>
+                        <br/>
+                        <Typography variant={'h5'}>Description</Typography>
+                        <Typography variant={'body'}>{project.description}</Typography>
+                        <br/>
+                        <br/>
+                        <Typography variant={'h5'}>Tags</Typography>
+                        <Typography variant="body2" color="textSecondary">{project.tags.toString()}</Typography>
+                        <br/>
+                        <br/>
+                    </Paper>
+                    </div>)
             )
         }
-    }, [project, classes.root]);
+    }, [project, user, classes.root, classes.title]);
 
     return (
         <div>
@@ -50,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 40,
         paddingTop: '100px',
         paddingBottom: '15px',
-        textAlign:'left',
+        textAlign:'center',
     },
     card: {
         minWidth: "250px",
