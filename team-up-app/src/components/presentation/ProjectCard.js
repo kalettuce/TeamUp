@@ -17,7 +17,7 @@ function ProjectCard(props) {
                 <CardMedia
                 component="img"
                 height="140"
-                image="https://husmen.xyz/portfolio/scope-timer/featured.png"
+                image={props.projectImage || "https://husmen.xyz/portfolio/scope-timer/featured.png"}
                 title="Placeholder"
                 />
                 <CardContent>

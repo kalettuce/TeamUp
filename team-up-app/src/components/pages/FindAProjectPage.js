@@ -49,6 +49,7 @@ function FindAProjectPage() {
                     projectTagline={project.tagline}
                     projectID={projectID}
                     projectTags={project.tags}
+                    projectImage={project.image_url}
                 />
             </Grid>
             )));
