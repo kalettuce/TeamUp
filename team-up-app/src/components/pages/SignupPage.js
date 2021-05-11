@@ -4,7 +4,7 @@ import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../../utils/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import NavigationBar from '../NavigationBar';
+import NavigationBar from '../containers/NavigationBar';
 
 export default function Signup() {
     const classes = useStyles();
