@@ -13,7 +13,7 @@ export function fetchAllUsers(callback) {
 
 // Fetch one project by its id
 export function fetchUserById(id, callback) {
-    database.ref('users/' + id + '/')
+    database.ref('/users/' + id + '/')
             .once('value')
             .then((snapshot) => {
         callback(snapshot.val());

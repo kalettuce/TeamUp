@@ -13,7 +13,7 @@ export function fetchAllProjects(callback) {
 
 // Fetch one project by its id
 export function fetchProjectById(id, callback) {
-    database.ref('projects/' + id + '/')
+    database.ref('/projects/' + id + '/')
             .once('value')
             .then((snapshot) => {
         callback(snapshot.val());
