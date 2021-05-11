@@ -4,24 +4,42 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { useRouteChanger } from '../utils/RouteChanger';
+import { useAuth } from '../utils/AuthContext';
 
 export default function LoginBar(props) {
-    const classes = useStyles()
+    const classes = useStyles();
+
+    const { currentUser, logout } = useAuth();
+
+    async function handleLogout() {
+        try {
+          await logout()
+          //history.push("/login")
+        } catch {
+        }
+      }
+
+    const changeRoute = useRouteChanger();
 
     const handleLogin = () => {
-        console.log("Login");
+        changeRoute("/login");
     }
 
     const handleSignup = () => {
-        console.log("Signup");
+        changeRoute("/signup");
     }
 
     const handleProjects = () => {
-        console.log("Projects");
+        changeRoute("/projects");
     }
     
     const handlePeople = () => {
         console.log("People");
+    }
+
+    const handleLandingPage = () => {
+        changeRoute("/");
     }
 
     return (
@@ -34,9 +52,9 @@ export default function LoginBar(props) {
                     xs={6}
                     className={classes.leftgrid}
                 >
-                    <Typography className={classes.name}>
+                    <Button onClick={() => handleLandingPage()} className={classes.loginbutton}>
                         TEAM UP
-                    </Typography>
+                    </Button>
                     <Button onClick={() => handleProjects()} className={classes.projectuserbutton} variant="outlined" endIcon={<ExpandMoreIcon />}>
                         PROJECTS
                     </Button>
@@ -44,17 +62,32 @@ export default function LoginBar(props) {
                         PEOPLE
                     </Button>
                 </Grid>
-                <Grid item
-                    xs={6}
-                    className={classes.rightgrid}
-                >
-                    <Button onClick={() => handleLogin()} className={classes.loginbutton}>
-                        LOG IN
-                    </Button>
-                    <Button onClick={() => handleSignup()} className={classes.signupbutton} variant="outlined">
-                        SIGN UP
-                    </Button>
-                </Grid>
+                {!currentUser && 
+                    <Grid item
+                        xs={6}
+                        className={classes.rightgrid}
+                    >
+                        <Button onClick={() => handleLogin()} className={classes.loginbutton}>
+                            LOG IN
+                        </Button>
+                        <Button onClick={() => handleSignup()} className={classes.signupbutton} variant="outlined">
+                            SIGN UP
+                        </Button>
+                    </Grid>
+                }  
+                {currentUser && 
+                    <Grid item
+                        xs={6}
+                        className={classes.rightgrid}
+                    >
+                        <Button onClick={() => handleLogout()} className={classes.signupbutton} variant="outlined">
+                            LOG OUT
+                        </Button>
+                        <Typography className={classes.name}>
+                            {currentUser.email}
+                        </Typography>
+                    </Grid>
+                }    
             </Grid>
         </div>
     );
@@ -67,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
         borderTopWidth: 0,
         borderLeftWidth: 0,
         borderRightWidth: 0,
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
         borderColor: 'black',
         borderStyle: 'solid',
     },
