@@ -2,6 +2,6 @@
 # Make sure this file has Unix line endings
 
 if pushd $(dirname $0); then
-  npm run build && firebase deploy
+  npm run test -- --watchAll=false && npm run build
   popd
 fi
