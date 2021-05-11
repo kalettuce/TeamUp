@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../../utils/AuthContext";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import NavigationBar from '../NavigationBar';
 
