@@ -7,6 +7,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import SearchBar from '../containers/SearchBar';
 import { fetchAllProjects } from '../../utils/FindProjects.js'
 import Fuse from 'fuse.js';
+import NavigationBar from '../NavigationBar';
 
 function FindAProjectPage() {
     const classes = useStyles();
@@ -91,6 +92,7 @@ function FindAProjectPage() {
 
     return (
         <div>
+            <NavigationBar />
             <Grid
                 container
                 justify="center"
