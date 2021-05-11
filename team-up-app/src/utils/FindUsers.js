@@ -2,7 +2,7 @@ import firebase from './Firebase.js';
 
 const database = firebase.database();
 
-// Fetches a snapshot of all projects
+// Fetches a snapshot of all users
 export function fetchAllUsers(callback) {
     database.ref('/users/')
             .once('value')
@@ -11,7 +11,7 @@ export function fetchAllUsers(callback) {
     });
 }
 
-// Fetch one project by its id
+// Fetch user info by userid
 export function fetchUserById(id, callback) {
     database.ref('/users/' + id + '/')
             .once('value')
