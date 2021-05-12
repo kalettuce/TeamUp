@@ -95,6 +95,8 @@ export default function LoginBar(props) {
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        position: 'fixed',
+        zIndex: 10000,
         flexGrow: 1,
         paddingBottom: 0,
         borderTopWidth: 0,
@@ -103,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
         borderBottomWidth: 1,
         borderColor: 'black',
         borderStyle: 'solid',
+        background:'#fff',
     },
     name: {
         fontWeight: 700,
