@@ -1,11 +1,14 @@
 import Router from "./Router";
 import './App.css';
+import { AuthProvider } from "./utils/AuthContext";
+import NavigationBar from "./components/containers/NavigationBar";
 
 function App(props) {
   return (
-    <div>
-      <Router/>
-    </div>
+    <AuthProvider>
+      <NavigationBar />
+      <Router />
+    </AuthProvider>
   );
 }
 

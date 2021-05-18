@@ -6,18 +6,25 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { useRouteChanger } from '../../utils/RouteChanger';
+import { useAuth } from '../../utils/AuthContext';
 
 function LandingPage() {
     const classes = useStyles();
+    const { currentUser } = useAuth();
+    const changeRoute = useRouteChanger();
+
     const title = "CONNECTING PEOPLE TO PROJECTS";
 
-    const changeRoute = useRouteChanger();
     const handleFindAProject = () => {
        changeRoute("/projects");
     }
 
     const handlePostAProject = () => {
-        console.log("POST A PROJECT");
+        if (currentUser) {
+            changeRoute("/createproject");
+        } else {
+            changeRoute("/login");
+        }
     }
 
     return (
