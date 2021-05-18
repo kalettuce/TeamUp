@@ -1,6 +1,6 @@
 # Team-Up (CSE403 Project)
 
-For further user and developer documentation, please visit the project [Wiki](https://github.com/kalettuce/TeamUp/wiki).
+For additional user and developer documentation, please visit the project [Wiki](https://github.com/kalettuce/TeamUp/wiki).
 
 ## About the Project
 
