@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { fetchProjectById } from '../../utils/FindProjects.js'
 import { fetchUserById } from '../../utils/FindUsers.js'
-import { Typography, Card, CardMedia } from '@material-ui/core';
+import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
+import { regionToFlag } from '../containers/RegionSelect';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -34,17 +35,31 @@ function ProjectDetailsPage() {
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image={project.image_url}
+                                image={project.image_url || "https://husmen.xyz/portfolio/scope-timer/featured.png"}
                             />
                         </Card>
                         <br/>
-                        <Typography variant={'h4'}>{project.name}</Typography>
+                        <Grid container>
+                            <Grid item xs={6}>
+                            <Typography variant={'h4'}>{project.name}</Typography>
+                            </Grid>
+                            <Grid item xs={6} align={"right"}>
+                            <Button
+                                className={classes.button}
+                                variant="outlined"
+                            >JOIN PROJECT</Button>
+                            </Grid>
+                        </Grid>
                         <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
+                        <Typography variant={'body1'}>
+                            <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
+                            {project.region ? project.region[0] : "Global"}
+                        </Typography>
                         <br/>
-                        <Typography variant={'h6'}>Owner: {user.name}</Typography>
+                        <Typography variant={'h6'}>Project creator: {user.name}</Typography>
                         <br/>
                         <Typography variant={'h5'}>Description</Typography>
-                        <Typography variant={'body'}>{project.description}</Typography>
+                        <Typography variant={'body1'}>{project.description}</Typography>
                         <br/>
                         <br/>
                         <Typography variant={'h5'}>Tags</Typography>
@@ -55,7 +70,7 @@ function ProjectDetailsPage() {
                     </div>)
             )
         }
-    }, [project, user, classes.root, classes.title]);
+    }, [project, user, classes.root, classes.title, classes.button]);
 
     return (
         <div>
@@ -87,4 +102,12 @@ const useStyles = makeStyles((theme) => ({
     card: {
         minWidth: "250px",
     },
+    button: {
+        fontSize: '1rem',
+        fontWeight: 700,
+        color: "black",
+        background: '#FFFFFF',
+        border: '1px solid',
+        borderRadius: 0,
+    }
 }));

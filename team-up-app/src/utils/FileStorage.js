@@ -6,19 +6,25 @@ const storage = firebase.storage();
 // Upload and set the image for a project
 // pid: the project id
 // file: the image to upload
+// callback: calls this when done, no arguments
 // Once set, the image can be accessed through the database under projects/pid/image_url
-export function setProjectImage(pid, file) {
+export function setProjectImage(pid, file, callback) {
     const path = "projects/" + pid + "/";
-    // Get the old image url
-    database.ref(path).child("image_url").once("value")
-            .then(snapshot => snapshot.val())
-            // Delete the old image
-            .then(url => storage.refFromURL(url).delete())
-            .catch(() => { /* No old image to delete, not an error */ })
-            // Upload the new image
-            .then(() => storage.ref(path).child(file.name).put(file))
-            // Update the image url in the database
-            .then(snapshot => snapshot.ref.getDownloadURL())
-            .then(url => database.ref(path).child("image_url").set(url))
-            .catch(console.error);
+
+    if (file.length !== 0) {
+        // Get the old image url
+        console.log(path, file);
+        database.ref(path).child("image_url").once("value")
+                .then(snapshot => { return snapshot.val(); })
+                // Delete the old image
+                .then(url => storage.refFromURL(url).delete())
+                .catch(() => { /* No old image to delete, not an error */ })
+                // Upload the new image
+                .then(() => storage.ref(path).child(file.name).put(file))
+                // Update the image url in the database
+                .then(snapshot => snapshot.ref.getDownloadURL())
+                .then(url => database.ref(path).child("image_url").set(url))
+                .catch(console.error)
+                .then(() => callback());
+    }
 }

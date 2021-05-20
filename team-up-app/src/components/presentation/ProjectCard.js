@@ -12,6 +12,7 @@ function ProjectCard(props) {
     return (
         <Card 
             onClick={() => changeRoute(`/projects/${props.projectID}`)}
+            style={{width: '100%'}}
             height="500">
             <CardActionArea>
                 <CardMedia

@@ -6,33 +6,50 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { useRouteChanger } from '../../utils/RouteChanger';
+import { useAuth } from '../../utils/AuthContext';
 
 function LandingPage() {
     const classes = useStyles();
+    const { currentUser } = useAuth();
+    const changeRoute = useRouteChanger();
+
     const title = "CONNECTING PEOPLE TO PROJECTS";
 
-    const changeRoute = useRouteChanger();
     const handleFindAProject = () => {
        changeRoute("/projects");
     }
 
     const handlePostAProject = () => {
-        console.log("POST A PROJECT");
+        if (currentUser) {
+            changeRoute("/createproject");
+        } else {
+            changeRoute("/login");
+        }
     }
 
     return (
         <div>
-            <Grid container className={classes.root}>
-                <Grid item xs={7} className={classes.grid}>
+            <Grid
+                container
+                className={classes.root}>
+                <Grid
+                    item xs={7}
+                    className={classes.grid}>
                     <Typography className={classes.title}>{title}</Typography>
-                    <Button onClick={() => handleFindAProject()} className={classes.button} variant="outlined">
+                    <Button onClick={() => handleFindAProject()}
+                            className={classes.button}
+                            variant="outlined">
                         FIND A PROJECT
                     </Button>
-                    <Button onClick={() => handlePostAProject()} className={classes.button} variant="outlined">
+                    <Button onClick={() => handlePostAProject()}
+                            className={classes.button}
+                            variant="outlined">
                         POST A PROJECT
                     </Button>
                 </Grid>
-                <Grid item xs={5} className={classes.grid}>
+                <Grid
+                    item xs={5}
+                    className={classes.grid}>
                     <Card className={classes.card}>
                         <CardMedia 
                             className={classes.media}

@@ -9,6 +9,7 @@ import { AuthProvider } from "./utils/AuthContext";
 import Signup from "./components/pages/SignupPage";
 import Login from "./components/pages/LoginPage";
 import NavigationBar from './components/containers/NavigationBar';
+import CreateAProjectPage from './components/pages/CreateAProjectPage';
 
 // Import page component and add its routes here.
 // URL parameters are denoted by : for non-exact paths/
@@ -23,6 +24,9 @@ function Router(props) {
                 </Route>
                 <Route exact path='/projects'>
                     <FindAProjectPage />
+                </Route>
+                <Route exact path='/createproject'>
+                    <CreateAProjectPage />
                 </Route>
                 <Route path='/projects/:pid'>
                     <ProjectDetailsPage />
