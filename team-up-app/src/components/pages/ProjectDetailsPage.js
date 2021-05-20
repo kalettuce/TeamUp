@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { fetchProjectById } from '../../utils/FindProjects.js'
 import { fetchUserById } from '../../utils/FindUsers.js'
-import { Typography, Card, CardMedia } from '@material-ui/core';
+import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -34,11 +34,20 @@ function ProjectDetailsPage() {
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image={project.image_url}
+                                image={project.image_url || "https://husmen.xyz/portfolio/scope-timer/featured.png"}
                             />
                         </Card>
                         <br/>
-                        <Typography variant={'h4'}>{project.name}</Typography>
+                        <Grid container>
+                            <Grid xs={6}>
+                            <Typography variant={'h4'}>{project.name}</Typography>
+                            </Grid>
+                            <Grid xs={6} align={"right"}>
+                            <Button
+                                variant="outlined"
+                            >JOIN PROJECT</Button>
+                            </Grid>
+                        </Grid>
                         <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
                         <br/>
                         <Typography variant={'h6'}>Owner: {user.name}</Typography>

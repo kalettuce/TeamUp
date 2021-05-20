@@ -29,17 +29,27 @@ function LandingPage() {
 
     return (
         <div>
-            <Grid container className={classes.root}>
-                <Grid item xs={7} className={classes.grid}>
+            <Grid
+                container
+                className={classes.root}>
+                <Grid
+                    item xs={7}
+                    className={classes.grid}>
                     <Typography className={classes.title}>{title}</Typography>
-                    <Button onClick={() => handleFindAProject()} className={classes.button} variant="outlined">
+                    <Button onClick={() => handleFindAProject()}
+                            className={classes.button}
+                            variant="outlined">
                         FIND A PROJECT
                     </Button>
-                    <Button onClick={() => handlePostAProject()} className={classes.button} variant="outlined">
+                    <Button onClick={() => handlePostAProject()}
+                            className={classes.button}
+                            variant="outlined">
                         POST A PROJECT
                     </Button>
                 </Grid>
-                <Grid item xs={5} className={classes.grid}>
+                <Grid
+                    item xs={5}
+                    className={classes.grid}>
                     <Card className={classes.card}>
                         <CardMedia 
                             className={classes.media}

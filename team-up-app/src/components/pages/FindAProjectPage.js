@@ -14,13 +14,17 @@ function FindAProjectPage() {
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
     const [projects, setProjects] = useState(null);
+    const [projectKeys, setProjectKeys] = useState(null);
     const [projectsToShow, setProjectsToShow] = useState(null);
+
     const itemsPerPage = 6;
+    const title = "FIND A PROJECT";
     
     // Fetches projects list and number of projects
     useEffect(() => {
         fetchAllProjects((projectsList) => {
-            setProjects(projectsList);
+            setProjects(Object.values(projectsList));
+            setProjectKeys(Object.keys(projectsList));
             setProjectsToShow(Object.entries(projectsList));
         });
     }, []);
@@ -61,12 +65,12 @@ function FindAProjectPage() {
     };
 
     const handleSearch = (query) => {
-        if (!query && projects !== null) {
+        if (!query && projects !== null && projectKeys !== null) {
             setProjectsToShow(Object.entries(projects));
         } else {
             const options = {
                 findAllMatches: true,
-                threshold: 0.3,
+                threshold: 0.1,
                 keys: [
                     {
                         name: "name",
@@ -81,14 +85,11 @@ function FindAProjectPage() {
             Object.entries(fuse.search(query))
                                .map((result) => 
                 resultProjects.push(
-                    [(result[1].refIndex).toString(), result[1].item]
-                )
-            );
+                    [projectKeys[(result[1].refIndex).toString()], result[1].item])
+            )
             setProjectsToShow(resultProjects);
         }
     }
-
-    const title = "FIND A PROJECT";
 
     return (
         <div>
@@ -102,8 +103,7 @@ function FindAProjectPage() {
                     onSearch={handleSearch}/>
                 <Grid
                     container
-                    spacing={3}
-                    justify="left">
+                    spacing={3}>
                     
                     {dom}
                 </Grid>

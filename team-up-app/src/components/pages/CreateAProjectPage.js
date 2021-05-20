@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { addAProject } from '../../utils/AddProjects.js';
+import { useAuth } from '../../utils/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateAProjectPage() {
     const classes = useStyles();
+    const { currentUser } = useAuth();
 
     const [name, setName] = useState('');
     const [tagline, setTagline] = useState('');
@@ -55,17 +57,18 @@ function CreateAProjectPage() {
     const [tags, setTags] = useState('');
 
     const handleConfirmation = () => {
-      if (name.length === 0) {
-        alert('Project name is required');
-      } else if (tagline.length === 0) {
-        alert('Project summary is required');
-      } else if (region.length === 0) {
-        alert('Time zone is required');
-      } else if (description.length === 0) {
-        alert('Project description is required');
-      } else {
-        addAProject(name, tagline, region, description, application, tags);
-      }
+        if (name.length === 0) {
+            alert('Project name is required');
+        } else if (tagline.length === 0) {
+            alert('Project summary is required');
+        } else if (region.length === 0) {
+            alert('Time zone is required');
+        } else if (description.length === 0) {
+            alert('Project description is required');
+        } else {
+            addAProject(name, currentUser.uid, tagline,
+                region, description, application, tags);
+        }
     }
     
     return (

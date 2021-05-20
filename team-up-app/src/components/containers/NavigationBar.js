@@ -31,6 +31,7 @@ export default function LoginBar(props) {
     }
 
     const handleProjects = () => {
+        console.log(currentUser);
         changeRoute("/projects");
     }
     
@@ -67,10 +68,13 @@ export default function LoginBar(props) {
                         xs={6}
                         className={classes.rightgrid}
                     >
-                        <Button onClick={() => handleLogin()} className={classes.loginbutton}>
+                        <Button onClick={() => handleLogin()}
+                                className={classes.loginbutton}>
                             LOG IN
                         </Button>
-                        <Button onClick={() => handleSignup()} className={classes.signupbutton} variant="outlined">
+                        <Button onClick={() => handleSignup()}
+                                className={classes.signupbutton}
+                                variant="outlined">
                             SIGN UP
                         </Button>
                     </Grid>
@@ -80,7 +84,9 @@ export default function LoginBar(props) {
                         xs={6}
                         className={classes.rightgrid}
                     >
-                        <Button onClick={() => handleLogout()} className={classes.signupbutton} variant="outlined">
+                        <Button onClick={() => handleLogout()}
+                                className={classes.signupbutton}
+                                variant="outlined">
                             LOG OUT
                         </Button>
                         <Typography className={classes.name}>

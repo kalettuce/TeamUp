@@ -2,10 +2,12 @@ import firebase from './Firebase.js';
 
 const database = firebase.database();
 
-export function addAProject(name, tagline, time_zone, description, application, tags) {
+export function addAProject(name, ownerID, tagline, time_zone,
+                            description, application, tags) {
   let tagList = tags.split(';').map((tag) => tag.trim());
   let projData =  {
     name: name,
+    owner: ownerID,
     tagline: tagline,
     time_zone: time_zone,
     description: description,
