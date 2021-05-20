@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { addAProject } from '../../utils/AddProjects.js';
 import { useAuth } from '../../utils/AuthContext';
+import { useRouteChanger } from '../../utils/RouteChanger';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,6 +56,7 @@ function CreateAProjectPage() {
     const [description, setDescription] = useState('');
     const [application, setApplication] = useState('');
     const [tags, setTags] = useState('');
+    const changeRoute = useRouteChanger();
 
     const handleConfirmation = () => {
         if (name.length === 0) {
@@ -66,11 +68,17 @@ function CreateAProjectPage() {
         } else if (description.length === 0) {
             alert('Project description is required');
         } else {
-            addAProject(name, currentUser.uid, tagline,
-                region, description, application, tags);
+            try {
+                const projectPid = addAProject(name, currentUser.uid, tagline,
+                    region, description, application, tags);
+                // might need to make this an asynchronous call
+                changeRoute(`/projects/${projectPid}`);
+            } catch {
+                console.log("Project creation failed");
+            }
         }
     }
-    
+
     return (
         <div className={classes.root}>
             <Typography className={classes.title}>CREATE A PROJECT</Typography>
