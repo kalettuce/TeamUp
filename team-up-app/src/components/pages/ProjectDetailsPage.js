@@ -39,11 +39,12 @@ function ProjectDetailsPage() {
                         </Card>
                         <br/>
                         <Grid container>
-                            <Grid xs={6}>
+                            <Grid item xs={6}>
                             <Typography variant={'h4'}>{project.name}</Typography>
                             </Grid>
-                            <Grid xs={6} align={"right"}>
+                            <Grid item xs={6} align={"right"}>
                             <Button
+                                className={classes.button}
                                 variant="outlined"
                             >JOIN PROJECT</Button>
                             </Grid>
@@ -53,7 +54,7 @@ function ProjectDetailsPage() {
                         <Typography variant={'h6'}>Owner: {user.name}</Typography>
                         <br/>
                         <Typography variant={'h5'}>Description</Typography>
-                        <Typography variant={'body'}>{project.description}</Typography>
+                        <Typography variant={'body1'}>{project.description}</Typography>
                         <br/>
                         <br/>
                         <Typography variant={'h5'}>Tags</Typography>
@@ -64,7 +65,7 @@ function ProjectDetailsPage() {
                     </div>)
             )
         }
-    }, [project, user, classes.root, classes.title]);
+    }, [project, user, classes.root, classes.title, classes.button]);
 
     return (
         <div>
@@ -96,4 +97,12 @@ const useStyles = makeStyles((theme) => ({
     card: {
         minWidth: "250px",
     },
+    button: {
+        fontSize: '1rem',
+        fontWeight: 700,
+        color: "black",
+        background: '#FFFFFF',
+        border: '1px solid',
+        borderRadius: 0,
+    }
 }));

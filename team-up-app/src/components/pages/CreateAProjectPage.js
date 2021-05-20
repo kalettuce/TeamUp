@@ -6,9 +6,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { addAProject } from '../../utils/AddProjects.js';
+import { addAProject } from '../../utils/AddProjects';
 import { useAuth } from '../../utils/AuthContext';
 import { useRouteChanger } from '../../utils/RouteChanger';
+import ImageUploaderElement from '../presentation/ImageUploaderElement';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,6 +57,9 @@ function CreateAProjectPage() {
     const [description, setDescription] = useState('');
     const [application, setApplication] = useState('');
     const [tags, setTags] = useState('');
+    const [pid, setPid] = useState('');
+    const [picture, setPicture] = useState([]);
+    
     const changeRoute = useRouteChanger();
 
     const handleConfirmation = () => {
@@ -69,15 +73,20 @@ function CreateAProjectPage() {
             alert('Project description is required');
         } else {
             try {
-                const projectPid = addAProject(name, currentUser.uid, tagline,
-                    region, description, application, tags);
-                // might need to make this an asynchronous call
-                changeRoute(`/projects/${projectPid}`);
+                setPid(addAProject(name, currentUser.uid, tagline,
+                    region, description, application, tags, picture));
             } catch {
                 console.log("Project creation failed");
             }
         }
     }
+
+    // Putting changeRoute in the dependency array kept refreshing the page
+    useEffect(() => {
+        if (pid !== '') {
+            changeRoute(`/projects/${pid}`);
+        }
+    });
 
     return (
         <div className={classes.root}>
@@ -132,7 +141,7 @@ function CreateAProjectPage() {
                     required
                     id="desc"
                     name="desc"
-                    label="What's the project about? What types of people will be a good fit?"
+                    label="What's the project about? What types of people would fit the team?"
                     onChange={(e) => {
                       setDescription(e.target.value);
                     }}
@@ -161,6 +170,9 @@ function CreateAProjectPage() {
                     fullWidth
                     />
                 </Grid>
+                <ImageUploaderElement onDrop={(e) => {
+                    setPicture(e)
+                }}/>
             </Grid>
             <Button
                 variant="outlined"
