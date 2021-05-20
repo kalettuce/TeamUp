@@ -10,7 +10,7 @@ const storage = firebase.storage();
 export function setProjectImage(pid, file) {
     const path = "projects/" + pid + "/";
 
-    if (file !== []) {
+    if (file.length !== 0) {
         // Get the old image url
         console.log(path, file);
         database.ref(path).child("image_url").once("value")
