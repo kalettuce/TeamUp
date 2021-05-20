@@ -5,7 +5,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import { regions } from '../../utils/RegionsList';
 
-function regionToFlag(isoCode) {
+export function regionToFlag(isoCode) {
   return typeof String.fromCodePoint !== 'undefined'
     ? isoCode
         .toUpperCase()
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     },
 });
 
-function RegionSelect(props) {
+export default function RegionSelect(props) {
     const classes = useStyles();
 
     return (
@@ -55,5 +55,3 @@ function RegionSelect(props) {
         />
     )
 };
-
-export default RegionSelect;

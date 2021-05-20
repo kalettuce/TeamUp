@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import { fetchProjectById } from '../../utils/FindProjects.js'
 import { fetchUserById } from '../../utils/FindUsers.js'
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
+import { regionToFlag } from '../containers/RegionSelect';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -50,8 +51,12 @@ function ProjectDetailsPage() {
                             </Grid>
                         </Grid>
                         <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
+                        <span>{regionToFlag(project[1])}</span>
+                        <Typography variant={'body1'} color="textSecondary">
+                            {project[0] || "Global"}
+                        </Typography>
                         <br/>
-                        <Typography variant={'h6'}>Owner: {user.name}</Typography>
+                        <Typography variant={'h6'}>Project creator: {user.name}</Typography>
                         <br/>
                         <Typography variant={'h5'}>Description</Typography>
                         <Typography variant={'body1'}>{project.description}</Typography>

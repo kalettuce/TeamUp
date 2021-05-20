@@ -120,7 +120,7 @@ function CreateAProjectPage() {
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <RegionSelect onChange={(e, region) => setRegion(region.code)}/>
+                    <RegionSelect onChange={(e, region) => setRegion([region.label, region.code])}/>
                 </Grid>
                 <Grid item xs={12}>
                     <TextField

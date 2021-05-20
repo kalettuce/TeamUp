@@ -49,9 +49,9 @@ function FindAProjectPage() {
                 item
                 xs={4}>
                 <ProjectCard
+                    projectID={projectID}
                     projectTitle={project.name}
                     projectTagline={project.tagline}
-                    projectID={projectID}
                     projectTags={project.tags}
                     projectImage={project.image_url}
                 />

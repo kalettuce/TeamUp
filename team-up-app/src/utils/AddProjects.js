@@ -5,14 +5,14 @@ const database = firebase.database();
 
 // adds a project to the database given these information.
 // returns the new project ID.
-export function addAProject(name, ownerID, tagline, time_zone,
+export function addAProject(name, ownerID, tagline, region,
                             description, joinProjectQuestion, tags, picture) {
   const tagList = tags.split(';').map((tag) => tag.trim());
   const projData =  {
     name: name,
     owner: ownerID,
     tagline: tagline,
-    time_zone: time_zone,
+    region: region,
     description: description,
     application: joinProjectQuestion,
     tags: tagList,
