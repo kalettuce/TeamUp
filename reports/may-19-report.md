@@ -29,4 +29,4 @@ Finalize implementation to join/accept users to a project and user profile pages
 * Chandra: Work on front-end for joining a new project and collaborate with Brian on getting it integrated with the database.
 * Keith: Polish further the project details page and develop the user profile page.
 * Brian: Fix the image storage permissions and write functions for sending requests and invitations in the database.
-* Brandon:
+* Brandon: Add a user profile page and a user lookup page
