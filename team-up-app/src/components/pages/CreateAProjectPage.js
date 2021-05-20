@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -6,6 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { addAProject } from '../../utils/AddProjects.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,6 +46,27 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateAProjectPage() {
     const classes = useStyles();
+
+    const [name, setName] = useState('');
+    const [tagline, setTagline] = useState('');
+    const [region, setRegion] = useState('');
+    const [description, setDescription] = useState('');
+    const [application, setApplication] = useState('');
+    const [tags, setTags] = useState('');
+
+    const handleConfirmation = () => {
+      if (name.length === 0) {
+        alert('Project name is required');
+      } else if (tagline.length === 0) {
+        alert('Project summary is required');
+      } else if (region.length === 0) {
+        alert('Time zone is required');
+      } else if (description.length === 0) {
+        alert('Project description is required');
+      } else {
+        addAProject(name, tagline, region, description, application, tags);
+      }
+    }
     
     return (
         <div className={classes.root}>
@@ -56,6 +78,9 @@ function CreateAProjectPage() {
                     id="name"
                     name="name"
                     label="Project name"
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
                     fullWidth
                     />
                 </Grid>
@@ -65,6 +90,9 @@ function CreateAProjectPage() {
                     id="tagline"
                     name="tagline"
                     label="One-sentence summary of the project"
+                    onChange={(e) => {
+                      setTagline(e.target.value);
+                    }}
                     fullWidth
                     />
                 </Grid>
@@ -74,6 +102,9 @@ function CreateAProjectPage() {
                     id="region"
                     name="region"
                     label="Region"
+                    onChange={(e) => {
+                      setRegion(e.target.value);
+                    }}
                     fullWidth
                     />
                     <FormControlLabel
@@ -91,6 +122,9 @@ function CreateAProjectPage() {
                     id="desc"
                     name="desc"
                     label="What's the project about? What types of people will be a good fit?"
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                    }}
                     fullWidth
                     />
                 </Grid>
@@ -99,6 +133,9 @@ function CreateAProjectPage() {
                     id="application"
                     name="application"
                     label="Application question (optional)"
+                    onChange={(e) => {
+                      setApplication(e.target.value);
+                    }}
                     fullWidth
                     />
                 </Grid>
@@ -106,7 +143,10 @@ function CreateAProjectPage() {
                     <TextField
                     id="tags"
                     name="tags"
-                    label="Add tags separated by colons"
+                    label="Add tags separated by semicolons (;)"
+                    onChange={(e) => {
+                      setTags(e.target.value);
+                    }}
                     fullWidth
                     />
                 </Grid>
@@ -114,9 +154,9 @@ function CreateAProjectPage() {
             <Button
                 variant="outlined"
                 className={classes.button}
+                onClick={handleConfirmation}
             >Create</Button>
         </div>
     );
 }
-
 export default CreateAProjectPage; 
