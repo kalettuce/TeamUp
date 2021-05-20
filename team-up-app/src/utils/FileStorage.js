@@ -14,7 +14,7 @@ export function setProjectImage(pid, file) {
         // Get the old image url
         console.log(path, file);
         database.ref(path).child("image_url").once("value")
-                .then(snapshot => snapshot.val())
+                .then(snapshot => { return snapshot.val(); })
                 // Delete the old image
                 .then(url => storage.refFromURL(url).delete())
                 .catch(() => { /* No old image to delete, not an error */ })
