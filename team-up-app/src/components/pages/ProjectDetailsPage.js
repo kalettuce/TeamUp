@@ -51,9 +51,9 @@ function ProjectDetailsPage() {
                             </Grid>
                         </Grid>
                         <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
-                        <span>{regionToFlag(project[1])}</span>
-                        <Typography variant={'body1'} color="textSecondary">
-                            {project[0] || "Global"}
+                        <Typography variant={'body1'}>
+                            <span>{regionToFlag(project.region[1]) || ''} </span>
+                            {project.region[0] || "Global"}
                         </Typography>
                         <br/>
                         <Typography variant={'h6'}>Project creator: {user.name}</Typography>
