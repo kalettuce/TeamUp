@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { addAProject } from '../../utils/AddProjects';
 import { useAuth } from '../../utils/AuthContext';
 import { useRouteChanger } from '../../utils/RouteChanger';
-import ImageUploaderElement from '../presentation/ImageUploaderElement';
+import ImageUploaderElement from '../containers/ImageUploaderElement';
+import RegionSelect from '../containers/RegionSelect';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -97,6 +96,8 @@ function CreateAProjectPage() {
                     required
                     id="name"
                     name="name"
+                    inputProps={{ maxLength: 30 }}
+                    helperText={'30 characters max'}
                     label="Project name"
                     onChange={(e) => {
                       setName(e.target.value);
@@ -104,37 +105,22 @@ function CreateAProjectPage() {
                     fullWidth
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={9}>
                     <TextField
                     required
                     id="tagline"
                     name="tagline"
-                    label="One-sentence summary of the project"
+                    inputProps={{ maxLength: 50 }}
+                    helperText={'50 characters max'}
+                    label="Brief summary of the project"
                     onChange={(e) => {
                       setTagline(e.target.value);
                     }}
                     fullWidth
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                    required
-                    id="region"
-                    name="region"
-                    label="Region"
-                    onChange={(e) => {
-                      setRegion(e.target.value);
-                    }}
-                    fullWidth
-                    />
-                    <FormControlLabel
-                    control={
-                        <Checkbox
-                            color="secondary"
-                            name="checkbox"
-                            value="yes" />}
-                    label="Remote OK"
-                    />
+                <Grid item xs={12} sm={3}>
+                    <RegionSelect onChange={(e, region) => setRegion(region.code)}/>
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -152,7 +138,7 @@ function CreateAProjectPage() {
                     <TextField
                     id="application"
                     name="application"
-                    label="Application question (optional)"
+                    label="Include a question for applicants to respond to."
                     onChange={(e) => {
                       setApplication(e.target.value);
                     }}

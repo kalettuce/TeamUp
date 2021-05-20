@@ -103,8 +103,8 @@ function FindAProjectPage() {
                     onSearch={handleSearch}/>
                 <Grid
                     container
+                    alignItems="stretch"
                     spacing={3}>
-                    
                     {dom}
                 </Grid>
                 <Pagination
@@ -142,6 +142,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign:'left',
     },
     card: {
-        minWidth: "250px",
+        minWidth: '250px',
+        display: 'flex',
     },
 }));
