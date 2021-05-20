@@ -157,7 +157,7 @@ function CreateAProjectPage() {
                     />
                 </Grid>
                 <ImageUploaderElement onDrop={(e) => {
-                    setPicture(e)
+                    setPicture(e[0]);
                 }}/>
             </Grid>
             <Button
