@@ -4,9 +4,11 @@ import { setProjectImage } from './FileStorage';
 const database = firebase.database();
 
 // adds a project to the database given these information.
-// returns the new project ID.
+// calls the callback with the new project ID as the only argument.
 export function addAProject(name, ownerID, tagline, region,
-                            description, joinProjectQuestion, tags, picture) {
+                            description, joinProjectQuestion,
+                            tags, picture, callback) {
+
   const tagList = tags.split(';').map((tag) => tag.trim());
   const projData =  {
     name: name,
@@ -24,7 +26,5 @@ export function addAProject(name, ownerID, tagline, region,
   let updates = {};
   updates['/projects/' + newPid] = projData;
   database.ref().update(updates);
-  setProjectImage(newPid, picture);
-
-  return newPid;
+  setProjectImage(newPid, picture, () => callback(newPid));
 }

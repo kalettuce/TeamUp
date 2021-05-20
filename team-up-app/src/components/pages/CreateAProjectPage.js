@@ -72,8 +72,8 @@ function CreateAProjectPage() {
             alert('Project description is required');
         } else {
             try {
-                setPid(addAProject(name, currentUser.uid, tagline,
-                    region, description, application, tags, picture));
+                addAProject(name, currentUser.uid, tagline,
+                    region, description, application, tags, picture, setPid);
             } catch {
                 console.log("Project creation failed");
             }

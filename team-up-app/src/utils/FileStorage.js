@@ -6,8 +6,9 @@ const storage = firebase.storage();
 // Upload and set the image for a project
 // pid: the project id
 // file: the image to upload
+// callback: calls this when done, no arguments
 // Once set, the image can be accessed through the database under projects/pid/image_url
-export function setProjectImage(pid, file) {
+export function setProjectImage(pid, file, callback) {
     const path = "projects/" + pid + "/";
 
     if (file.length !== 0) {
@@ -23,6 +24,7 @@ export function setProjectImage(pid, file) {
                 // Update the image url in the database
                 .then(snapshot => snapshot.ref.getDownloadURL())
                 .then(url => database.ref(path).child("image_url").set(url))
-                .catch(console.error);
+                .catch(console.error)
+                .then(() => callback());
     }
 }
