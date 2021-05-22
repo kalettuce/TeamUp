@@ -6,6 +6,9 @@ import { fetchProjectById } from '../../utils/FindProjects.js'
 import { fetchUserById } from '../../utils/FindUsers.js'
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
 import { regionToFlag } from '../containers/RegionSelect';
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle";
+import JoinAProjectPage from './JoinAProjectPage.js';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -13,6 +16,7 @@ function ProjectDetailsPage() {
     const [project, setProject] = useState(null);
     const [user, setUser] = useState(null);
     const [dom, setDom] = useState('');
+    const [joinProjectOpen, setJoinProjectOpen] = useState(false);
 
     useEffect(() => {
         fetchProjectById(pid, setProject);
@@ -28,6 +32,17 @@ function ProjectDetailsPage() {
         if (project != null && user != null) {
             setDom(
                 (<div>
+                    <Dialog
+                        onClose={() => setJoinProjectOpen(false)}
+                        open={joinProjectOpen}>
+                        <DialogTitle>
+                            Join this project
+                        </DialogTitle>
+                        <JoinAProjectPage
+                            project={project}
+                            ownerName={user.name}
+                            />
+                    </Dialog>
                     <Typography className={classes.title}>PROJECT DETAILS</Typography>
                     <br/>
                     <Paper elevation={3} className={classes.root}>
@@ -41,12 +56,13 @@ function ProjectDetailsPage() {
                         <br/>
                         <Grid container>
                             <Grid item xs={6}>
-                            <Typography variant={'h4'}>{project.name}</Typography>
+                            <Typography className={classes.projectTitle} variant={'h4'}>{project.name}</Typography>
                             </Grid>
                             <Grid item xs={6} align={"right"}>
                             <Button
                                 className={classes.button}
                                 variant="outlined"
+                                onClick={() => setJoinProjectOpen(true)}
                             >JOIN PROJECT</Button>
                             </Grid>
                         </Grid>
@@ -67,10 +83,10 @@ function ProjectDetailsPage() {
                         <br/>
                         <br/>
                     </Paper>
-                    </div>)
+                </div>)
             )
         }
-    }, [project, user, classes.root, classes.title, classes.button]);
+    }, [project, joinProjectOpen, user, classes.root, classes.title, classes.button]);
 
     return (
         <div>
@@ -98,6 +114,11 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '100px',
         paddingBottom: '15px',
         textAlign:'center',
+    },
+    projectTitle: {
+        fontWeight: 700,
+        color: '#000000',
+        fontSize: 32,
     },
     card: {
         minWidth: "250px",
