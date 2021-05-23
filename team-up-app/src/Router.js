@@ -19,30 +19,31 @@ function Router(props) {
         <AuthProvider>
             <NavigationBar />
             <Switch>
-                <Route exact path='/'>
-                    <LandingPage />
-                </Route>
-                <Route exact path='/projects'>
-                    <FindAProjectPage />
-                </Route>
-                <Route exact path='/createproject'>
-                    <CreateAProjectPage />
-                </Route>
-                <Route path='/projects/:pid'>
-                    <ProjectDetailsPage />
-                </Route>
-                <Route exact path='/users'>
-                    <UsersListPage />
-                </Route>
-                <Route path='/users/:username'>
-                    <UserProfilePage />
-                </Route>
-                <Route exact path='/signup'>
-                    <Signup />
-                </Route>
-                <Route exact path='/login'>
-                    <Login />
-                </Route>
+                <Route
+                    exact path='/'
+                    component={LandingPage}/>
+                <Route 
+                    exact path='/projects'
+                    component={FindAProjectPage}/>
+                <Route
+                    exact path='/createproject'
+                    component={CreateAProjectPage}/>
+                <Route
+                    path='/projects/:pid'
+                    component={ProjectDetailsPage}/>
+                <Route
+                    exact path='/users'
+                    component={UsersListPage}/>
+                <Route
+                    path='/users/:username'
+                    component={UserProfilePage}/>
+                <Route
+                    exact path='/signup'
+                    component={Signup}/>
+                <Route
+                    exact path='/login'
+                    component={Login}/>
+                <Route component={LandingPage}/>
             </Switch>
         </AuthProvider>
     );

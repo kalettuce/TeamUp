@@ -10,42 +10,6 @@ import { useRouteChanger } from '../../utils/RouteChanger';
 import ImageUploaderElement from '../containers/ImageUploaderElement';
 import RegionSelect from '../containers/RegionSelect';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        paddingTop: '20px',
-        paddingLeft: '200px',
-        paddingRight: '200px',
-        width: '70%',
-        margin: 'auto',
-        background: '#FFFFFF',
-    },
-    title: {
-        fontWeight: 700,
-        color: '#000000',
-        fontSize: 40,
-        paddingTop: '100px',
-        paddingBottom: '15px',
-        textAlign:'center',
-    },
-    button: {
-        marginTop: '30px',
-        fontSize: 20,
-        fontWeight: 700,
-        color: "black",
-        background: '#FFFFFF',
-        borderColor: '#000000',
-        paddingTop: '10px',
-        paddingBottom: '10px',
-        paddingRight: '50px',
-        paddingLeft: '50px',
-        "&:hover": {
-            backgroundColor: '#FFFFFF'
-        },
-        borderRadius: 0,
-    },
-  }));
-
 function CreateAProjectPage() {
     const classes = useStyles();
     const { currentUser } = useAuth();
@@ -171,4 +135,41 @@ function CreateAProjectPage() {
         </div>
     );
 }
+
 export default CreateAProjectPage; 
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        paddingTop: '20px',
+        paddingLeft: '200px',
+        paddingRight: '200px',
+        width: '70%',
+        margin: 'auto',
+        background: '#FFFFFF',
+    },
+    title: {
+        fontWeight: 700,
+        color: '#000000',
+        fontSize: 40,
+        paddingTop: '100px',
+        paddingBottom: '15px',
+        textAlign:'center',
+    },
+    button: {
+        marginTop: '30px',
+        fontSize: 20,
+        fontWeight: 700,
+        color: "black",
+        background: '#FFFFFF',
+        borderColor: '#000000',
+        paddingTop: '10px',
+        paddingBottom: '10px',
+        paddingRight: '50px',
+        paddingLeft: '50px',
+        "&:hover": {
+            backgroundColor: '#FFFFFF'
+        },
+        borderRadius: 0,
+    },
+  }));

@@ -9,15 +9,21 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle";
 import JoinAProjectPage from './JoinAProjectPage.js';
 import { useAuth } from '../../utils/AuthContext';
+import { useRouteChanger } from '../../utils/RouteChanger';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
-    const {pid} = useParams();
     const [project, setProject] = useState(null);
     const [user, setUser] = useState(null);
     const [dom, setDom] = useState('');
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
+    const { pid } = useParams();
     const { currentUser } = useAuth();
+    const changeRoute = useRouteChanger();
+
+    const handleLogin = () => {
+        changeRoute("/login");
+    }
 
     useEffect(() => {
         fetchProjectById(pid, setProject);
@@ -57,18 +63,30 @@ function ProjectDetailsPage() {
                         <br/>
                         <Grid container spacing={10} >
                             <Grid item xs={9}>
-                            <Typography className={classes.projectTitle} variant={'h4'}>{project.name}</Typography>
-                            <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
+                            <Typography
+                                className={classes.projectTitle}
+                                variant={'h4'}>
+                                    {project.name}
+                            </Typography>
+                            <Typography
+                                variant={'h5'}
+                                color="textSecondary">
+                                    {project.tagline}
+                            </Typography>
                             <br/>
                             <Typography variant={'h5'}>Project Information</Typography>
-                            <Typography className={classes.description} variant={'body1'}>{project.description}</Typography>
+                            <Typography
+                                className={classes.description}
+                                variant={'body1'}>
+                                    {project.description}
+                            </Typography>
                             </Grid>
                             <Grid item xs={3} align={"right"}>
                             <Button
                                 className={classes.button}
                                 variant="outlined"
-                                onClick={() => setJoinProjectOpen(true)}
-                            >JOIN PROJECT</Button>
+                                onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}
+                            >{currentUser ? 'JOIN PROJECT' : 'LOG IN TO JOIN'}</Button>
                             <div align={"left"}>
                                 <Typography variant={'h6'}>Region</Typography>
                                 <Typography variant={'body1'}>
@@ -77,10 +95,17 @@ function ProjectDetailsPage() {
                                 </Typography>
                                 <br/>
                                 <Typography variant={'h6'}>Creator</Typography>
-                                <Typography variant={'body1'}>{project.owner === currentUser.uid ? 'You created this project' : user.name}</Typography>
+                                <Typography variant={'body1'}>
+                                    {currentUser && project.owner === currentUser.uid ? 
+                                        'You created this project' : user.name}
+                                </Typography>
                                 <br/>
                                 <Typography variant={'h6'}>Tags</Typography>
-                                <Typography variant="body2" color="textSecondary">{project.tags.toString()}</Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary">
+                                        {project.tags.toString()}
+                                </Typography>
                             </div>
                             </Grid>
                         </Grid>
@@ -93,7 +118,7 @@ function ProjectDetailsPage() {
             )
         }
     }, [project, joinProjectOpen, classes.projectTitle, 
-        classes.description, currentUser.uid, user,
+        classes.description, user, currentUser,
         classes.root, classes.title, classes.button]);
 
     return (

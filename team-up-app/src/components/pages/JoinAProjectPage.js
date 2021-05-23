@@ -16,6 +16,7 @@ function JoinAProjectPage(props) {
     if (props.project.application) {
         dom = (
             <React.Fragment>
+                <br/>
                 <Typography
                     variant={'body2'}
                     color="textSecondary">
@@ -24,14 +25,18 @@ function JoinAProjectPage(props) {
                 </Typography>
                 <br/>
                 <Typography variant={'body1'}><b>{props.project.application}</b></Typography>
+                <br/>
                 <TextField
                         required
+                        multiline
+                        variant={"outlined"}
                         id="response"
                         name="response"
-                        label="Your response"
+                        placeholder="Your amazing response"
                         onChange={(e) => {
                         setResponse(e.target.value);
                         }}
+                        rows={4}
                         fullWidth
                         />
             </React.Fragment>
@@ -44,7 +49,7 @@ function JoinAProjectPage(props) {
             {dom}
             <Typography
                     className={classes.agreement}
-                    variant={'body2'}>
+                    variant={'body1'}>
                         By pressing 'Submit', I confirm that I would like to join
                         this project and the information I have provided will be shared with
                         the creator ({props.ownerName}).
@@ -74,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
     },
     agreement: {
         paddingTop: '20px',
+        paddingBottom: '20px',
     },
     title: {
         fontWeight: 700,
