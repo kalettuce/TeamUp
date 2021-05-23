@@ -125,12 +125,15 @@ function CreateAProjectPage() {
                 <Grid item xs={12}>
                     <TextField
                     required
+                    multiline
                     id="desc"
                     name="desc"
-                    label="What's the project about? What types of people would fit the team?"
+                    placeholder="What's the project about? What types of people would fit the team?"
                     onChange={(e) => {
                       setDescription(e.target.value);
                     }}
+                    variant={"outlined"}
+                    rows={4}
                     fullWidth
                     />
                 </Grid>

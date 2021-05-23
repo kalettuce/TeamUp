@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import { fetchProjectById } from '../../utils/FindProjects.js'
 import { fetchUserById } from '../../utils/FindUsers.js'
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
@@ -9,6 +8,7 @@ import { regionToFlag } from '../containers/RegionSelect';
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle";
 import JoinAProjectPage from './JoinAProjectPage.js';
+import { useAuth } from '../../utils/AuthContext';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -17,6 +17,7 @@ function ProjectDetailsPage() {
     const [user, setUser] = useState(null);
     const [dom, setDom] = useState('');
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
+    const { currentUser } = useAuth();
 
     useEffect(() => {
         fetchProjectById(pid, setProject);
@@ -45,48 +46,55 @@ function ProjectDetailsPage() {
                     </Dialog>
                     <Typography className={classes.title}>PROJECT DETAILS</Typography>
                     <br/>
-                    <Paper elevation={3} className={classes.root}>
+                    <div className={classes.root}>
                         <Card elevation={0}>
                             <CardMedia
                                 component="img"
-                                height="200"
+                                height="300"
                                 image={project.image_url || "https://husmen.xyz/portfolio/scope-timer/featured.png"}
                             />
                         </Card>
                         <br/>
-                        <Grid container>
-                            <Grid item xs={6}>
+                        <Grid container spacing={10} >
+                            <Grid item xs={9}>
                             <Typography className={classes.projectTitle} variant={'h4'}>{project.name}</Typography>
+                            <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
+                            <br/>
+                            <Typography variant={'h5'}>Project Information</Typography>
+                            <Typography className={classes.description} variant={'body1'}>{project.description}</Typography>
                             </Grid>
-                            <Grid item xs={6} align={"right"}>
+                            <Grid item xs={3} align={"right"}>
                             <Button
                                 className={classes.button}
                                 variant="outlined"
                                 onClick={() => setJoinProjectOpen(true)}
                             >JOIN PROJECT</Button>
+                            <div align={"left"}>
+                                <Typography variant={'h6'}>Region</Typography>
+                                <Typography variant={'body1'}>
+                                <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
+                                {project.region ? project.region[0] : "Global"}
+                                </Typography>
+                                <br/>
+                                <Typography variant={'h6'}>Creator</Typography>
+                                <Typography variant={'body1'}>{project.owner === currentUser.uid ? 'You created this project' : user.name}</Typography>
+                                <br/>
+                                <Typography variant={'h6'}>Tags</Typography>
+                                <Typography variant="body2" color="textSecondary">{project.tags.toString()}</Typography>
+                            </div>
                             </Grid>
                         </Grid>
-                        <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
-                        <Typography variant={'body1'}>
-                            <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
-                            {project.region ? project.region[0] : "Global"}
-                        </Typography>
-                        <br/>
-                        <Typography variant={'h6'}>Project creator: {user.name}</Typography>
-                        <br/>
-                        <Typography variant={'h5'}>Description</Typography>
-                        <Typography variant={'body1'}>{project.description}</Typography>
                         <br/>
                         <br/>
-                        <Typography variant={'h5'}>Tags</Typography>
-                        <Typography variant="body2" color="textSecondary">{project.tags.toString()}</Typography>
                         <br/>
                         <br/>
-                    </Paper>
+                    </div>
                 </div>)
             )
         }
-    }, [project, joinProjectOpen, user, classes.root, classes.title, classes.button]);
+    }, [project, joinProjectOpen, classes.projectTitle, 
+        classes.description, currentUser.uid, user,
+        classes.root, classes.title, classes.button]);
 
     return (
         <div>
@@ -120,15 +128,21 @@ const useStyles = makeStyles((theme) => ({
         color: '#000000',
         fontSize: 32,
     },
+    description: {
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word',
+    },
     card: {
         minWidth: "250px",
     },
     button: {
+        width: '100%',
         fontSize: '1rem',
         fontWeight: 700,
         color: "black",
         background: '#FFFFFF',
         border: '1px solid',
         borderRadius: 0,
+        marginBottom: 20,
     }
 }));

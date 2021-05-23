@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +6,6 @@ import { Button } from '@material-ui/core';
 import { useAuth } from '../../utils/AuthContext';
 import { useRouteChanger } from '../../utils/RouteChanger';
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 function JoinAProjectPage(props) {

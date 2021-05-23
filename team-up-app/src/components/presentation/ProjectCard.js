@@ -11,6 +11,8 @@ function ProjectCard(props) {
 
     return (
         <Card 
+            elevation={0}
+            variant="outlined"
             onClick={() => changeRoute(`/projects/${props.projectID}`)}
             style={{width: '100%'}}
             height="500">
