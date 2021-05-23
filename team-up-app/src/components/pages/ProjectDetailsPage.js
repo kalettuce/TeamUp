@@ -39,19 +39,23 @@ function ProjectDetailsPage() {
     }, [project]);
 
     useEffect(() => {
-        if (project && project.members && joinedMembers) {
-            if (joinedMembers.length === project.members.length) {
-                var temp = []
-                joinedMembers.forEach((member) => {
-                    temp.push(member.name)
-                });
-                setJoinedMemberNames(temp);
+        if (project) {
+            if (project.members) {
+                if (joinedMembers && joinedMembers.length === project.members.length) {
+                    var temp = []
+                    joinedMembers.forEach((member) => {
+                        temp.push(member.name)
+                    });
+                    setJoinedMemberNames(temp);
+                }
+            } else {
+                setJoinedMemberNames([]);
             }
         }
     }, [project, joinedMembers]);
 
     useEffect(() => {
-        if (project && user) {
+        if (project && user && joinedMemberNames) {
             var isCurrUserProject, 
                 currUserHasJoined,
                 currUserHasRequested = false;
@@ -120,7 +124,7 @@ function ProjectDetailsPage() {
                             <Typography
                                 className={classes.description}
                                 variant={'body1'}>
-                                    {joinedMemberNames ? 
+                                    {joinedMemberNames.length > 0 ? 
                                         joinedMemberNames.toString() : "Be the first to join this project."}
                             </Typography>
                             <br/>
