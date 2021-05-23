@@ -19,3 +19,14 @@ export function fetchUserById(id, callback) {
         callback(snapshot.val());
     });
 }
+
+// Fetch multiple user info by userid
+export function fetchUsersById(ids, callback) {
+    for (const id in ids) {
+        database.ref('/users/' + id + '/')
+                .once('value')
+                .then((snapshot) => {
+                    callback(users => [...users, snapshot.val()]);
+                });
+    }
+}

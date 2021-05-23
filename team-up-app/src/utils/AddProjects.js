@@ -18,7 +18,7 @@ export function addAProject(name, ownerID, tagline, region,
     description: description,
     application: joinProjectQuestion,
     tags: tagList,
-    members: [],
+    members: [ownerID],
     invitations_sent: []
   };
 

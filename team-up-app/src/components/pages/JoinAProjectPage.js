@@ -10,10 +10,37 @@ import DialogActions from "@material-ui/core/DialogActions";
 
 function JoinAProjectPage(props) {
     const [response, setResponse] = useState('');
+    const [error, setError] = useState(false);
+    const [joinIsSuccessful, setJoinIsSuccessful] = useState(false);
     const classes = useStyles();
-    let dom = '';
+    const changeRoute = useRouteChanger();
+    const { currentUser } = useAuth();
 
-    if (props.project.application) {
+    const handleConfirmation = () => {
+        if (props.project.info.application && response.length === 0) {
+            setError(true);
+        } else {
+            try {
+                // submit project request here
+                console.log(
+                    {"email": currentUser,
+                    "project": props.project.id,
+                    "response": response});
+                setJoinIsSuccessful(true);
+            } catch {
+                console.log("Join project failed");
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (joinIsSuccessful) {
+            changeRoute(`/projects/${props.project.id}`);
+        }
+    });
+
+    let dom = '';
+    if (props.project.info.application) {
         dom = (
             <React.Fragment>
                 <br/>
@@ -24,17 +51,20 @@ function JoinAProjectPage(props) {
                     to answer the following prompt.
                 </Typography>
                 <br/>
-                <Typography variant={'body1'}><b>{props.project.application}</b></Typography>
+                <Typography variant={'body1'}><b>{props.project.info.application}</b></Typography>
                 <br/>
                 <TextField
                         required
                         multiline
                         variant={"outlined"}
-                        id="response"
-                        name="response"
-                        placeholder="Your amazing response"
+                        error={error}
+                        id={"response"}
+                        name={"response"}
+                        placeholder={"Your amazing response"}
+                        helperText={"Required"}
+                        onClick={() => setError(false)}
                         onChange={(e) => {
-                        setResponse(e.target.value);
+                            setResponse(e.target.value);
                         }}
                         rows={4}
                         fullWidth
@@ -45,20 +75,28 @@ function JoinAProjectPage(props) {
 
     return (
         <DialogContent>
-            <Typography className={classes.title} variant={'h4'}>{props.project.name}</Typography>
+            <Typography
+                className={classes.title}
+                variant={'h4'}>
+                    {props.project.info.name}
+            </Typography>
             {dom}
             <Typography
-                    className={classes.agreement}
-                    variant={'body1'}>
-                        By pressing 'Submit', I confirm that I would like to join
-                        this project and the information I have provided will be shared with
-                        the creator ({props.ownerName}).
+                className={classes.agreement}
+                variant={'body1'}>
+                    By pressing 'Submit', I confirm that I would like to request to join
+                    this project and the information I have provided will be shared with
+                    the creator ({props.ownerName}).
             </Typography>
             <DialogActions>
                 <Button
                     className={classes.button}
-                    variant="outlined"
+                    variant={"outlined"}
+                    onClick={handleConfirmation}
                     >SUBMIT</Button>
+                <Button
+                    onClick={() => props.open(false)}
+                    >CANCEL</Button>
             </DialogActions>
         </DialogContent>
     )

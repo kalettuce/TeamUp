@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { fetchProjectById } from '../../utils/FindProjects.js'
-import { fetchUserById } from '../../utils/FindUsers.js'
+import { fetchUserById, fetchUsersById } from '../../utils/FindUsers.js'
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
 import { regionToFlag } from '../containers/RegionSelect';
 import Dialog from "@material-ui/core/Dialog"
@@ -17,6 +17,8 @@ function ProjectDetailsPage() {
     const [user, setUser] = useState(null);
     const [dom, setDom] = useState('');
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
+    const [joinedMemberNames, setJoinedMemberNames] = useState([]);
+    const [joinedMembers, setJoinedMembers] = useState([]);
     const { pid } = useParams();
     const { currentUser } = useAuth();
     const changeRoute = useRouteChanger();
@@ -30,13 +32,50 @@ function ProjectDetailsPage() {
     }, [pid]);
 
     useEffect(() => {
-        if (project != null) {
+        if (project) {
             fetchUserById(project.owner, setUser);
+            fetchUsersById(project.members, setJoinedMembers);
         }
     }, [project]);
 
     useEffect(() => {
-        if (project != null && user != null) {
+        if (project && project.members && 
+                joinedMembers.length === project.members.length) {
+            var temp = []
+            joinedMembers.forEach((member) => {
+                temp.push(member.name)
+            });
+
+            setJoinedMemberNames(temp);
+        }
+    }, [project, joinedMembers]);
+
+    useEffect(() => {
+        if (project && user) {
+            var isCurrUserProject = false;
+            var currUserHasJoined = false;
+            var currUserHasRequested = false;
+            if (currentUser) {
+                isCurrUserProject = project.owner === currentUser.uid;
+                currUserHasJoined = project.members ? 
+                    currentUser.uid in project.members : false;
+                currUserHasRequested = project.requests_received ?
+                    currentUser.uid in project.requests_received : false;
+            }
+
+            var buttonLabel = '';
+            if (!currentUser) {
+                buttonLabel = 'LOG IN TO JOIN';
+            } else if (isCurrUserProject) {
+                buttonLabel = 'DELETE PROJECT'; //TODO: write delete function
+            } else if (currUserHasJoined) {
+                buttonLabel = 'JOINED ✔';
+            } else if (currUserHasRequested) {
+                buttonLabel = 'PENDING';
+            } else {
+                buttonLabel = 'JOIN PROJECT';
+            }
+ 
             setDom(
                 (<div>
                     <Dialog
@@ -46,8 +85,9 @@ function ProjectDetailsPage() {
                             Join this project
                         </DialogTitle>
                         <JoinAProjectPage
-                            project={project}
+                            project={{"id": pid, "info": project}}
                             ownerName={user.name}
+                            open={setJoinProjectOpen}
                             />
                     </Dialog>
                     <Typography className={classes.title}>PROJECT DETAILS</Typography>
@@ -74,6 +114,16 @@ function ProjectDetailsPage() {
                                     {project.tagline}
                             </Typography>
                             <br/>
+                            <Typography variant={'h5'}>
+                                {`Team Members (${project.members ? project.members.length : 0})`}
+                            </Typography>
+                            <Typography
+                                className={classes.description}
+                                variant={'body1'}>
+                                    {joinedMemberNames.length > 0 ? 
+                                        joinedMemberNames.toString() : "Be the first to join this project."}
+                            </Typography>
+                            <br/>
                             <Typography variant={'h5'}>Project Information</Typography>
                             <Typography
                                 className={classes.description}
@@ -83,10 +133,11 @@ function ProjectDetailsPage() {
                             </Grid>
                             <Grid item xs={3} align={"right"}>
                             <Button
+                                disabled={currUserHasJoined || currUserHasRequested}
                                 className={classes.button}
-                                variant="outlined"
+                                variant={"outlined"}
                                 onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}
-                            >{currentUser ? 'JOIN PROJECT' : 'LOG IN TO JOIN'}</Button>
+                            >{buttonLabel}</Button>
                             <div align={"left"}>
                                 <Typography variant={'h6'}>Region</Typography>
                                 <Typography variant={'body1'}>
@@ -96,8 +147,7 @@ function ProjectDetailsPage() {
                                 <br/>
                                 <Typography variant={'h6'}>Creator</Typography>
                                 <Typography variant={'body1'}>
-                                    {currentUser && project.owner === currentUser.uid ? 
-                                        'You created this project' : user.name}
+                                    {isCurrUserProject ? 'You created this project' : user.name}
                                 </Typography>
                                 <br/>
                                 <Typography variant={'h6'}>Tags</Typography>
@@ -116,9 +166,9 @@ function ProjectDetailsPage() {
                     </div>
                 </div>)
             )
-        }
+        }// eslint-disable-next-line
     }, [project, joinProjectOpen, classes.projectTitle, 
-        classes.description, user, currentUser,
+        classes.description, user, currentUser, pid, joinedMemberNames,
         classes.root, classes.title, classes.button]);
 
     return (
