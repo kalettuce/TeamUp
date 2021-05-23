@@ -17,8 +17,8 @@ function ProjectDetailsPage() {
     const [user, setUser] = useState(null);
     const [dom, setDom] = useState('');
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
-    const [joinedMemberNames, setJoinedMemberNames] = useState([]);
     const [joinedMembers, setJoinedMembers] = useState([]);
+    const [joinedMemberNames, setJoinedMemberNames] = useState(null);
     const { pid } = useParams();
     const { currentUser } = useAuth();
     const changeRoute = useRouteChanger();
@@ -39,22 +39,22 @@ function ProjectDetailsPage() {
     }, [project]);
 
     useEffect(() => {
-        if (project && project.members && 
-                joinedMembers.length === project.members.length) {
-            var temp = []
-            joinedMembers.forEach((member) => {
-                temp.push(member.name)
-            });
-
-            setJoinedMemberNames(temp);
+        if (project && project.members && joinedMembers) {
+            if (joinedMembers.length === project.members.length) {
+                var temp = []
+                joinedMembers.forEach((member) => {
+                    temp.push(member.name)
+                });
+                setJoinedMemberNames(temp);
+            }
         }
     }, [project, joinedMembers]);
 
     useEffect(() => {
         if (project && user) {
-            var isCurrUserProject = false;
-            var currUserHasJoined = false;
-            var currUserHasRequested = false;
+            var isCurrUserProject, 
+                currUserHasJoined,
+                currUserHasRequested = false;
             if (currentUser) {
                 isCurrUserProject = project.owner === currentUser.uid;
                 currUserHasJoined = project.members ? 
@@ -120,7 +120,7 @@ function ProjectDetailsPage() {
                             <Typography
                                 className={classes.description}
                                 variant={'body1'}>
-                                    {joinedMemberNames.length > 0 ? 
+                                    {joinedMemberNames ? 
                                         joinedMemberNames.toString() : "Be the first to join this project."}
                             </Typography>
                             <br/>
