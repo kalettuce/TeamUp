@@ -11,7 +11,9 @@ function NotFoundPage() {
     return (
         <div className={classes.root}>
             <Typography className={classes.title}>404 :(</Typography>
-            <Typography>Oops, that page doesn't exist. Sorry about that!</Typography>
+            <Typography variant={"body1"}>
+                Oops, that page doesn't exist. Sorry about that!
+            </Typography>
             <Button
                 variant={"outlined"}
                 className={classes.button}

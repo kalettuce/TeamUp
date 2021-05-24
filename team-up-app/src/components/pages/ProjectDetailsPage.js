@@ -11,6 +11,7 @@ import ProjectDetailsTabs from '../containers/ProjectDetailsTabs.js';
 import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
 import { regionToFlag } from '../containers/RegionSelect';
 import placeholder from '../../placeholder.jpg';
+import StyledTags from "../presentation/StyledTags.js";
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -47,6 +48,7 @@ function ProjectDetailsPage() {
             if (project.members) {
                 if (joinedMembers && 
                         joinedMembers.length === project.members.length) {
+                            console.log(joinedMembers);
                     var temp = []
                     joinedMembers.forEach((member) => {
                         temp.push({uid: member.uid, 
@@ -112,7 +114,7 @@ function ProjectDetailsPage() {
                             />
                         </Card>
                         <br/>
-                        <Grid container spacing={10}>
+                        <Grid container spacing={5}>
                             <Grid item xs={9}>
                                 <Button
                                     disableRipple
@@ -163,7 +165,7 @@ function ProjectDetailsPage() {
                                 <Typography
                                     variant="body2"
                                     color="textSecondary">
-                                        {project.tags.toString()}
+                                        <StyledTags tagList={project.tags}/>
                                 </Typography>
                             </Grid>
                         </Grid>

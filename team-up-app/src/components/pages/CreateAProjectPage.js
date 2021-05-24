@@ -25,6 +25,8 @@ function CreateAProjectPage() {
     
     const changeRoute = useRouteChanger();
 
+    // TODO: restyle error messages
+    // TODO: try https://betterstack.dev/projects/react-tag-input/ for tags input
     const handleConfirmation = () => {
         if (name.length === 0) {
             alert('Project name is required');
