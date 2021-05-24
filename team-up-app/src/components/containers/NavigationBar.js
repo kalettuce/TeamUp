@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -6,11 +6,22 @@ import Button from '@material-ui/core/Button';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useRouteChanger } from '../../utils/RouteChanger';
 import { useAuth } from '../../utils/AuthContext';
+import { fetchUserById } from '../../utils/FindUsers.js'
 
 export default function LoginBar(props) {
     const classes = useStyles();
 
     const { currentUser, logout } = useAuth();
+
+    const [userProfile, setUserProfile] = useState(null)
+
+    useEffect(() => {
+        if (currentUser != null) {
+            fetchUserById(currentUser.uid, setUserProfile);
+        } else {
+            setUserProfile(null);
+        }
+    }, [currentUser]);
 
     async function handleLogout() {
         try {
@@ -63,7 +74,7 @@ export default function LoginBar(props) {
                         PEOPLE
                     </Button>
                 </Grid>
-                {!currentUser && 
+                {!userProfile && 
                     <Grid item
                         xs={6}
                         className={classes.rightgrid}
@@ -79,7 +90,7 @@ export default function LoginBar(props) {
                         </Button>
                     </Grid>
                 }  
-                {currentUser && 
+                {userProfile && 
                     <Grid item
                         xs={6}
                         className={classes.rightgrid}
@@ -90,7 +101,7 @@ export default function LoginBar(props) {
                             LOG OUT
                         </Button>
                         <Typography className={classes.name}>
-                            {currentUser.email}
+                            {userProfile.name}
                         </Typography>
                     </Grid>
                 }    
