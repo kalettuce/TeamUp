@@ -39,7 +39,9 @@ function ProjectDetailsPage() {
     useEffect(() => {
         if (project) {
             fetchUserById(project.owner, setUser);
-            fetchUsersById(project.members, setJoinedMembers);
+            if (project.members) {
+                fetchUsersById(project.members, setJoinedMembers);
+            }
         }
     }, [project]);
 
