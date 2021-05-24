@@ -15,6 +15,7 @@ function SearchBar(props) {
 
     return (
         <TextField
+            className={classes.searchBar}
             placeholder={props.placeholder}
             onInput={(e) => handleSearchBarChange(e)}
             onKeyPress={(e) => e.key === 'Enter' ? props.onSearch(query) : ''}
@@ -41,6 +42,10 @@ function SearchBar(props) {
 export default SearchBar;
 
 const useStyles = makeStyles((theme) => ({
+    searchBar: {
+        marginTop: 40,
+        marginBottom: 40,
+    },
     iconButton: {
       padding: 10,
     },

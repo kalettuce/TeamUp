@@ -18,7 +18,7 @@ function FindAProjectPage() {
     const [projectsToShow, setProjectsToShow] = useState(null);
 
     const itemsPerPage = 6;
-    const title = "FIND A PROJECT";
+    const title = "EXPLORE PROJECTS";
     
     // Fetches projects list and number of projects
     useEffect(() => {
@@ -108,6 +108,7 @@ function FindAProjectPage() {
                     {dom}
                 </Grid>
                 <Pagination
+                    className={classes.pagination}
                     count={totalPages}
                     page={page}
                     defaultPage={1}
@@ -145,4 +146,8 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '250px',
         display: 'flex',
     },
+    pagination: {
+        marginTop: '20px',
+        marginBottom: '30px',
+    }
 }));
