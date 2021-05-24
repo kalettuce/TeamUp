@@ -10,6 +10,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import JoinAProjectPage from './JoinAProjectPage.js';
 import { useAuth } from '../../utils/AuthContext';
 import { useRouteChanger } from '../../utils/RouteChanger';
+import ProjectDetailsTabs from '../containers/ProjectDetailsTabs.js';
+import placeholder from '../../placeholder.jpg';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -19,6 +21,7 @@ function ProjectDetailsPage() {
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
     const [joinedMembers, setJoinedMembers] = useState([]);
     const [joinedMemberNames, setJoinedMemberNames] = useState(null);
+    const [requests, setRequests] = useState(["request1", "request2"]); // TODO: write function to get requests
     const { pid } = useParams();
     const { currentUser } = useAuth();
     const changeRoute = useRouteChanger();
@@ -101,48 +104,37 @@ function ProjectDetailsPage() {
                             <CardMedia
                                 component="img"
                                 height="300"
-                                image={project.image_url || "https://husmen.xyz/portfolio/scope-timer/featured.png"}
+                                image={project.image_url || placeholder}
                             />
                         </Card>
                         <br/>
-                        <Grid container spacing={10} >
+                        <Grid container spacing={10}>
                             <Grid item xs={9}>
-                            <Typography
-                                className={classes.projectTitle}
-                                variant={'h4'}>
-                                    {project.name}
-                            </Typography>
-                            <Typography
-                                variant={'h5'}
-                                color="textSecondary">
-                                    {project.tagline}
-                            </Typography>
-                            <br/>
-                            <Typography variant={'h5'}>
-                                {`Team Members (${project.members ? project.members.length : 0})`}
-                            </Typography>
-                            <Typography
-                                className={classes.description}
-                                variant={'body1'}>
-                                    {joinedMemberNames.length > 0 ? 
-                                        joinedMemberNames.toString() : "Be the first to join this project."}
-                            </Typography>
-                            <br/>
-                            <Typography variant={'h5'}>Project Information</Typography>
-                            <Typography
-                                className={classes.description}
-                                variant={'body1'}>
-                                    {project.description}
-                            </Typography>
+                                <Typography
+                                    className={classes.projectTitle}
+                                    variant={'h4'}>
+                                        {project.name}
+                                </Typography>
+                                <Typography
+                                    variant={'h5'}
+                                    color="textSecondary">
+                                        {project.tagline}
+                                </Typography>
+                                <br/>
+                                <ProjectDetailsTabs
+                                    project={project}
+                                    joinedMemberNames={joinedMemberNames}
+                                    currUserHasJoined={currUserHasJoined}
+                                    isCurrUserProject={isCurrUserProject}
+                                    requests={requests}/>
                             </Grid>
-                            <Grid item xs={3} align={"right"}>
-                            <Button
-                                disabled={currUserHasJoined || currUserHasRequested}
-                                className={classes.button}
-                                variant={"outlined"}
-                                onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}
-                            >{buttonLabel}</Button>
-                            <div align={"left"}>
+                            <Grid item xs={3}>
+                                <Button
+                                    disabled={currUserHasJoined || currUserHasRequested}
+                                    className={isCurrUserProject ? classes.buttonDelete : classes.button}
+                                    variant={"outlined"}
+                                    onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}
+                                >{buttonLabel}</Button>
                                 <Typography variant={'h6'}>Region</Typography>
                                 <Typography variant={'body1'}>
                                 <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
@@ -160,7 +152,6 @@ function ProjectDetailsPage() {
                                     color="textSecondary">
                                         {project.tags.toString()}
                                 </Typography>
-                            </div>
                             </Grid>
                         </Grid>
                         <br/>
@@ -171,7 +162,7 @@ function ProjectDetailsPage() {
                 </div>)
             )
         }// eslint-disable-next-line
-    }, [project, joinProjectOpen, classes.projectTitle, 
+    }, [project, joinProjectOpen, classes.projectTitle, requests,
         classes.description, user, currentUser, pid, joinedMemberNames,
         classes.root, classes.title, classes.button]);
 
@@ -207,10 +198,6 @@ const useStyles = makeStyles((theme) => ({
         color: '#000000',
         fontSize: 32,
     },
-    description: {
-        whiteSpace: 'pre-wrap',
-        wordBreak: 'break-word',
-    },
     card: {
         minWidth: "250px",
     },
@@ -219,9 +206,22 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1rem',
         fontWeight: 700,
         color: "black",
-        background: '#FFFFFF',
+        background:'#FFFFFF',
         border: '1px solid',
         borderRadius: 0,
         marginBottom: 20,
+    },
+    buttonDelete: {
+        width: '100%',
+        fontSize: '1rem',
+        fontWeight: 700,
+        color: "white",
+        background:'#e74f4e',
+        border: '1px solid black',
+        borderRadius: 0,
+        marginBottom: 20,
+        "&:hover": {
+            background: '#e74f4e',
+        }
     }
 }));

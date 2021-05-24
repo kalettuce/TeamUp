@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { useRouteChanger } from '../../utils/RouteChanger';
+import placeholder from '../../placeholder.jpg';
 
 function ProjectCard(props) {
     const changeRoute = useRouteChanger();
@@ -20,8 +21,7 @@ function ProjectCard(props) {
                 <CardMedia
                 component="img"
                 height="140"
-                image={props.projectImage || "https://husmen.xyz/portfolio/scope-timer/featured.png"}
-                title="Placeholder"
+                image={props.projectImage || placeholder}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
