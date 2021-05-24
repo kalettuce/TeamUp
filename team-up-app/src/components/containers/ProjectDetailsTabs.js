@@ -69,12 +69,15 @@ function ProjectDetailsTabs(props) {
                     value={value}
                     onChange={handleChange}>
                     <Tab
+                        disableRipple
                         label={'Project Details'}
                         {...a11yProps(0)} />
                     <Tab 
+                        disableRipple
                         label={`Team Members (${props.joinedMemberNames.length})`}
                         {...a11yProps(1)} />
                     <Tab 
+                        disableRipple
                         hidden={!props.isCurrUserProject}
                         label={`Pending Requests (${props.requests.length})`} 
                         {...a11yProps(2)} />

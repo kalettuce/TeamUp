@@ -9,7 +9,7 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle";
 import JoinAProjectPage from './JoinAProjectPage.js';
 import { useAuth } from '../../utils/AuthContext';
-import { useRouteChanger } from '../../utils/RouteChanger';
+import { useHistory } from 'react-router-dom';
 import ProjectDetailsTabs from '../containers/ProjectDetailsTabs.js';
 import placeholder from '../../placeholder.jpg';
 
@@ -24,10 +24,10 @@ function ProjectDetailsPage() {
     const [requests, setRequests] = useState(["request1", "request2"]); // TODO: write function to get requests
     const { pid } = useParams();
     const { currentUser } = useAuth();
-    const changeRoute = useRouteChanger();
+    const history = useHistory();
 
     const handleLogin = () => {
-        changeRoute("/login");
+        history.push("/login");
     }
 
     useEffect(() => {
@@ -97,7 +97,6 @@ function ProjectDetailsPage() {
                             open={setJoinProjectOpen}
                             />
                     </Dialog>
-                    <Typography className={classes.title}>PROJECT DETAILS</Typography>
                     <br/>
                     <div className={classes.root}>
                         <Card elevation={0}>
@@ -110,6 +109,12 @@ function ProjectDetailsPage() {
                         <br/>
                         <Grid container spacing={10}>
                             <Grid item xs={9}>
+                                <Button
+                                    disableRipple
+                                    className={classes.backButton}
+                                    onClick={() => history.goBack()}>
+                                    Back
+                                </Button>
                                 <Typography
                                     className={classes.projectTitle}
                                     variant={'h4'}>
@@ -223,5 +228,11 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             background: '#e74f4e',
         }
+    },
+    backButton: {
+        padding: "0px",
+        marginBottom: "10px",
+        minHeight: 0,
+        minWidth: 0,
     }
 }));
