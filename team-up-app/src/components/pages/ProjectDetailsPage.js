@@ -7,7 +7,7 @@ import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
 import { regionToFlag } from '../containers/RegionSelect';
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle";
-import JoinAProjectPage from './JoinAProjectPage.js';
+import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
 import { useAuth } from '../../utils/AuthContext';
 import { useHistory } from 'react-router-dom';
 import ProjectDetailsTabs from '../containers/ProjectDetailsTabs.js';
@@ -19,6 +19,7 @@ function ProjectDetailsPage() {
     const [user, setUser] = useState(null);
     const [dom, setDom] = useState('');
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
+    const [currUserJustRequested, setCurrUserJustRequested] = useState(false);
     const [joinedMembers, setJoinedMembers] = useState([]);
     const [joinedMemberNames, setJoinedMemberNames] = useState(null);
     const [requests, setRequests] = useState(["request1", "request2"]); // TODO: write function to get requests
@@ -77,7 +78,7 @@ function ProjectDetailsPage() {
                 buttonLabel = 'DELETE PROJECT'; //TODO: write delete function
             } else if (currUserHasJoined) {
                 buttonLabel = 'JOINED ✔';
-            } else if (currUserHasRequested) {
+            } else if (currUserHasRequested || currUserJustRequested) {
                 buttonLabel = 'PENDING';
             } else {
                 buttonLabel = 'JOIN PROJECT';
@@ -95,6 +96,7 @@ function ProjectDetailsPage() {
                             project={{"id": pid, "info": project}}
                             ownerName={user.name}
                             open={setJoinProjectOpen}
+                            setCurrUserJustRequested={setCurrUserJustRequested}
                             />
                     </Dialog>
                     <br/>
@@ -113,7 +115,7 @@ function ProjectDetailsPage() {
                                     disableRipple
                                     className={classes.backButton}
                                     onClick={() => history.goBack()}>
-                                    Back
+                                    🡠 Back
                                 </Button>
                                 <Typography
                                     className={classes.projectTitle}
@@ -135,15 +137,16 @@ function ProjectDetailsPage() {
                             </Grid>
                             <Grid item xs={3}>
                                 <Button
-                                    disabled={currUserHasJoined || currUserHasRequested}
+                                    disabled={currUserHasJoined || currUserHasRequested || currUserJustRequested}
                                     className={isCurrUserProject ? classes.buttonDelete : classes.button}
                                     variant={"outlined"}
-                                    onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}
-                                >{buttonLabel}</Button>
+                                    onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}>
+                                        {buttonLabel}
+                                </Button>
                                 <Typography variant={'h6'}>Region</Typography>
                                 <Typography variant={'body1'}>
                                 <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
-                                {project.region ? project.region[0] : "Global"}
+                                    {project.region ? project.region[0] : "Global"}
                                 </Typography>
                                 <br/>
                                 <Typography variant={'h6'}>Creator</Typography>
@@ -166,10 +169,11 @@ function ProjectDetailsPage() {
                     </div>
                 </div>)
             )
-        }// eslint-disable-next-line
+        }
+    // eslint-disable-next-line
     }, [project, joinProjectOpen, classes.projectTitle, requests,
         classes.description, user, currentUser, pid, joinedMemberNames,
-        classes.root, classes.title, classes.button]);
+        classes.root, classes.title, classes.button, currUserJustRequested]);
 
     return (
         <div>

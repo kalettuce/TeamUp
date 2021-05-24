@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 
-function JoinAProjectPage(props) {
+function JoinAProjectDialog(props) {
     const [response, setResponse] = useState('');
     const [error, setError] = useState(false);
     const [joinIsSuccessful, setJoinIsSuccessful] = useState(false);
@@ -36,6 +36,7 @@ function JoinAProjectPage(props) {
     useEffect(() => {
         if (joinIsSuccessful) {
             props.open(false);
+            props.setCurrUserJustRequested(true);
         }
         // eslint-disable-next-line
     }, [joinIsSuccessful]);
@@ -104,7 +105,7 @@ function JoinAProjectPage(props) {
 
 }
 
-export default JoinAProjectPage;
+export default JoinAProjectDialog;
 
 const useStyles = makeStyles((theme) => ({
     root: {
