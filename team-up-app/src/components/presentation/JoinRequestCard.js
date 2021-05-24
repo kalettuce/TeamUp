@@ -31,14 +31,13 @@ function JoinRequestCard(props) {
             </CardContent>
             <CardActions>
             <Button
-                variant={"outlined"}
                 size={"small"}
-                onClick={() => {history.go(0)}}>
+                onClick={() => {console.log("accepted")}}>
                 Accept
             </Button>
             <Button
                 size={"small"}
-                onClick={() => {history.go(0)}}>
+                onClick={() => {console.log("rejected")}}>
                 Reject
             </Button>
             </CardActions>
@@ -55,5 +54,8 @@ const useStyles = makeStyles((theme) => ({
     description: {
         whiteSpace: 'pre-wrap',
         wordBreak: 'break-word',
+        backgroundColor: '#f2f2f2',
+        padding: 15,
+        borderRadius: 4,
     },
 }));

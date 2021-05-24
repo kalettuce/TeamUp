@@ -74,7 +74,7 @@ function ProjectDetailsTabs(props) {
                         {...a11yProps(0)} />
                     <Tab 
                         disableRipple
-                        label={`Team Members (${props.joinedMemberNames.length})`}
+                        label={`Team Members (${props.joinedMembersInfo.length})`}
                         {...a11yProps(1)} />
                     <Tab 
                         disableRipple
@@ -94,15 +94,15 @@ function ProjectDetailsTabs(props) {
                 index={1}>
                 <ProjectDetailsTabTwo
                     project={props.project}
+                    isCurrUserProject={props.isCurrUserProject}
                     currUserHasJoined={props.currUserHasJoined}
-                    joinedMemberNames={props.joinedMemberNames}/>
+                    joinedMembersInfo={props.joinedMembersInfo}/>
             </TabPanel>
             <TabPanel
                 value={value}
                 index={2}>
             <ProjectDetailsTabThree
-                    project={props.project}
-                    requests={props.requests}/>
+                requests={props.requests}/>
             </TabPanel>
         </div>
     );

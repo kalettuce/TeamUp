@@ -2,15 +2,23 @@ import { Typography } from '@material-ui/core';
 import JoinRequestCard from './JoinRequestCard';
 
 function ProjectDetailsTabThree(props) {
-    const project = props.project;
     const requests = props.requests;
-    var dom = []
 
+    var dom = []
     if (requests.length === 0) {
-        dom = "No pending requests."
+        dom = <Typography
+                variant={"body1"}
+                color={"textSecondary"}>
+                    No pending requests.
+                </Typography>
     } else {
-        for (const val of requests) {
-            dom.push(<JoinRequestCard key={val} info={val} />);
+        // TODO: fetch requests
+        for (const request of requests) {
+            dom.push(
+                <JoinRequestCard
+                    key={request}
+                    info={request} />
+            );
         }
     }
 
@@ -18,10 +26,7 @@ function ProjectDetailsTabThree(props) {
         <div>
             <Typography variant={'h5'}>Pending Requests</Typography>
             <br/>
-            <Typography
-                variant={'body1'}>
-                    {dom}
-            </Typography>
+            {dom}
             <br/>
         </div>
     )

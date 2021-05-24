@@ -1,16 +1,15 @@
-import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import { fetchProjectById } from '../../utils/FindProjects.js'
-import { fetchUserById, fetchUsersById } from '../../utils/FindUsers.js'
+import { useParams, useHistory } from 'react-router-dom';
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
-import { regionToFlag } from '../containers/RegionSelect';
+import { makeStyles } from '@material-ui/core/styles';
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle";
-import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
+import { fetchProjectById } from '../../utils/FindProjects.js'
+import { fetchUserById, fetchUsersById } from '../../utils/FindUsers.js'
 import { useAuth } from '../../utils/AuthContext';
-import { useHistory } from 'react-router-dom';
 import ProjectDetailsTabs from '../containers/ProjectDetailsTabs.js';
+import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
+import { regionToFlag } from '../containers/RegionSelect';
 import placeholder from '../../placeholder.jpg';
 
 function ProjectDetailsPage() {
@@ -21,7 +20,7 @@ function ProjectDetailsPage() {
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
     const [currUserJustRequested, setCurrUserJustRequested] = useState(false);
     const [joinedMembers, setJoinedMembers] = useState([]);
-    const [joinedMemberNames, setJoinedMemberNames] = useState(null);
+    const [joinedMembersInfo, setJoinedMembersInfo] = useState(null);
     const [requests, setRequests] = useState(["request1", "request2"]); // TODO: write function to get requests
     const { pid } = useParams();
     const { currentUser } = useAuth();
@@ -46,21 +45,24 @@ function ProjectDetailsPage() {
     useEffect(() => {
         if (project) {
             if (project.members) {
-                if (joinedMembers && joinedMembers.length === project.members.length) {
+                if (joinedMembers && 
+                        joinedMembers.length === project.members.length) {
                     var temp = []
                     joinedMembers.forEach((member) => {
-                        temp.push(member.name)
+                        temp.push({uid: member.uid, 
+                                   name: member.info.name,
+                                   email: member.info.email})
                     });
-                    setJoinedMemberNames(temp);
+                    setJoinedMembersInfo(temp);
                 }
             } else {
-                setJoinedMemberNames([]);
+                setJoinedMembersInfo([]);
             }
         }
     }, [project, joinedMembers]);
 
     useEffect(() => {
-        if (project && user && joinedMemberNames) {
+        if (project && user && joinedMembersInfo) {
             var isCurrUserProject, 
                 currUserHasJoined,
                 currUserHasRequested = false;
@@ -131,7 +133,7 @@ function ProjectDetailsPage() {
                                 <br/>
                                 <ProjectDetailsTabs
                                     project={project}
-                                    joinedMemberNames={joinedMemberNames}
+                                    joinedMembersInfo={joinedMembersInfo}
                                     currUserHasJoined={currUserHasJoined}
                                     isCurrUserProject={isCurrUserProject}
                                     requests={requests}/>
@@ -175,7 +177,7 @@ function ProjectDetailsPage() {
         }
     // eslint-disable-next-line
     }, [project, joinProjectOpen, classes.projectTitle, requests,
-        classes.description, user, currentUser, pid, joinedMemberNames,
+        classes.description, user, currentUser, pid, joinedMembersInfo,
         classes.root, classes.title, classes.button, currUserJustRequested]);
 
     return (
