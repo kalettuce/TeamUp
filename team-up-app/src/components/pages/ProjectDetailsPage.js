@@ -67,7 +67,7 @@ function ProjectDetailsPage() {
             if (currentUser) {
                 isCurrUserProject = project.owner === currentUser.uid;
                 currUserHasJoined = project.members ? 
-                    currentUser.uid in project.members : false;
+                    project.members.includes(currentUser.uid) : false;
                 currUserHasRequested = project.requests_received ?
                     currentUser.uid in project.requests_received : false;
             }
@@ -138,7 +138,9 @@ function ProjectDetailsPage() {
                             </Grid>
                             <Grid item xs={3}>
                                 <Button
-                                    disabled={currUserHasJoined || currUserHasRequested || currUserJustRequested}
+                                    disabled={(currUserHasJoined && !isCurrUserProject)
+                                                || currUserHasRequested
+                                                || currUserJustRequested}
                                     className={isCurrUserProject ? classes.buttonDelete : classes.button}
                                     variant={"outlined"}
                                     onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}>
@@ -225,7 +227,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         fontSize: '1rem',
         fontWeight: 700,
-        color: "white",
+        color: '#fff',
         background:'#e74f4e',
         border: '1px solid black',
         borderRadius: 0,
