@@ -12,6 +12,7 @@ import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
 import { regionToFlag } from '../containers/RegionSelect';
 import placeholder from '../../placeholder.jpg';
 import StyledTags from "../presentation/StyledTags.js";
+import { fetchRequestsByProject } from "../../utils/FindMessages.js";
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -22,7 +23,7 @@ function ProjectDetailsPage() {
     const [currUserJustRequested, setCurrUserJustRequested] = useState(false);
     const [joinedMembers, setJoinedMembers] = useState([]);
     const [joinedMembersInfo, setJoinedMembersInfo] = useState(null);
-    const [requests, setRequests] = useState(["request1", "request2"]); // TODO: write function to get requests
+    const [requests, setRequests] = useState([]); // TODO: write function to get requests
     const { pid } = useParams();
     const { currentUser } = useAuth();
     const history = useHistory();
@@ -34,6 +35,7 @@ function ProjectDetailsPage() {
     // TODO: Send to NotFoundPage (404) if a project cannot be found
     useEffect(() => {
         fetchProjectById(pid, setProject);
+        fetchRequestsByProject(pid, setRequests);
     }, [pid]);
 
     useEffect(() => {
@@ -48,9 +50,8 @@ function ProjectDetailsPage() {
     useEffect(() => {
         if (project) {
             if (project.members) {
-                if (joinedMembers && 
-                        joinedMembers.length === project.members.length) {
-                            console.log(joinedMembers);
+                if (joinedMembers) {
+                    console.log(joinedMembers);
                     var temp = []
                     joinedMembers.forEach((member) => {
                         temp.push({uid: member.uid, 

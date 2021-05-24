@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Button, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import { fetchUserById } from '../../utils/FindUsers';
 
 function JoinRequestCard(props) {
     const classes = useStyles();
     const history = useHistory();
-    const user = "testUser";
+    const [user, setUser] = useState("");
+
+    fetchUserById(props.info.from, user => setUser(user.name));
 
     return (
         <Card
@@ -26,7 +29,7 @@ function JoinRequestCard(props) {
                 <Typography
                     className={classes.description}
                     variant="body1">
-                    {props.info}
+                    {props.info.message}
                 </Typography>
             </CardContent>
             <CardActions>

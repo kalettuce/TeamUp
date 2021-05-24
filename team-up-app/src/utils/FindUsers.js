@@ -23,11 +23,15 @@ export function fetchUserById(id, callback) {
 // Fetch multiple user info by userid and also includes uid
 // with each entry for reference
 export function fetchUsersById(ids, callback) {
+    const promises = [];
+
     for (const id of ids) {
-        database.ref('/users/' + id + '/')
+        promises.push(database.ref('/users/' + id + '/')
                 .once('value')
                 .then((snapshot) => {
-                    callback(users => [...users, {uid: id, info: snapshot.val()}]);
-                });
+                    return {uid: id, info: snapshot.val()};
+                }));
     }
+
+    Promise.all(promises).then(callback);
 }
