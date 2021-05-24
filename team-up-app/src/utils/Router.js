@@ -1,15 +1,15 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import LandingPage from "./components/pages/LandingPage";
-import FindAProjectPage from "./components/pages/FindAProjectPage";
-import UserProfilePage from "./components/pages/UserProfilePage";
-import UsersListPage from "./components/pages/UsersListPage";
-import ProjectDetailsPage from "./components/pages/ProjectDetailsPage";
-import { AuthProvider } from "./utils/AuthContext";
-import Signup from "./components/pages/SignupPage";
-import Login from "./components/pages/LoginPage";
-import NavigationBar from './components/containers/NavigationBar';
-import CreateAProjectPage from './components/pages/CreateAProjectPage';
+import LandingPage from "../components/pages/LandingPage";
+import FindAProjectPage from "../components/pages/FindAProjectPage";
+import UserProfilePage from "../components/pages/UserProfilePage";
+import UsersListPage from "../components/pages/UsersListPage";
+import ProjectDetailsPage from "../components/pages/ProjectDetailsPage";
+import { AuthProvider } from "./AuthContext";
+import Signup from "../components/pages/SignupPage";
+import Login from "../components/pages/LoginPage";
+import NavigationBar from '../components/containers/NavigationBar';
+import CreateAProjectPage from '../components/pages/CreateAProjectPage';
 
 // Import page component and add its routes here.
 // URL parameters are denoted by : for non-exact paths/

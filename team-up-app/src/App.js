@@ -1,4 +1,4 @@
-import Router from "./Router";
+import Router from "./utils/Router";
 import './App.css';
 import { AuthProvider } from "./utils/AuthContext";
 import NavigationBar from "./components/containers/NavigationBar";
