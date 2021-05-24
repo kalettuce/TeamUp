@@ -7,6 +7,7 @@ import { useAuth } from '../../utils/AuthContext';
 import { useHistory } from 'react-router-dom';
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import { addRequest } from "../../utils/AddMessages.js";
 
 function JoinAProjectDialog(props) {
     const [response, setResponse] = useState('');
@@ -26,6 +27,7 @@ function JoinAProjectDialog(props) {
                     {"uid": currentUser.uid,
                     "project": props.project.id,
                     "response": response});
+                addRequest(currentUser.uid, props.project.id, response);
                 setJoinIsSuccessful(true);
             } catch {
                 console.log("Join project failed");
