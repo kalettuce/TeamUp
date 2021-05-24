@@ -31,6 +31,7 @@ function ProjectDetailsPage() {
         history.push("/login");
     }
 
+    // TODO: Send to NotFoundPage (404) if a project cannot be found
     useEffect(() => {
         fetchProjectById(pid, setProject);
     }, [pid]);

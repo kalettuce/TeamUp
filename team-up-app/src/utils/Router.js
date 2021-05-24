@@ -10,6 +10,7 @@ import Signup from "../components/pages/SignupPage";
 import Login from "../components/pages/LoginPage";
 import NavigationBar from '../components/containers/NavigationBar';
 import CreateAProjectPage from '../components/pages/CreateAProjectPage';
+import NotFoundPage from '../components/pages/NotFoundPage';
 
 // Import page component and add its routes here.
 // URL parameters are denoted by : for non-exact paths/
@@ -43,7 +44,7 @@ function Router(props) {
                 <Route
                     exact path='/login'
                     component={Login}/>
-                <Route component={LandingPage}/>
+                <Route component={NotFoundPage}/>
             </Switch>
         </AuthProvider>
     );
