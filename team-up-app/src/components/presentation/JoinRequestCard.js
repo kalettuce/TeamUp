@@ -6,6 +6,7 @@ import { Button, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { fetchUserById } from '../../utils/FindUsers';
+import { acceptRequest, rejectRequest } from '../../utils/HandleRequests.js';
 
 function JoinRequestCard(props) {
     const classes = useStyles();
@@ -34,18 +35,18 @@ function JoinRequestCard(props) {
             <CardActions>
             <Button
                 size={"small"}
-                onClick={() => {console.log("accepted")}}>
+                onClick={() => {acceptRequest(props.info.key)}}>
                 Accept
             </Button>
             <Button
                 size={"small"}
-                onClick={() => {console.log("rejected")}}>
+                onClick={() => {rejectRequest(props.info.key)}}>
                 Reject
             </Button>
             </CardActions>
             </div>)
         }
-    }, [user, classes.description, props.info.message])
+    }, [user, classes.description, props.info.message, props.info.key])
 
     return (
         <Card
