@@ -13,7 +13,7 @@ export default function LoginBar(props) {
 
     const { currentUser, logout } = useAuth();
 
-    const [userProfile, setUserProfile] = useState(null)
+    const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
         if (currentUser != null) {
@@ -47,7 +47,7 @@ export default function LoginBar(props) {
     }
     
     const handlePeople = () => {
-        console.log("People");
+        changeRoute("/users");
     }
 
     const handleLandingPage = () => {

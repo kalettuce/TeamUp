@@ -34,7 +34,7 @@ function Router(props) {
                 <Route exact path='/users'>
                     <UsersListPage />
                 </Route>
-                <Route path='/users/:username'>
+                <Route path='/users/:uid'>
                     <UserProfilePage />
                 </Route>
                 <Route exact path='/signup'>
