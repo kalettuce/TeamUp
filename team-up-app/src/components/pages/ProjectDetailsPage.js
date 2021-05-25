@@ -56,7 +56,7 @@ function ProjectDetailsPage() {
     }, [currentUser]);
     
     useEffect(() => {
-        if (project && project.owner === currentUser.uid) {
+        if (project && currentUser && project.owner === currentUser.uid) {
             fetchRequestsByProject(pid, setRequests);
         }
     }, [project, currentUser, pid]);
