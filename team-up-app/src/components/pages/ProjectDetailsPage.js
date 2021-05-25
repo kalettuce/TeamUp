@@ -35,7 +35,6 @@ function ProjectDetailsPage() {
     // TODO: Send to NotFoundPage (404) if a project cannot be found
     useEffect(() => {
         fetchProjectById(pid, setProject);
-        fetchRequestsByProject(pid, setRequests);
     }, [pid]);
 
     useEffect(() => {
@@ -52,6 +51,12 @@ function ProjectDetailsPage() {
             fetchRequestsBySender(currentUser.uid, setCurrUserRequests)
         }
     }, [currentUser]);
+    
+    useEffect(() => {
+        if (project && project.owner === currentUser.uid) {
+            fetchRequestsByProject(pid, setRequests);
+        }
+    }, [project, currentUser]);
 
     useEffect(() => {
         if (project && owner && joinedMembers && requests) {
