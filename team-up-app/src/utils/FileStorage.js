@@ -28,3 +28,37 @@ export function setProjectImage(pid, file, callback) {
                 .then(() => callback());
     }
 }
+
+// recursively delete a "folder" in firebase storage
+// path: the path the that "folder"
+function deleteFolderContents(path) {
+    const ref = firebase.storage().ref(path);
+    ref.listAll()
+        .then(dir => {
+            dir.items.forEach(fileRef => {
+                deleteFile(ref.fullPath, fileRef.name);
+            });
+            dir.prefixes.forEach(folderRef => {
+                deleteFolderContents(folderRef.fullPath);
+            })
+        })
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+// delete a single file in firebase storage
+// pathToFile: the path to the folder containing the target file
+// filename: the name of the file to delete
+function deleteFile(pathToFile, fileName) {
+    const ref = firebase.storage().ref(pathToFile);
+    const childRef = ref.child(fileName);
+    childRef.delete()
+}
+
+// deletes all data related to a project in its project folder
+// pid: the project id
+export function removeProjectFolder(pid) {
+    const path = `/projects/${pid}`;
+    deleteFolderContents(path);
+}
