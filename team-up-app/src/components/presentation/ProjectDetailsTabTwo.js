@@ -2,11 +2,11 @@ import { Typography } from '@material-ui/core';
 import UserInfoCard from './UserInfoCard';
 
 function ProjectDetailsTabTwo(props) {
-    const joinedMembersInfo = props.joinedMembersInfo;
+    const joinedMembers = props.joinedMembers;
     const currUserHasJoined = props.currUserHasJoined;
 
     var dom = []
-    if (joinedMembersInfo.length === 0) {
+    if (joinedMembers.length === 0) {
         dom = <Typography
                 variant={"body1"}
                 color={"textSecondary"}>
@@ -19,14 +19,14 @@ function ProjectDetailsTabTwo(props) {
                     Join this project to view its members.
                 </Typography>
     } else {
-        for (const member of joinedMembersInfo) {
+        for (const member of joinedMembers) {
             dom.push(
                 <UserInfoCard
                     key={member.uid}
                     isCurrUserProject={props.isCurrUserProject}
                     id={member.uid}
-                    name={member.name}
-                    email={member.email} />
+                    name={member.info.name}
+                    email={member.info.email} />
             );
         }
     }

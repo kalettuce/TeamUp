@@ -12,18 +12,18 @@ import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
 import { regionToFlag } from '../containers/RegionSelect';
 import placeholder from '../../placeholder.jpg';
 import StyledTags from "../presentation/StyledTags.js";
-import { fetchRequestsByProject } from "../../utils/FindMessages.js";
+import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindMessages.js";
 
 function ProjectDetailsPage() {
     const classes = useStyles();
     const [project, setProject] = useState(null);
-    const [user, setUser] = useState(null);
+    const [owner, setOwner] = useState(null);
     const [dom, setDom] = useState('');
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
     const [currUserJustRequested, setCurrUserJustRequested] = useState(false);
+    const [currUserRequests, setCurrUserRequests] = useState(null);
     const [joinedMembers, setJoinedMembers] = useState([]);
-    const [joinedMembersInfo, setJoinedMembersInfo] = useState(null);
-    const [requests, setRequests] = useState([]); // TODO: write function to get requests
+    const [requests, setRequests] = useState([]);
     const { pid } = useParams();
     const { currentUser } = useAuth();
     const history = useHistory();
@@ -40,7 +40,7 @@ function ProjectDetailsPage() {
 
     useEffect(() => {
         if (project) {
-            fetchUserById(project.owner, setUser);
+            fetchUserById(project.owner, setOwner);
             if (project.members) {
                 fetchUsersById(project.members, setJoinedMembers);
             }
@@ -48,37 +48,28 @@ function ProjectDetailsPage() {
     }, [project]);
 
     useEffect(() => {
-        if (project) {
-            if (project.members) {
-                if (joinedMembers) {
-                    console.log(joinedMembers);
-                    var temp = []
-                    joinedMembers.forEach((member) => {
-                        temp.push({uid: member.uid, 
-                                   name: member.info.name,
-                                   email: member.info.email})
-                    });
-                    setJoinedMembersInfo(temp);
-                }
-            } else {
-                setJoinedMembersInfo([]);
-            }
+        if (currentUser) {
+            fetchRequestsBySender(currentUser.uid, setCurrUserRequests)
         }
-    }, [project, joinedMembers]);
+    }, [currentUser]);
 
     useEffect(() => {
-        if (project && user && joinedMembersInfo) {
+        if (project && owner && joinedMembers && requests) {
+            
+            // TODO: Button is buggy here; help fix please
             var isCurrUserProject, 
                 currUserHasJoined,
                 currUserHasRequested = false;
-            if (currentUser) {
+            if (currentUser && currUserRequests) {
                 isCurrUserProject = project.owner === currentUser.uid;
                 currUserHasJoined = project.members ? 
                     project.members.includes(currentUser.uid) : false;
-                currUserHasRequested = project.requests_received ?
-                    currentUser.uid in project.requests_received : false;
+                currUserHasRequested = currUserRequests
+                                        .map((request) => request.to)
+                                        .includes(pid);
             }
-
+            
+            console.log(currUserHasRequested)
             var buttonLabel = '';
             if (!currentUser) {
                 buttonLabel = 'LOG IN TO JOIN';
@@ -102,7 +93,7 @@ function ProjectDetailsPage() {
                         </DialogTitle>
                         <JoinAProjectPage
                             project={{"id": pid, "info": project}}
-                            ownerName={user.name}
+                            ownerName={owner.name}
                             open={setJoinProjectOpen}
                             setCurrUserJustRequested={setCurrUserJustRequested}
                             />
@@ -138,7 +129,7 @@ function ProjectDetailsPage() {
                                 <br/>
                                 <ProjectDetailsTabs
                                     project={project}
-                                    joinedMembersInfo={joinedMembersInfo}
+                                    joinedMembers={joinedMembers}
                                     currUserHasJoined={currUserHasJoined}
                                     isCurrUserProject={isCurrUserProject}
                                     requests={requests}/>
@@ -161,15 +152,11 @@ function ProjectDetailsPage() {
                                 <br/>
                                 <Typography variant={'h6'}>Creator</Typography>
                                 <Typography variant={'body1'}>
-                                    {isCurrUserProject ? 'You created this project' : user.name}
+                                    {isCurrUserProject ? 'You created this project' : owner.name}
                                 </Typography>
                                 <br/>
                                 <Typography variant={'h6'}>Tags</Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary">
-                                        <StyledTags tagList={project.tags}/>
-                                </Typography>
+                                <StyledTags tagList={project.tags}/>
                             </Grid>
                         </Grid>
                         <br/>
@@ -182,7 +169,7 @@ function ProjectDetailsPage() {
         }
     // eslint-disable-next-line
     }, [project, joinProjectOpen, classes.projectTitle, requests,
-        classes.description, user, currentUser, pid, joinedMembersInfo,
+        classes.description, owner, currentUser, pid, joinedMembers,
         classes.root, classes.title, classes.button, currUserJustRequested]);
 
     return (

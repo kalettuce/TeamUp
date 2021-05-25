@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -10,18 +10,17 @@ import { fetchUserById } from '../../utils/FindUsers';
 function JoinRequestCard(props) {
     const classes = useStyles();
     const history = useHistory();
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState(null);
+    const [dom, setDom] = useState("");
 
-    fetchUserById(props.info.from, user => setUser(user.name));
+    useEffect(() => {
+        fetchUserById(props.info.from, user => setUser(user.name));
+    }, [props.info.from]);
 
-    return (
-        <Card
-            className={classes.card}
-            elevation={0}
-            variant="outlined"
-            style={{width: '100%'}}
-            height="500">
-            <CardContent>
+    useEffect(() => {
+        if (user) {
+            setDom(<div>
+                <CardContent>
                 <Typography
                     variant="body2"
                     color="textSecondary">{`${user} has requested to join`}
@@ -44,6 +43,18 @@ function JoinRequestCard(props) {
                 Reject
             </Button>
             </CardActions>
+            </div>)
+        }
+    }, [user, classes.description, props.info.message])
+
+    return (
+        <Card
+            className={classes.card}
+            elevation={0}
+            variant="outlined"
+            style={{width: '100%'}}
+            height="500">
+                {dom}
         </Card>
     );
 }
