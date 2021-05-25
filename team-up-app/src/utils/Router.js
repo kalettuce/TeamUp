@@ -13,7 +13,7 @@ import CreateAProjectPage from '../components/pages/CreateAProjectPage';
 import NotFoundPage from '../components/pages/NotFoundPage';
 
 // Import page component and add its routes here.
-// URL parameters are denoted by : for non-exact paths/
+// URL parameters are denoted by colon (:)
 // Use useParams() in the child component to retrieve the parameter.
 function Router(props) {
     return (
@@ -30,13 +30,13 @@ function Router(props) {
                     exact path='/createproject'
                     component={CreateAProjectPage}/>
                 <Route
-                    path='/projects/:pid'
+                    exact path='/projects/:pid'
                     component={ProjectDetailsPage}/>
                 <Route
                     exact path='/users'
                     component={UsersListPage}/>
                 <Route
-                    path='/users/:username'
+                    exact path='/users/:username'
                     component={UserProfilePage}/>
                 <Route
                     exact path='/signup'
@@ -44,7 +44,9 @@ function Router(props) {
                 <Route
                     exact path='/login'
                     component={Login}/>
-                <Route component={NotFoundPage}/>
+                <Route
+                    path='*'
+                    component={NotFoundPage}/>
             </Switch>
         </AuthProvider>
     );

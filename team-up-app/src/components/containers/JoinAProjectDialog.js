@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import { useAuth } from '../../utils/AuthContext';
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import { addRequest } from "../../utils/AddMessages.js";
+import { addRequest } from "../../utils/AddJoinRequests.js";
 
 function JoinAProjectDialog(props) {
     const [response, setResponse] = useState('');

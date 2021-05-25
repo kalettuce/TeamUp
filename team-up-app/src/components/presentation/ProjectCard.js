@@ -39,12 +39,7 @@ function ProjectCard(props) {
                 </CardContent>
             </CardActionArea>
             <CardContent>
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p">
-                        <StyledTags tagList={props.projectTags} />
-                </Typography>
+            <StyledTags tagList={props.projectTags} />
             </CardContent>
         </Card>
     );

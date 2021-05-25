@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 
+export const NOT_FOUND = "404";
+
 function NotFoundPage() {
     const classes = useStyles();
     const history = useHistory();

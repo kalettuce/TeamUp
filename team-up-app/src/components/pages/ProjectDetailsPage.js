@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
-import { useRouteChanger } from '../../utils/RouteChanger';
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from "@material-ui/core/Dialog"
@@ -13,11 +12,11 @@ import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
 import { regionToFlag } from '../containers/RegionSelect';
 import placeholder from '../../placeholder.jpg';
 import StyledTags from "../presentation/StyledTags.js";
-import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindMessages.js";
+import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindJoinRequests.js";
 import { removeProject } from '../../utils/RemoveProjects.js'
+import { NOT_FOUND } from './NotFoundPage';
 
 function ProjectDetailsPage() {
-    const changeRoute = useRouteChanger();
     const classes = useStyles();
     const [project, setProject] = useState(null);
     const [owner, setOwner] = useState(null);
@@ -25,8 +24,8 @@ function ProjectDetailsPage() {
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
     const [currUserJustRequested, setCurrUserJustRequested] = useState(false);
     const [currUserRequests, setCurrUserRequests] = useState(null);
+    const [projectRequests, setProjectRequests] = useState([]);
     const [joinedMembers, setJoinedMembers] = useState([]);
-    const [requests, setRequests] = useState([]);
     const { pid } = useParams();
     const { currentUser } = useAuth();
     const history = useHistory();
@@ -35,13 +34,15 @@ function ProjectDetailsPage() {
         history.push("/login");
     }
 
-    // TODO: Send to NotFoundPage (404) if a project cannot be found
     useEffect(() => {
         fetchProjectById(pid, setProject);
     }, [pid]);
 
     useEffect(() => {
-        if (project) {
+        // Send to NotFoundPage (404) if a project cannot be found
+        if (project === NOT_FOUND) {
+            history.push("/" + NOT_FOUND);
+        } else if (project) {
             fetchUserById(project.owner, setOwner);
             if (project.members) {
                 fetchUsersById(project.members, setJoinedMembers);
@@ -52,49 +53,54 @@ function ProjectDetailsPage() {
     useEffect(() => {
         if (currentUser) {
             fetchRequestsBySender(currentUser.uid, setCurrUserRequests)
+        } else {
+            setCurrUserRequests([]);
         }
     }, [currentUser]);
     
+    // based on permissions
     useEffect(() => {
-        if (project && currentUser && project.owner === currentUser.uid) {
-            fetchRequestsByProject(pid, setRequests);
+        if (project) {
+            if (currentUser && project.owner === currentUser.uid) {
+                fetchRequestsByProject(pid, setProjectRequests);
+            } else {
+                setProjectRequests([]);
+            }
         }
     }, [project, currentUser, pid]);
 
     useEffect(() => {
-        if (project && owner && joinedMembers && requests) {
-            
+        if (project && owner 
+                    && joinedMembers 
+                    && projectRequests) {
             // TODO: Button is buggy here; help fix please
             var isCurrUserProject, 
                 currUserHasJoined,
                 currUserHasRequested = false;
-            if (currentUser && currUserRequests) {
+            if (currentUser && currUserRequests !== null) {
                 isCurrUserProject = project.owner === currentUser.uid;
                 currUserHasJoined = project.members ? 
                     project.members.includes(currentUser.uid) : false;
-                currUserHasRequested = currUserRequests
-                                        .map((request) => request.to)
-                                        .includes(pid);
+                currUserHasRequested = Object.values(currUserRequests).includes(pid);
             }
-            
-            console.log(currUserHasRequested)
+
             var buttonLabel = '';
             var buttonFunc;
             if (!currentUser) {
-                buttonLabel = 'LOG IN TO JOIN';
+                buttonLabel = 'LOGIN TO JOIN';
                 buttonFunc = handleLogin;
             } else if (isCurrUserProject) {
                 buttonLabel = 'DELETE PROJECT'; // TODO: perhaps add a confirmation window?
                 buttonFunc = () => {
                     removeProject(pid, () => {
-                        changeRoute('/projects/');
+                        history.push('/projects/');
                     });
                 };
             } else if (currUserHasJoined) {
-                buttonLabel = 'JOINED ✔';
+                buttonLabel = 'JOINED';
                 buttonFunc = null;
             } else if (currUserHasRequested || currUserJustRequested) {
-                buttonLabel = 'PENDING';
+                buttonLabel = 'REQUEST SENT ✔';
                 buttonFunc = null;
             } else {
                 buttonLabel = 'JOIN PROJECT';
@@ -150,7 +156,7 @@ function ProjectDetailsPage() {
                                     joinedMembers={joinedMembers}
                                     currUserHasJoined={currUserHasJoined}
                                     isCurrUserProject={isCurrUserProject}
-                                    requests={requests}/>
+                                    requests={projectRequests}/>
                             </Grid>
                             <Grid item xs={3}>
                                 <Button
@@ -186,7 +192,7 @@ function ProjectDetailsPage() {
             )
         }
     // eslint-disable-next-line
-    }, [project, joinProjectOpen, classes.projectTitle, requests,
+    }, [project, joinProjectOpen, classes.projectTitle, projectRequests, currUserRequests,
         classes.description, owner, currentUser, pid, joinedMembers,
         classes.root, classes.title, classes.button, currUserJustRequested]);
 

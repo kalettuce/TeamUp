@@ -6,7 +6,6 @@ const database = firebase.database();
 export function fetchRequestsBySender(uid, callback) {
     database.ref("users").child(uid).child("requests_sent").once("value")
         .then(snapshot => snapshot.val())
-        .then(fetchRequests)
         .then(callback);
 }
 
