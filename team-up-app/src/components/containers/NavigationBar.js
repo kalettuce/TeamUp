@@ -125,33 +125,35 @@ export default function LoginBar(props) {
                     </Grid>
                 }    
             </Grid>
-            <Popover
-                id='simple-popover'
-                open={showPopover}
-                anchorEl={anchorEl}
-                onClose={(event) => handlePopoverClose(event)}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-            >
-                <Grid container direction="row" alignItems="center" justify="center" className={classes.mediaParent}>
-                    <CardMedia
-                        className={classes.cardMedia}
-                        image={userProfile.image || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
-                    />  
-                    <Button className={classes.popoverButtons} onClick={(event) => handleProfile()}>
-                        View Profile
-                    </Button>  
-                    <Button className={classes.popoverButtons}>
-                        View Involved Projects
-                    </Button> 
-                </Grid> 
-            </Popover>
+            {userProfile && 
+                <Popover
+                    id='simple-popover'
+                    open={showPopover}
+                    anchorEl={anchorEl}
+                    onClose={(event) => handlePopoverClose(event)}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                    <Grid container direction="row" alignItems="center" justify="center" className={classes.mediaParent}>
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image={userProfile.image || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                        />  
+                        <Button className={classes.popoverButtons} onClick={(event) => handleProfile()}>
+                            View Profile
+                        </Button>  
+                        <Button className={classes.popoverButtons}>
+                            View Involved Projects
+                        </Button> 
+                    </Grid> 
+                </Popover>
+            }
         </div>
     );
 }
