@@ -3,6 +3,9 @@ import { removeProjectFolder } from './FileStorage.js'
 
 const database = firebase.database();
 
+// deletes a project from the DB, also deletes the project folder in storage
+// pid: project id
+// callback: the procedure to execute after the deletion
 export function removeProject(pid, callback) {
     const projectRef = database.ref(`/projects/${pid}/`);
 
