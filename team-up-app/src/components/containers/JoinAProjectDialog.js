@@ -103,15 +103,6 @@ function JoinAProjectDialog(props) {
 export default JoinAProjectDialog;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        paddingTop: '20px',
-        paddingLeft: '200px',
-        paddingRight: '200px',
-        width: '70%',
-        margin: 'auto',
-        background: '#FFFFFF',
-    },
     agreement: {
         paddingTop: '20px',
         paddingBottom: '20px',

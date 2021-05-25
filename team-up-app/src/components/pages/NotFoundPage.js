@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 
-export const NOT_FOUND = "404";
+export const NOT_FOUND = 404;
 
 function NotFoundPage() {
     const classes = useStyles();
@@ -12,7 +12,7 @@ function NotFoundPage() {
 
     return (
         <div className={classes.root}>
-            <Typography className={classes.title}>404 :(</Typography>
+            <Typography className={classes.title}>{NOT_FOUND} :(</Typography>
             <Typography variant={"body1"}>
                 Oops, that page doesn't exist. Sorry about that!
             </Typography>

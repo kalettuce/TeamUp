@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
-import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
+import { Typography, Card, CardMedia, Grid, Button, Dialog, DialogTitle } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Dialog from "@material-ui/core/Dialog"
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { fetchProjectById } from '../../utils/FindProjects.js'
 import { fetchUserById, fetchUsersById } from '../../utils/FindUsers.js'
 import { useAuth } from '../../utils/AuthContext';
@@ -13,7 +11,7 @@ import { regionToFlag } from '../containers/RegionSelect';
 import placeholder from '../../placeholder.jpg';
 import StyledTags from "../presentation/StyledTags.js";
 import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindJoinRequests.js";
-import { removeProject } from '../../utils/RemoveProjects.js'
+import DeleteProjectDialog from '../containers/DeleteProjectDialog';
 import { NOT_FOUND } from './NotFoundPage';
 
 function ProjectDetailsPage() {
@@ -22,6 +20,7 @@ function ProjectDetailsPage() {
     const [owner, setOwner] = useState(null);
     const [dom, setDom] = useState('');
     const [joinProjectOpen, setJoinProjectOpen] = useState(false);
+    const [deleteProjectOpen, setDeleteProjectOpen] = useState(false);
     const [currUserJustRequested, setCurrUserJustRequested] = useState(false);
     const [currUserRequests, setCurrUserRequests] = useState(null);
     const [projectRequests, setProjectRequests] = useState([]);
@@ -48,7 +47,7 @@ function ProjectDetailsPage() {
                 fetchUsersById(project.members, setJoinedMembers);
             }
         }
-    }, [project]);
+    }, [project, history]);
 
     useEffect(() => {
         if (currentUser) {
@@ -73,7 +72,7 @@ function ProjectDetailsPage() {
         if (project && owner 
                     && joinedMembers 
                     && projectRequests) {
-            // TODO: Button is buggy here; help fix please
+
             var isCurrUserProject, 
                 currUserHasJoined,
                 currUserHasRequested = false;
@@ -91,11 +90,7 @@ function ProjectDetailsPage() {
                 buttonFunc = handleLogin;
             } else if (isCurrUserProject) {
                 buttonLabel = 'DELETE PROJECT'; // TODO: perhaps add a confirmation window?
-                buttonFunc = () => {
-                    removeProject(pid, () => {
-                        history.push('/projects/');
-                    });
-                };
+                buttonFunc = () => setDeleteProjectOpen(true);
             } else if (currUserHasJoined) {
                 buttonLabel = 'JOINED';
                 buttonFunc = null;
@@ -103,7 +98,7 @@ function ProjectDetailsPage() {
                 buttonLabel = 'REQUEST SENT ✔';
                 buttonFunc = null;
             } else {
-                buttonLabel = 'JOIN PROJECT';
+                buttonLabel = 'REQUEST TO JOIN';
                 buttonFunc = () => setJoinProjectOpen(true);
             }
  
@@ -113,7 +108,7 @@ function ProjectDetailsPage() {
                         onClose={() => setJoinProjectOpen(false)}
                         open={joinProjectOpen}>
                         <DialogTitle>
-                            Join this project
+                            Confirm request
                         </DialogTitle>
                         <JoinAProjectPage
                             project={{"id": pid, "info": project}}
@@ -121,6 +116,16 @@ function ProjectDetailsPage() {
                             open={setJoinProjectOpen}
                             setCurrUserJustRequested={setCurrUserJustRequested}
                             />
+                    </Dialog>
+                    <Dialog
+                        onClose={() => setDeleteProjectOpen(false)}
+                        open={isCurrUserProject && deleteProjectOpen}>
+                        <DialogTitle>
+                            Confirm delete
+                        </DialogTitle>
+                        <DeleteProjectDialog 
+                            pid={pid}
+                            open={setDeleteProjectOpen}/>
                     </Dialog>
                     <br/>
                     <div className={classes.root}>
@@ -192,9 +197,11 @@ function ProjectDetailsPage() {
             )
         }
     // eslint-disable-next-line
-    }, [project, joinProjectOpen, classes.projectTitle, projectRequests, currUserRequests,
-        classes.description, owner, currentUser, pid, joinedMembers,
-        classes.root, classes.title, classes.button, currUserJustRequested]);
+    }, [project, joinProjectOpen, projectRequests, currUserRequests, pid,
+        currUserJustRequested, history, owner, currentUser, joinedMembers, 
+        deleteProjectOpen, 
+        classes.backButton, classes.buttonDelete, classes.description,
+        classes.root, classes.title, classes.button, classes.projectTitle]);
 
     return (
         <div>
