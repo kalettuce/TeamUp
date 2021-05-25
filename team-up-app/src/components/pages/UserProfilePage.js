@@ -29,7 +29,7 @@ function UserProfilePage() {
                 className="d-flex align-items-center justify-content-center"
                 style={{ minHeight: "100vh" }}
                 >
-                    <div className="w-100" style={{ maxWidth: "500px" }}>
+                    <div className="w-100" style={{ maxWidth: "600px" }}>
                         <Paper elevation={3}>
                             <Grid container direction="row" justify="center" alignItems="center">
                                 <Grid item xs={6}>
@@ -92,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 20,
         paddingBottom: '10px',
         paddingLeft: '20px',
+        paddingRight: '5px',
     },
     descSect: {
         paddingTop: '20px',

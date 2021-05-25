@@ -7,6 +7,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useRouteChanger } from '../../utils/RouteChanger';
 import { useAuth } from '../../utils/AuthContext';
 import { fetchUserById } from '../../utils/FindUsers.js'
+import Popover from '@material-ui/core/Popover';
+import { CardMedia } from '@material-ui/core';
+import { Container } from "react-bootstrap";
 
 export default function LoginBar(props) {
     const classes = useStyles();
@@ -14,6 +17,9 @@ export default function LoginBar(props) {
     const { currentUser, logout } = useAuth();
 
     const [userProfile, setUserProfile] = useState(null);
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const showPopover = Boolean(anchorEl);
 
     useEffect(() => {
         if (currentUser != null) {
@@ -53,6 +59,19 @@ export default function LoginBar(props) {
     const handleLandingPage = () => {
         changeRoute("/");
     }
+
+    const handleProfile = () => {
+        changeRoute("/users/" + currentUser.uid);
+        setAnchorEl(null);
+    }
+
+    const handleProfilePopover = (event) => {
+        setAnchorEl(event.currentTarget);
+    }
+
+    const handlePopoverClose = (event) => {
+        setAnchorEl(null)
+    };
 
     return (
         <div>
@@ -100,12 +119,39 @@ export default function LoginBar(props) {
                                 variant="outlined">
                             LOG OUT
                         </Button>
-                        <Typography className={classes.name}>
+                        <Button onClick={(event) => handleProfilePopover(event)} className={classes.name}>
                             {userProfile.name}
-                        </Typography>
+                        </Button>
                     </Grid>
                 }    
             </Grid>
+            <Popover
+                id='simple-popover'
+                open={showPopover}
+                anchorEl={anchorEl}
+                onClose={(event) => handlePopoverClose(event)}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <Grid container direction="row" alignItems="center" justify="center" className={classes.mediaParent}>
+                    <CardMedia
+                        className={classes.cardMedia}
+                        image={userProfile.image || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                    />  
+                    <Button className={classes.popoverButtons} onClick={(event) => handleProfile()}>
+                        View Profile
+                    </Button>  
+                    <Button className={classes.popoverButtons}>
+                        View Involved Projects
+                    </Button> 
+                </Grid> 
+            </Popover>
         </div>
     );
 }
@@ -125,13 +171,20 @@ const useStyles = makeStyles((theme) => ({
         background:'#fff',
     },
     name: {
+        marginTop: '5px',
+        marginBottom: '5px',
+        fontSize: 20,
         fontWeight: 700,
-        marginTop: '10px',
-        fontSize: 25,
         color: "black",
+        background: '#FFFFFF',
         border: 'none',
-        marginRight: 25,
-        paddingLeft: '5%',
+        paddingRight: '25px',
+        paddingLeft: '25px',
+        marginRight: '25px',
+        "&:hover": {
+            backgroundColor: '#FFFFFF'
+        },
+        textTransform: 'none',
     },
     leftgrid: {
         paddingLeft: '15px',
@@ -194,4 +247,20 @@ const useStyles = makeStyles((theme) => ({
         },
         borderRadius: 0,
     },
+    cardMedia: {
+        paddingTop: '75%',
+        borderRadius: '50%',
+        width: '75%',
+        marginTop: '20px',
+        marginBottom: '10px',
+    },
+    mediaParent: {
+        minHeight: '150px',
+        minWidth: '150px',
+    },
+    popoverButtons: {
+        fontWeight: 700,
+        width: '100%',
+        marginBottom: '10px',
+    }
 }));
