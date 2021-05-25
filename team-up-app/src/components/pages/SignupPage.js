@@ -1,10 +1,12 @@
 import React, { useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../../utils/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { createUser } from '../../utils/CreateUser.js'
+import { Card } from '@material-ui/core';
+import ImageUploaderElement from '../containers/ImageUploaderElement';
 
 export default function Signup() {
     const classes = useStyles();
@@ -14,6 +16,7 @@ export default function Signup() {
     const passwordConfirmRef = useRef();
     const nameRef = useRef();
     const descriptionRef = useRef();
+    const [picture, setPicture] = useState([]);
     const { signup } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -46,14 +49,13 @@ export default function Signup() {
     }
 
     return (
-        <div>
+        <div className={classes.root}>
             <Container
             className="d-flex align-items-center justify-content-center"
             style={{ minHeight: "100vh" }}
             >
                 <div className="w-100" style={{ maxWidth: "400px" }}>
-                    <Card>
-                        <Card.Body>
+                    <Card className={classes.card}>
                             <h2 className="text-center mb-4">SIGN UP</h2>
                             {error && <Alert variant="danger">{error}</Alert>}
                             <Form onSubmit={handleSignup}>
@@ -87,11 +89,13 @@ export default function Signup() {
                                     </Form.Label>
                                     <Form.Control type="password" ref={passwordConfirmRef} required />
                                 </Form.Group>
+                                <ImageUploaderElement onDrop={(e) => {
+                                    setPicture(e[0]);
+                                }}/>
                                 <Button disabled={loading} className={classes.button} type="submit" variant="outlined">
                                     SIGN UP
                                 </Button>
                             </Form>
-                        </Card.Body>
                     </Card>
             </div>
             </Container>
@@ -117,5 +121,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 0,
         width:"100%"
     },
+    card: {
+        padding: '20px',
+    },
+    root: {
+        paddingTop: '25px',
+    }
 }));
 

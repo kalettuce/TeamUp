@@ -20,7 +20,7 @@ function UsersListPage() {
     const itemsPerPage = 8;
     const title = "PEOPLE";
     
-    // Fetches projects list and number of projects
+    // Fetches user list and number of users
     useEffect(() => {
         fetchAllUsers((usersList) => {
             setUsers(Object.values(usersList));
@@ -30,7 +30,7 @@ function UsersListPage() {
     }, []);
 
     // Sets total number of pages for pagination; updates
-    // whenever the list of projects to show changes
+    // whenever the list of users to show changes
     useEffect(() => {
         if (usersToShow !== null) {
             setTotalPages(Math.ceil(usersToShow.length / itemsPerPage));
@@ -38,7 +38,7 @@ function UsersListPage() {
     }, [usersToShow]);
 
     useEffect(() => {
-        // Projects loaded asyncrhonously
+        // Users loaded asyncrhonously
         if (usersToShow !== null) {
             setDom(usersToShow
                     .slice((page - 1) * itemsPerPage, page * itemsPerPage)
@@ -77,6 +77,7 @@ function UsersListPage() {
                     {dom}
                 </Grid>
                 <Pagination
+                    className={classes.pagination}
                     count={totalPages}
                     page={page}
                     defaultPage={1}
@@ -114,4 +115,8 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '250px',
         display: 'flex',
     },
+    pagination: {
+        paddingTop: '20px',
+        paddingBottom:'20px',
+    }
 }));

@@ -15,7 +15,7 @@ function UserProfilePage() {
     const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
-        if (currentUser != null) {
+        if (uid != null) {
             fetchUserById(uid, setUserProfile);
         } else {
             setUserProfile(null);
@@ -33,7 +33,13 @@ function UserProfilePage() {
                         <Paper elevation={3}>
                             <Grid container direction="row" justify="center" alignItems="center">
                                 <Grid item xs={6}>
-                                        <Typography className={classes.title}>{userProfile.name}</Typography>
+                                    <Grid container direction="row" alignItems="center" justify="center">
+                                        <CardMedia
+                                            className={classes.cardMedia}
+                                            image={userProfile.image || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                                        />    
+                                    </Grid> 
+                                    <Typography className={classes.title}>{userProfile.name}</Typography>
                                 </Grid>
                                 <Grid item xs={6} className={classes.descSect}>
                                     <Typography className={classes.main}>Bio:</Typography>
@@ -90,5 +96,11 @@ const useStyles = makeStyles((theme) => ({
     descSect: {
         paddingTop: '20px',
         paddingBottom: '20px',
-    }
+    },
+    cardMedia: {
+        paddingTop: '60%',
+        borderRadius: '50%',
+        width: '60%',
+        marginTop: '20px',
+    },
 }));

@@ -108,6 +108,7 @@ function FindAProjectPage() {
                     {dom}
                 </Grid>
                 <Pagination
+                    className={classes.pagination}
                     count={totalPages}
                     page={page}
                     defaultPage={1}
@@ -145,4 +146,8 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '250px',
         display: 'flex',
     },
+    pagination: {
+        paddingTop: '20px',
+        paddingBottom:'20px',
+    }
 }));
