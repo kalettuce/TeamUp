@@ -73,14 +73,19 @@ function ProjectDetailsPage() {
                     && joinedMembers 
                     && projectRequests) {
 
-            var isCurrUserProject, 
-                currUserHasJoined,
+            var isCurrUserProject = false, 
+                currUserHasJoined = false,
                 currUserHasRequested = false;
-            if (currentUser && currUserRequests !== null) {
+            if (currentUser) {
                 isCurrUserProject = project.owner === currentUser.uid;
-                currUserHasJoined = project.members ? 
-                    project.members.includes(currentUser.uid) : false;
-                currUserHasRequested = Object.values(currUserRequests).includes(pid);
+
+                if (project.members) {
+                    currUserHasJoined = project.members.includes(currentUser.uid);
+                }
+
+                if (currUserRequests) {
+                    currUserHasRequested = Object.values(currUserRequests).includes(pid);
+                }
             }
 
             var buttonLabel = '';
@@ -89,7 +94,7 @@ function ProjectDetailsPage() {
                 buttonLabel = 'LOGIN TO JOIN';
                 buttonFunc = handleLogin;
             } else if (isCurrUserProject) {
-                buttonLabel = 'DELETE PROJECT'; // TODO: perhaps add a confirmation window?
+                buttonLabel = 'DELETE PROJECT';
                 buttonFunc = () => setDeleteProjectOpen(true);
             } else if (currUserHasJoined) {
                 buttonLabel = 'JOINED';
