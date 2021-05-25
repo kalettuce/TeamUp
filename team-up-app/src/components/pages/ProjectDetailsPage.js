@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
+import { useRouteChanger } from '../../utils/RouteChanger';
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from "@material-ui/core/Dialog"
@@ -13,8 +14,10 @@ import { regionToFlag } from '../containers/RegionSelect';
 import placeholder from '../../placeholder.jpg';
 import StyledTags from "../presentation/StyledTags.js";
 import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindMessages.js";
+import { removeProject } from '../../utils/RemoveProjects.js'
 
 function ProjectDetailsPage() {
+    const changeRoute = useRouteChanger();
     const classes = useStyles();
     const [project, setProject] = useState(null);
     const [owner, setOwner] = useState(null);
@@ -56,7 +59,7 @@ function ProjectDetailsPage() {
         if (project && project.owner === currentUser.uid) {
             fetchRequestsByProject(pid, setRequests);
         }
-    }, [project, currentUser]);
+    }, [project, currentUser, pid]);
 
     useEffect(() => {
         if (project && owner && joinedMembers && requests) {
@@ -76,16 +79,26 @@ function ProjectDetailsPage() {
             
             console.log(currUserHasRequested)
             var buttonLabel = '';
+            var buttonFunc;
             if (!currentUser) {
                 buttonLabel = 'LOG IN TO JOIN';
+                buttonFunc = handleLogin;
             } else if (isCurrUserProject) {
-                buttonLabel = 'DELETE PROJECT'; //TODO: write delete function
+                buttonLabel = 'DELETE PROJECT'; // TODO: perhaps add a confirmation window?
+                buttonFunc = () => {
+                    removeProject(pid, () => {
+                        changeRoute('/projects/');
+                    });
+                };
             } else if (currUserHasJoined) {
                 buttonLabel = 'JOINED ✔';
+                buttonFunc = null;
             } else if (currUserHasRequested || currUserJustRequested) {
                 buttonLabel = 'PENDING';
+                buttonFunc = null;
             } else {
                 buttonLabel = 'JOIN PROJECT';
+                buttonFunc = () => setJoinProjectOpen(true);
             }
  
             setDom(
@@ -146,7 +159,7 @@ function ProjectDetailsPage() {
                                                 || currUserJustRequested}
                                     className={isCurrUserProject ? classes.buttonDelete : classes.button}
                                     variant={"outlined"}
-                                    onClick={currentUser ? () => setJoinProjectOpen(true) : handleLogin}>
+                                    onClick={buttonFunc}>
                                         {buttonLabel}
                                 </Button>
                                 <Typography variant={'h6'}>Region</Typography>
