@@ -27,13 +27,13 @@ function DeleteProjectDialog(props) {
             </Typography>
             <DialogActions>
                 <Button
+                    onClick={() => props.open(false)}
+                    >CANCEL</Button>
+                <Button
                     className={classes.deleteButton}
                     variant={"outlined"}
                     onClick={handleDelete}
                     >DELETE</Button>
-                <Button
-                    onClick={() => props.open(false)}
-                    >CANCEL</Button>
             </DialogActions>
         </DialogContent>
     )
