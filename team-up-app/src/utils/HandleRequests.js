@@ -10,8 +10,9 @@ export function acceptRequest(rid) {
             const uid = data.from;
             const pid = data.to;
 
-            addMember(pid, uid);
-            deleteRequest(pid, uid, rid);
+            addMember(pid, uid, () => {
+                deleteRequest(pid, uid, rid);
+            });
         });
 }
 
@@ -28,7 +29,6 @@ export function rejectRequest(rid) {
 
 function deleteRequest(pid, uid, rid) {
     database.ref(`/requests/${rid}`).remove();
-    database.ref(`/projects/${pid}/requests_received/${rid}`).remove();
-    // TODO: fix permission issues
-    // database.ref(`/users/${uid}/requests_sent/${rid}`).remove();
+    database.ref(`/projects/${pid}/requests_received/${uid}`).remove();
+    database.ref(`/users/${uid}/requests_sent/${pid}`).remove();
 }

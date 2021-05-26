@@ -8,6 +8,6 @@ export function addRequest(uid, pid, message) {
     // adding the key itself to the fields
     database.ref('requests').child(rid).update({key: rid});
 
-    database.ref("projects").child(pid).child("requests_received").child(rid).set(uid);
-    database.ref("users").child(uid).child("requests_sent").child(rid).set(pid);
+    database.ref("projects").child(pid).child("requests_received").child(uid).set(rid);
+    database.ref("users").child(uid).child("requests_sent").child(pid).set(rid);
 }

@@ -12,7 +12,6 @@ function ProjectDetailsTabThree(props) {
                     No pending requests.
                 </Typography>
     } else {
-        // TODO: fetch requests
         for (const request of requests) {
             dom.push(
                 <JoinRequestCard

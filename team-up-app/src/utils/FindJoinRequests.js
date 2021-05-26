@@ -43,7 +43,7 @@ function fetchRequests(rids) {
         return [];
     }
     
-    rids = Object.keys(rids);
+    rids = Object.values(rids);
 
     const requestPromises = [];
     for (let rid of rids) {
