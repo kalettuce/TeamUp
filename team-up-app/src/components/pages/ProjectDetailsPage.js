@@ -151,7 +151,7 @@ function ProjectDetailsPage() {
                                     disableRipple
                                     className={classes.backButton}
                                     onClick={() => history.goBack()}>
-                                    🡠 Back
+                                    &#8592; Back
                                 </Button>
                                 <Typography
                                     className={classes.projectTitle}
