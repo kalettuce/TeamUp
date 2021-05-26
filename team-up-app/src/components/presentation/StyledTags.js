@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
     },
     tag: {
-        fontFamily: 'Consolas',
+        fontFamily: "'Inconsolata', monospace",
         fontSize: '12px',
         backgroundColor: '#f2f2f2',
         borderRadius: 4,
