@@ -49,7 +49,7 @@ function UsersListPage() {
                 item
                 xs={3}>
                 <UserCard
-                    image={user.image}
+                    image={user.image_url}
                     uid={uid}
                     name={user.name}
                     description={user.description}

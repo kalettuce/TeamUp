@@ -36,7 +36,7 @@ export default function Signup() {
             const ret = await signup(emailRef.current.value, passwordRef.current.value);
             const userUID = ret.user.uid;
 
-            createUser(userUID, descriptionRef.current.value, emailRef.current.value, nameRef.current.value);
+            createUser(userUID, descriptionRef.current.value, emailRef.current.value, nameRef.current.value, picture);
 
             history.push("/");
 

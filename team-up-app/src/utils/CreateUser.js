@@ -1,10 +1,11 @@
 import firebase from './Firebase.js';
+import { setUserImage } from './FileStorage';
 
 const database = firebase.database();
 
 // Adds a new user to the database
 // Will modify node values if they already exist
-export function createUser(userUID, description, email, name) {
+export function createUser(userUID, description, email, name, picture) {
     database.ref('/users/')
             .child(userUID)
             .set({
@@ -18,4 +19,5 @@ export function createUser(userUID, description, email, name) {
                 requests_sent: [],
                 tags: []
     });
+    setUserImage(userUID, picture, () => {});
 }

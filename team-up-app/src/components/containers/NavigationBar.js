@@ -31,7 +31,8 @@ export default function LoginBar(props) {
 
     async function handleLogout() {
         try {
-          await logout()
+            setAnchorEl(null);
+            await logout()
           //history.push("/login")
         } catch {
         }
@@ -48,15 +49,17 @@ export default function LoginBar(props) {
     }
 
     const handleProjects = () => {
-        console.log(currentUser);
+        setAnchorEl(null);
         changeRoute("/projects");
     }
     
     const handlePeople = () => {
+        setAnchorEl(null);
         changeRoute("/users");
     }
 
     const handleLandingPage = () => {
+        setAnchorEl(null);
         changeRoute("/");
     }
 
@@ -143,7 +146,7 @@ export default function LoginBar(props) {
                     <Grid container direction="row" alignItems="center" justify="center" className={classes.mediaParent}>
                         <CardMedia
                             className={classes.cardMedia}
-                            image={userProfile.image || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                            image={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
                         />  
                         <Button className={classes.popoverButtons} onClick={(event) => handleProfile()}>
                             View Profile

@@ -36,7 +36,7 @@ function UserProfilePage() {
                                     <Grid container direction="row" alignItems="center" justify="center">
                                         <CardMedia
                                             className={classes.cardMedia}
-                                            image={userProfile.image || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                                            image={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
                                         />    
                                     </Grid> 
                                     <Typography className={classes.title}>{userProfile.name}</Typography>
