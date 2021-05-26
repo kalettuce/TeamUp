@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../../utils/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import { Container } from "react-bootstrap";
 import { createUser } from '../../utils/CreateUser.js'
 
@@ -35,7 +35,7 @@ export default function Signup() {
 
             createUser(userUID, descriptionRef.current.value, emailRef.current.value, nameRef.current.value);
 
-            history.push("/");
+            history.goBack();
 
 
         } catch (error) {

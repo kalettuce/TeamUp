@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../../utils/AuthContext";
-import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
     const classes = useStyles();
@@ -22,7 +22,7 @@ export default function Login() {
             setError("");
             setLoading(true);
             await login(emailRef.current.value, passwordRef.current.value);
-            history.push("/");
+            history.goBack();
         } catch {
             setError("Failed to log in");
         }
