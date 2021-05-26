@@ -44,7 +44,8 @@ function ProjectDetailsPage() {
         } else if (project) {
             fetchUserById(project.owner, setOwner);
             if (project.members) {
-                fetchUsersById(project.members, setJoinedMembers);
+                fetchUsersById(
+                    Object.values(project.members), setJoinedMembers);
             }
         }
     }, [project, history]);
@@ -80,11 +81,13 @@ function ProjectDetailsPage() {
                 isCurrUserProject = project.owner === currentUser.uid;
 
                 if (project.members) {
-                    currUserHasJoined = project.members.includes(currentUser.uid);
+                    currUserHasJoined = Object.values(project.members)
+                                              .includes(currentUser.uid);
                 }
 
                 if (currUserRequests) {
-                    currUserHasRequested = Object.values(currUserRequests).includes(pid);
+                    currUserHasRequested = Object.values(currUserRequests)
+                                                 .includes(pid);
                 }
             }
 

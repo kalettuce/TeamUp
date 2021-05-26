@@ -4,6 +4,7 @@ import UserInfoCard from './UserInfoCard';
 function ProjectDetailsTabTwo(props) {
     const joinedMembers = props.joinedMembers;
     const currUserHasJoined = props.currUserHasJoined;
+    const project = props.project;
 
     var dom = []
     if (joinedMembers.length === 0) {
@@ -23,7 +24,7 @@ function ProjectDetailsTabTwo(props) {
             dom.push(
                 <UserInfoCard
                     key={member.uid}
-                    isCurrUserProject={props.isCurrUserProject}
+                    userIsCreator={project.owner === member.uid}
                     id={member.uid}
                     name={member.info.name}
                     email={member.info.email} />

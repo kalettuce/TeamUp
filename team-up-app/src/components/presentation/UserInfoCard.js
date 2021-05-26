@@ -4,11 +4,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-// TODO: Make card onClick go to user profile
+import { useRouteChanger } from '../../utils/RouteChanger';
 
 function UserInfoCard(props) {
     const classes = useStyles();
+    const changeRoute = useRouteChanger();
 
     return (
         <Card
@@ -17,12 +17,12 @@ function UserInfoCard(props) {
             variant="outlined"
             style={{width: '100%'}}
             height="500"
-            onClick={() => console.log(props.id)}>
+            onClick={() => changeRoute(`/users/${props.id}`)}>
             <CardActionArea>
                 <CardContent>
                     <Typography
                         variant="body1">
-                            <b>{props.name}</b> {props.isCurrUserProject ? '(Creator)' : ''}
+                            <b>{props.name}</b> {props.userIsCreator ? '(Creator)' : ''}
                     </Typography>
                     <Typography
                         className={classes.description}

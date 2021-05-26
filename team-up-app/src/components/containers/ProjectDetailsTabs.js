@@ -94,7 +94,6 @@ function ProjectDetailsTabs(props) {
                 index={1}>
                 <ProjectDetailsTabTwo
                     project={props.project}
-                    isCurrUserProject={props.isCurrUserProject}
                     currUserHasJoined={props.currUserHasJoined}
                     joinedMembers={props.joinedMembers}/>
             </TabPanel>
