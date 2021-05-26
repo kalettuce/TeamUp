@@ -35,18 +35,18 @@ function JoinRequestCard(props) {
             <CardActions>
             <Button
                 size={"small"}
-                onClick={() => {acceptRequest(props.info.key)}}>
+                onClick={() => acceptRequest(props.info.key, () => history.go(0))}>
                 Accept
             </Button>
             <Button
                 size={"small"}
-                onClick={() => {rejectRequest(props.info.key)}}>
+                onClick={() => rejectRequest(props.info.key, () => history.go(0))}>
                 Reject
             </Button>
             </CardActions>
             </div>)
         }
-    }, [user, classes.description, props.info.message, props.info.key])
+    }, [user, classes.description, props.info.message, props.info.key, history])
 
     return (
         <Card
