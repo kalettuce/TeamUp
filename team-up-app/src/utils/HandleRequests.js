@@ -27,7 +27,7 @@ export function rejectRequest(rid) {
         });
 }
 
-function deleteRequest(pid, uid, rid) {
+export function deleteRequest(pid, uid, rid) {
     database.ref(`/requests/${rid}`).remove();
     database.ref(`/projects/${pid}/requests_received/${uid}`).remove();
     database.ref(`/users/${uid}/requests_sent/${pid}`).remove();

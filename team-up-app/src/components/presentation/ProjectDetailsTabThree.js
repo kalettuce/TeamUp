@@ -15,7 +15,7 @@ function ProjectDetailsTabThree(props) {
         for (const request of requests) {
             dom.push(
                 <JoinRequestCard
-                    key={request}
+                    key={request.key}
                     info={request} />
             );
         }

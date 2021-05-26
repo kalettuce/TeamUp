@@ -9,7 +9,7 @@ export function addMember(pid, uid, callback) {
     database.ref('projects').child(pid).child('members').push(uid);
     database.ref(`/users/${uid}/joined_projects`).once('value')
         .then((snapshot) => {
-            database.ref('users').child(uid).child('joined_projects').push(pid)
+            database.ref('users').child(uid).child('joined_projects').child(pid).set(true)
                 .then(callback);
         });
 }
