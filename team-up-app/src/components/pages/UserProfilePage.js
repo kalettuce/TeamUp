@@ -1,9 +1,9 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { useAuth } from '../../utils/AuthContext';
+//import { useAuth } from '../../utils/AuthContext';
 import { fetchUserById } from '../../utils/FindUsers.js';
 import React, { useState, useEffect } from "react";
 import Paper from '@material-ui/core/Paper';
-import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
+import { Typography, CardMedia, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from "react-bootstrap";
 import { regionToFlag } from '../containers/RegionSelect';
@@ -13,7 +13,7 @@ function UserProfilePage() {
     const classes = useStyles();
     const history = useHistory();
     const {uid} = useParams();
-    const {currentUser} = useAuth();
+    //const {currentUser} = useAuth();
 
     const [userProfile, setUserProfile] = useState(null);
 
@@ -30,6 +30,7 @@ function UserProfilePage() {
         if (userProfile === NOT_FOUND) {
             history.push("/" + NOT_FOUND);
         }
+    // eslint-disable-next-line
     }, [userProfile]);
 
     return (

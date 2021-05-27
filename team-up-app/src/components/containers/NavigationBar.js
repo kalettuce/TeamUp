@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useRouteChanger } from '../../utils/RouteChanger';
@@ -9,7 +8,6 @@ import { useAuth } from '../../utils/AuthContext';
 import { fetchUserById } from '../../utils/FindUsers.js'
 import Popover from '@material-ui/core/Popover';
 import { CardMedia } from '@material-ui/core';
-import { Container } from "react-bootstrap";
 
 export default function LoginBar(props) {
     const classes = useStyles();

@@ -4,16 +4,18 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import UserCard from '../presentation/UserCard';
 import Pagination from '@material-ui/lab/Pagination';
-import SearchBar from '../containers/SearchBar';
+//import SearchBar from '../containers/SearchBar';
 import { fetchAllUsers } from '../../utils/FindUsers.js'
-import Fuse from 'fuse.js';
+//import Fuse from 'fuse.js';
 
 function UsersListPage() {
     const classes = useStyles();
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
+    // eslint-disable-next-line
     const [users, setUsers] = useState(null);
+    // eslint-disable-next-line
     const [userKeys, setUserKeys] = useState(null);
     const [usersToShow, setUsersToShow] = useState(null);
 
