@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../../utils/AuthContext";
 import { Container } from "react-bootstrap";
+import { Card } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 
 export default function Login() {
@@ -37,8 +38,7 @@ export default function Login() {
             style={{ minHeight: "100vh" }}
             >
                 <div className="w-100" style={{ maxWidth: "400px" }}>
-                    <Card>
-                        <Card.Body>
+                    <Card className={classes.card}>
                             <h2 className="text-center mb-4">LOG IN</h2>
                             {error && <Alert variant="danger">{error}</Alert>}
                             <Form onSubmit={handleLogin}>
@@ -58,7 +58,6 @@ export default function Login() {
                                     LOG IN
                                 </Button>
                             </Form>
-                        </Card.Body>
                     </Card>
                 </div>
             </Container>
@@ -84,4 +83,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 0,
         width:"100%"
     },
+    card: {
+        padding: '20px',
+    }
 }));

@@ -36,7 +36,7 @@ function Router(props) {
                     exact path='/users'
                     component={UsersListPage}/>
                 <Route
-                    exact path='/users/:username'
+                    exact path='/users/:uid'
                     component={UserProfilePage}/>
                 <Route
                     exact path='/signup'

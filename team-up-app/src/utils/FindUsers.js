@@ -1,4 +1,5 @@
 import firebase from './Firebase.js';
+import { NOT_FOUND } from '../components/pages/NotFoundPage';
 
 const database = firebase.database();
 
@@ -16,7 +17,7 @@ export function fetchUserById(id, callback) {
     database.ref('/users/' + id + '/')
             .once('value')
             .then((snapshot) => {
-        callback(snapshot.val());
+        callback(snapshot.val() ? snapshot.val() : NOT_FOUND);
     });
 }
 
