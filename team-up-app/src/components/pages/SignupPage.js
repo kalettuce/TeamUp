@@ -7,6 +7,7 @@ import { Container } from "react-bootstrap";
 import { createUser } from '../../utils/CreateUser.js'
 import { Card } from '@material-ui/core';
 import ImageUploaderElement from '../containers/ImageUploaderElement';
+import RegionSelect from '../containers/RegionSelect';
 
 export default function Signup() {
     const classes = useStyles();
@@ -16,6 +17,7 @@ export default function Signup() {
     const passwordConfirmRef = useRef();
     const nameRef = useRef();
     const descriptionRef = useRef();
+    const [region, setRegion] = useState('');
     const [picture, setPicture] = useState([]);
     const { signup } = useAuth();
     const [error, setError] = useState("");
@@ -27,6 +29,14 @@ export default function Signup() {
 
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
             return setError("Passwords do not match");
+        } else if (descriptionRef.current.value.length === 0) {
+            return setError("Bio is required");
+        } else if (emailRef.current.value.length === 0) {
+            return setError("Email is required");
+        } else if (nameRef.current.value.length === 0) {
+            return setError("Name is required");
+        } else if (region.length === 0) {
+            return setError("Time zone is required");
         }
 
         try {
@@ -36,7 +46,7 @@ export default function Signup() {
             const ret = await signup(emailRef.current.value, passwordRef.current.value);
             const userUID = ret.user.uid;
 
-            createUser(userUID, descriptionRef.current.value, emailRef.current.value, nameRef.current.value, picture);
+            createUser(userUID, descriptionRef.current.value, emailRef.current.value, nameRef.current.value, region, picture);
 
             history.goBack();
 
@@ -63,32 +73,33 @@ export default function Signup() {
                                     <Form.Label>
                                         Name
                                     </Form.Label>
-                                    <Form.Control type="name" ref={nameRef} required />
+                                    <Form.Control type="name" ref={nameRef} />
                                 </Form.Group>
                                 <Form.Group id="email">
                                     <Form.Label>
                                         Email
                                     </Form.Label>
-                                    <Form.Control type="email" ref={emailRef} required />
+                                    <Form.Control type="email" ref={emailRef} />
                                 </Form.Group>
                                 <Form.Group id="description">
                                     <Form.Label>
                                         Bio
                                     </Form.Label>
-                                    <Form.Control type="description" ref={descriptionRef} required />
+                                    <Form.Control type="description" ref={descriptionRef} />
                                 </Form.Group>
                                 <Form.Group id="password">
                                     <Form.Label>
                                         Password
                                     </Form.Label>
-                                    <Form.Control type="password" ref={passwordRef} required />
+                                    <Form.Control type="password" ref={passwordRef} />
                                 </Form.Group>
                                 <Form.Group id="password-confirm">
                                     <Form.Label>
                                         Password Confirmation
                                     </Form.Label>
-                                    <Form.Control type="password" ref={passwordConfirmRef} required />
+                                    <Form.Control type="password" ref={passwordConfirmRef} />
                                 </Form.Group>
+                                <RegionSelect onChange={(e, region) => setRegion([region.label, region.code])}/>
                                 <ImageUploaderElement onDrop={(e) => {
                                     setPicture(e[0]);
                                 }}/>
@@ -125,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '20px',
     },
     root: {
-        paddingTop: '25px',
+        paddingTop: '50px',
     }
 }));
 

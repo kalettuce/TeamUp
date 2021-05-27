@@ -64,6 +64,7 @@ export default function LoginBar(props) {
     }
 
     const handleProfile = () => {
+        console.log(userProfile);
         changeRoute("/users/" + currentUser.uid);
         setAnchorEl(null);
     }

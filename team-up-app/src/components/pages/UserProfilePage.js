@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useAuth } from '../../utils/AuthContext';
 import { fetchUserById } from '../../utils/FindUsers.js';
 import React, { useState, useEffect } from "react";
@@ -6,9 +6,12 @@ import Paper from '@material-ui/core/Paper';
 import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from "react-bootstrap";
+import { regionToFlag } from '../containers/RegionSelect';
+import { NOT_FOUND } from './NotFoundPage';
 
 function UserProfilePage() {
     const classes = useStyles();
+    const history = useHistory();
     const {uid} = useParams();
     const {currentUser} = useAuth();
 
@@ -22,8 +25,16 @@ function UserProfilePage() {
         }
     }, [uid]);
 
+    useEffect(() => {
+        // Send to NotFoundPage (404) if a user cannot be found
+        if (userProfile === NOT_FOUND) {
+            history.push("/" + NOT_FOUND);
+        }
+    }, [userProfile]);
+
     return (
         <div>
+            <Typography>test</Typography>
             {userProfile && 
                 <Container
                 className="d-flex align-items-center justify-content-center"
@@ -47,8 +58,18 @@ function UserProfilePage() {
                                     <Typography className={classes.main}>Email:</Typography>
                                     <Typography className={classes.sub}>{userProfile.email}</Typography>
                                     <Typography className={classes.main}>Region:</Typography>
-                                    <Typography className={classes.sub}>{userProfile.region}</Typography>
+                                    <Typography className={classes.sub}>
+                                        <span>{userProfile.region ? regionToFlag(userProfile.region[1]) : ''} </span>
+                                        {userProfile.region ? userProfile.region[0] : "Global"}
+                                    </Typography>
                                 </Grid>
+                                {currentUser.uid == uid &&
+                                    <Grid item xs={12}>
+                                        <Button className={classes.editprofilebutton}>
+                                            Edit profile
+                                        </Button>
+                                    </Grid>
+                                }   
                             </Grid>
                         </Paper>
                     </div>
@@ -103,5 +124,21 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '50%',
         width: '60%',
         marginTop: '20px',
+    },
+    editprofilebutton: {
+        marginTop: '5px',
+        marginBottom: '5px',
+        fontSize: 20,
+        fontWeight: 700,
+        color: "black",
+        background: '#FFFFFF',
+        borderColor: '#000000',
+        paddingRight: '25px',
+        paddingLeft: '25px',
+        marginRight: '25px',
+        "&:hover": {
+            backgroundColor: '#FFFFFF'
+        },
+        borderRadius: 0,
     },
 }));

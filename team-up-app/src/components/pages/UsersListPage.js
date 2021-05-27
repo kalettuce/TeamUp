@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     pagination: {
-        paddingTop: '20px',
-        paddingBottom:'20px',
+        marginTop: '20px',
+        marginBottom: '30px',
     }
 }));
