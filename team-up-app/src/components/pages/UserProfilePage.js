@@ -20,7 +20,7 @@ function UserProfilePage() {
         } else {
             setUserProfile(null);
         }
-    }, [currentUser]);
+    }, [uid]);
 
     return (
         <div>
@@ -31,7 +31,7 @@ function UserProfilePage() {
                 >
                     <div className="w-100" style={{ maxWidth: "600px" }}>
                         <Paper elevation={3}>
-                            <Grid container direction="row" justify="center" alignItems="center">
+                            <Grid container  style={{ minHeight: "350px" }} direction="row" justify="center" alignItems="center">
                                 <Grid item xs={6}>
                                     <Grid container direction="row" alignItems="center" justify="center">
                                         <CardMedia

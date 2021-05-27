@@ -73,7 +73,7 @@ export default function Signup() {
                                 </Form.Group>
                                 <Form.Group id="description">
                                     <Form.Label>
-                                        Description
+                                        Bio
                                     </Form.Label>
                                     <Form.Control type="description" ref={descriptionRef} required />
                                 </Form.Group>
