@@ -86,7 +86,8 @@ function ProjectDetailsPage() {
                 }
 
                 if (currUserRequests) {
-                    currUserHasRequested = Object.values(currUserRequests)
+                    console.log(currUserRequests)
+                    currUserHasRequested = Object.keys(currUserRequests)
                                                  .includes(pid);
                 }
             }
