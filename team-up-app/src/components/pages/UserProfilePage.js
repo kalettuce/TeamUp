@@ -42,7 +42,7 @@ function UserProfilePage() {
                 >
                     <div className="w-100" style={{ maxWidth: "600px" }}>
                         <Paper elevation={3}>
-                            <Grid container  style={{ minHeight: "350px" }} direction="row" justify="center" alignItems="center">
+                            <Grid container direction="row" justify="center" alignItems="center">
                                 <Grid item xs={6}>
                                     <Grid container direction="row" alignItems="center" justify="center">
                                         <CardMedia
@@ -62,15 +62,15 @@ function UserProfilePage() {
                                         <span>{userProfile.region ? regionToFlag(userProfile.region[1]) : ''} </span>
                                         {userProfile.region ? userProfile.region[0] : "Global"}
                                     </Typography>
-                                </Grid>
-                                {currentUser.uid == uid &&
-                                    <Grid item xs={12}>
-                                        <Button className={classes.editprofilebutton}>
-                                            Edit profile
-                                        </Button>
-                                    </Grid>
-                                }   
+                                </Grid> 
                             </Grid>
+                            {/*currentUser.uid == uid &&
+                                <Grid container direction="column" justify="center" alignItems="center">
+                                    <Button variant="outlined" className={classes.editprofilebutton}>
+                                        Edit profile
+                                    </Button>
+                                </Grid>*/
+                            }  
                         </Paper>
                     </div>
                 </Container>
@@ -127,7 +127,6 @@ const useStyles = makeStyles((theme) => ({
     },
     editprofilebutton: {
         marginTop: '5px',
-        marginBottom: '5px',
         fontSize: 20,
         fontWeight: 700,
         color: "black",
@@ -140,5 +139,6 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: '#FFFFFF'
         },
         borderRadius: 0,
+        marginBottom: '20px'
     },
 }));
