@@ -18,7 +18,7 @@ function FindAProjectPage() {
     const [projectsToShow, setProjectsToShow] = useState(null);
 
     const itemsPerPage = 6;
-    const title = "FIND A PROJECT";
+    const title = "EXPLORE PROJECTS";
     
     // Fetches projects list and number of projects
     useEffect(() => {
@@ -147,7 +147,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     pagination: {
-        paddingTop: '20px',
-        paddingBottom:'20px',
+        marginTop: '20px',
+        marginBottom: '30px',
     }
 }));

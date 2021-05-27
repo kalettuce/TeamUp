@@ -13,7 +13,6 @@ export function setProjectImage(pid, file, callback) {
 
     if (file.length !== 0) {
         // Get the old image url
-        console.log(path, file);
         database.ref(path).child("image_url").once("value")
                 .then(snapshot => { return snapshot.val(); })
                 // Delete the old image

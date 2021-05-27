@@ -18,7 +18,7 @@ export function addAProject(name, ownerID, tagline, region,
     description: description,
     application: joinProjectQuestion,
     tags: tagList,
-    members: [],
+    members: [ownerID],
     invitations_sent: []
   };
 
@@ -26,5 +26,9 @@ export function addAProject(name, ownerID, tagline, region,
   let updates = {};
   updates['/projects/' + newPid] = projData;
   database.ref().update(updates);
-  setProjectImage(newPid, picture, () => callback(newPid));
+  if (picture.length !== 0) {
+    setProjectImage(newPid, picture, () => callback(newPid));
+  } else {
+    callback(newPid);
+  }
 }

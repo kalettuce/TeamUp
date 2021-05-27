@@ -10,42 +10,6 @@ import { useRouteChanger } from '../../utils/RouteChanger';
 import ImageUploaderElement from '../containers/ImageUploaderElement';
 import RegionSelect from '../containers/RegionSelect';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        paddingTop: '20px',
-        paddingLeft: '200px',
-        paddingRight: '200px',
-        width: '70%',
-        margin: 'auto',
-        background: '#FFFFFF',
-    },
-    title: {
-        fontWeight: 700,
-        color: '#000000',
-        fontSize: 40,
-        paddingTop: '100px',
-        paddingBottom: '15px',
-        textAlign:'center',
-    },
-    button: {
-        marginTop: '30px',
-        fontSize: 20,
-        fontWeight: 700,
-        color: "black",
-        background: '#FFFFFF',
-        borderColor: '#000000',
-        paddingTop: '10px',
-        paddingBottom: '10px',
-        paddingRight: '50px',
-        paddingLeft: '50px',
-        "&:hover": {
-            backgroundColor: '#FFFFFF'
-        },
-        borderRadius: 0,
-    },
-  }));
-
 function CreateAProjectPage() {
     const classes = useStyles();
     const { currentUser } = useAuth();
@@ -61,6 +25,8 @@ function CreateAProjectPage() {
     
     const changeRoute = useRouteChanger();
 
+    // TODO: restyle error messages
+    // TODO: try https://betterstack.dev/projects/react-tag-input/ for tags input
     const handleConfirmation = () => {
         if (name.length === 0) {
             alert('Project name is required');
@@ -125,12 +91,15 @@ function CreateAProjectPage() {
                 <Grid item xs={12}>
                     <TextField
                     required
+                    multiline
                     id="desc"
                     name="desc"
-                    label="What's the project about? What types of people would fit the team?"
+                    placeholder="What's the project about? What types of people would fit the team?"
                     onChange={(e) => {
                       setDescription(e.target.value);
                     }}
+                    variant={"outlined"}
+                    rows={4}
                     fullWidth
                     />
                 </Grid>
@@ -168,4 +137,41 @@ function CreateAProjectPage() {
         </div>
     );
 }
+
 export default CreateAProjectPage; 
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        paddingTop: '20px',
+        paddingLeft: '200px',
+        paddingRight: '200px',
+        width: '70%',
+        margin: 'auto',
+        background: '#FFFFFF',
+    },
+    title: {
+        fontWeight: 700,
+        color: '#000000',
+        fontSize: 40,
+        paddingTop: '100px',
+        paddingBottom: '15px',
+        textAlign:'center',
+    },
+    button: {
+        marginTop: '30px',
+        fontSize: 20,
+        fontWeight: 700,
+        color: "black",
+        background: '#FFFFFF',
+        borderColor: '#000000',
+        paddingTop: '10px',
+        paddingBottom: '10px',
+        paddingRight: '50px',
+        paddingLeft: '50px',
+        "&:hover": {
+            backgroundColor: '#FFFFFF'
+        },
+        borderRadius: 0,
+    },
+  }));

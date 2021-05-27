@@ -1,76 +1,215 @@
-import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
+import { useParams, useHistory } from 'react-router-dom';
+import { Typography, Card, CardMedia, Grid, Button, Dialog, DialogTitle } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import { fetchProjectById } from '../../utils/FindProjects.js'
-import { fetchUserById } from '../../utils/FindUsers.js'
-import { Typography, Card, CardMedia, Grid, Button } from '@material-ui/core';
+import { fetchUserById, fetchUsersById } from '../../utils/FindUsers.js'
+import { useAuth } from '../../utils/AuthContext';
+import ProjectDetailsTabs from '../containers/ProjectDetailsTabs.js';
+import JoinAProjectPage from '../containers/JoinAProjectDialog.js';
 import { regionToFlag } from '../containers/RegionSelect';
+import placeholder from '../../placeholder.jpg';
+import StyledTags from "../presentation/StyledTags.js";
+import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindJoinRequests.js";
+import DeleteProjectDialog from '../containers/DeleteProjectDialog';
+import { NOT_FOUND } from './NotFoundPage';
 
 function ProjectDetailsPage() {
     const classes = useStyles();
-    const {pid} = useParams();
     const [project, setProject] = useState(null);
-    const [user, setUser] = useState(null);
+    const [owner, setOwner] = useState(null);
     const [dom, setDom] = useState('');
+    const [joinProjectOpen, setJoinProjectOpen] = useState(false);
+    const [deleteProjectOpen, setDeleteProjectOpen] = useState(false);
+    const [currUserJustRequested, setCurrUserJustRequested] = useState(false);
+    const [currUserRequests, setCurrUserRequests] = useState(null);
+    const [projectRequests, setProjectRequests] = useState([]);
+    const [joinedMembers, setJoinedMembers] = useState([]);
+    const { pid } = useParams();
+    const { currentUser } = useAuth();
+    const history = useHistory();
+
+    const handleLogin = () => {
+        history.push("/login");
+    }
 
     useEffect(() => {
         fetchProjectById(pid, setProject);
     }, [pid]);
 
     useEffect(() => {
-        if (project != null) {
-            fetchUserById(project.owner, setUser);
+        // Send to NotFoundPage (404) if a project cannot be found
+        if (project === NOT_FOUND) {
+            history.push("/" + NOT_FOUND);
+        } else if (project) {
+            fetchUserById(project.owner, setOwner);
+            if (project.members) {
+                fetchUsersById(
+                    Object.values(project.members), setJoinedMembers);
+            }
         }
-    }, [project]);
+    }, [project, history]);
 
     useEffect(() => {
-        if (project != null && user != null) {
+        if (currentUser) {
+            fetchRequestsBySender(currentUser.uid, setCurrUserRequests)
+        } else {
+            setCurrUserRequests([]);
+        }
+    }, [currentUser]);
+    
+    // based on permissions
+    useEffect(() => {
+        if (project) {
+            if (currentUser && project.owner === currentUser.uid) {
+                fetchRequestsByProject(pid, setProjectRequests);
+            } else {
+                setProjectRequests([]);
+            }
+        }
+    }, [project, currentUser, pid]);
+
+    useEffect(() => {
+        if (project && owner 
+                    && joinedMembers 
+                    && projectRequests) {
+
+            var isCurrUserProject = false, 
+                currUserHasJoined = false,
+                currUserHasRequested = false;
+            if (currentUser) {
+                isCurrUserProject = project.owner === currentUser.uid;
+
+                if (project.members) {
+                    currUserHasJoined = Object.values(project.members)
+                                              .includes(currentUser.uid);
+                }
+
+                if (currUserRequests) {
+                    currUserHasRequested = Object.values(currUserRequests)
+                                                 .includes(pid);
+                }
+            }
+
+            var buttonLabel = '';
+            var buttonFunc;
+            if (!currentUser) {
+                buttonLabel = 'LOGIN TO JOIN';
+                buttonFunc = handleLogin;
+            } else if (isCurrUserProject) {
+                buttonLabel = 'DELETE PROJECT';
+                buttonFunc = () => setDeleteProjectOpen(true);
+            } else if (currUserHasJoined) {
+                buttonLabel = 'JOINED';
+                buttonFunc = null;
+            } else if (currUserHasRequested || currUserJustRequested) {
+                buttonLabel = 'REQUEST SENT ✔';
+                buttonFunc = null;
+            } else {
+                buttonLabel = 'REQUEST TO JOIN';
+                buttonFunc = () => setJoinProjectOpen(true);
+            }
+ 
             setDom(
                 (<div>
-                    <Typography className={classes.title}>PROJECT DETAILS</Typography>
+                    <Dialog
+                        onClose={() => setJoinProjectOpen(false)}
+                        open={joinProjectOpen}>
+                        <DialogTitle>
+                            Confirm request
+                        </DialogTitle>
+                        <JoinAProjectPage
+                            project={{"id": pid, "info": project}}
+                            ownerName={owner.name}
+                            open={setJoinProjectOpen}
+                            setCurrUserJustRequested={setCurrUserJustRequested}
+                            />
+                    </Dialog>
+                    <Dialog
+                        onClose={() => setDeleteProjectOpen(false)}
+                        open={isCurrUserProject && deleteProjectOpen}>
+                        <DialogTitle>
+                            Confirm delete
+                        </DialogTitle>
+                        <DeleteProjectDialog 
+                            pid={pid}
+                            open={setDeleteProjectOpen}/>
+                    </Dialog>
                     <br/>
-                    <Paper elevation={3} className={classes.root}>
+                    <div className={classes.root}>
                         <Card elevation={0}>
                             <CardMedia
                                 component="img"
-                                height="200"
-                                image={project.image_url || "https://husmen.xyz/portfolio/scope-timer/featured.png"}
+                                height="300"
+                                image={project.image_url || placeholder}
                             />
                         </Card>
                         <br/>
-                        <Grid container>
-                            <Grid item xs={6}>
-                            <Typography variant={'h4'}>{project.name}</Typography>
+                        <Grid container spacing={5}>
+                            <Grid item xs={9}>
+                                <Button
+                                    disableRipple
+                                    className={classes.backButton}
+                                    onClick={() => history.goBack()}>
+                                    &#8592; Back
+                                </Button>
+                                <Typography
+                                    className={classes.projectTitle}
+                                    variant={'h4'}>
+                                        {project.name}
+                                </Typography>
+                                <Typography
+                                    variant={'h5'}
+                                    color="textSecondary">
+                                        {project.tagline}
+                                </Typography>
+                                <br/>
+                                <ProjectDetailsTabs
+                                    project={project}
+                                    joinedMembers={joinedMembers}
+                                    currUserHasJoined={currUserHasJoined}
+                                    isCurrUserProject={isCurrUserProject}
+                                    requests={projectRequests}/>
                             </Grid>
-                            <Grid item xs={6} align={"right"}>
-                            <Button
-                                className={classes.button}
-                                variant="outlined"
-                            >JOIN PROJECT</Button>
+                            <Grid item xs={3}>
+                                <Button
+                                    disabled={(currUserHasJoined && !isCurrUserProject)
+                                                || currUserHasRequested
+                                                || currUserJustRequested}
+                                    className={isCurrUserProject ? classes.buttonDelete : classes.button}
+                                    variant={"outlined"}
+                                    onClick={buttonFunc}>
+                                        {buttonLabel}
+                                </Button>
+                                <Typography variant={'h6'}>Region</Typography>
+                                <Typography variant={'body1'}>
+                                <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
+                                    {project.region ? project.region[0] : "Global"}
+                                </Typography>
+                                <br/>
+                                <Typography variant={'h6'}>Creator</Typography>
+                                <Typography variant={'body1'}>
+                                    {isCurrUserProject ? 'You created this project' : owner.name}
+                                </Typography>
+                                <br/>
+                                <Typography variant={'h6'}>Tags</Typography>
+                                <StyledTags tagList={project.tags}/>
                             </Grid>
                         </Grid>
-                        <Typography variant={'h5'} color="textSecondary">{project.tagline}</Typography>
-                        <Typography variant={'body1'}>
-                            <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
-                            {project.region ? project.region[0] : "Global"}
-                        </Typography>
-                        <br/>
-                        <Typography variant={'h6'}>Project creator: {user.name}</Typography>
-                        <br/>
-                        <Typography variant={'h5'}>Description</Typography>
-                        <Typography variant={'body1'}>{project.description}</Typography>
                         <br/>
                         <br/>
-                        <Typography variant={'h5'}>Tags</Typography>
-                        <Typography variant="body2" color="textSecondary">{project.tags.toString()}</Typography>
                         <br/>
                         <br/>
-                    </Paper>
-                    </div>)
+                    </div>
+                </div>)
             )
         }
-    }, [project, user, classes.root, classes.title, classes.button]);
+    // eslint-disable-next-line
+    }, [project, joinProjectOpen, projectRequests, currUserRequests, pid,
+        currUserJustRequested, history, owner, currentUser, joinedMembers, 
+        deleteProjectOpen, 
+        classes.backButton, classes.buttonDelete, classes.description,
+        classes.root, classes.title, classes.button, classes.projectTitle]);
 
     return (
         <div>
@@ -99,15 +238,41 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '15px',
         textAlign:'center',
     },
+    projectTitle: {
+        fontWeight: 700,
+        color: '#000000',
+        fontSize: 32,
+    },
     card: {
         minWidth: "250px",
     },
     button: {
+        width: '100%',
         fontSize: '1rem',
         fontWeight: 700,
         color: "black",
-        background: '#FFFFFF',
+        background:'#FFFFFF',
         border: '1px solid',
         borderRadius: 0,
+        marginBottom: 20,
+    },
+    buttonDelete: {
+        width: '100%',
+        fontSize: '1rem',
+        fontWeight: 700,
+        color: '#fff',
+        background:'#e74f4e',
+        border: '1px solid black',
+        borderRadius: 0,
+        marginBottom: 20,
+        "&:hover": {
+            background: '#e74f4e',
+        }
+    },
+    backButton: {
+        padding: "0px",
+        marginBottom: "10px",
+        minHeight: 0,
+        minWidth: 0,
     }
 }));
