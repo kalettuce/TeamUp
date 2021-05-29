@@ -39,12 +39,12 @@ function LandingPage() {
                     <Button onClick={() => handleFindAProject()}
                             className={classes.button}
                             variant="outlined">
-                        FIND A PROJECT
+                        EXPLORE PROJECTS
                     </Button>
                     <Button onClick={() => handlePostAProject()}
                             className={classes.button}
                             variant="outlined">
-                        POST A PROJECT
+                        CREATE A PROJECT
                     </Button>
                 </Grid>
                 <Grid

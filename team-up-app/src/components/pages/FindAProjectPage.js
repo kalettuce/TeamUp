@@ -7,6 +7,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import SearchBar from '../containers/SearchBar';
 import { fetchAllProjects } from '../../utils/FindProjects.js'
 import Fuse from 'fuse.js';
+import { Backdrop, CircularProgress } from "@material-ui/core";
 
 function FindAProjectPage() {
     const classes = useStyles();
@@ -16,6 +17,7 @@ function FindAProjectPage() {
     const [projects, setProjects] = useState(null);
     const [projectKeys, setProjectKeys] = useState(null);
     const [projectsToShow, setProjectsToShow] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const itemsPerPage = 6;
     const title = "EXPLORE PROJECTS";
@@ -57,6 +59,7 @@ function FindAProjectPage() {
                 />
             </Grid>
             )));
+            setLoading(false);
         }
     }, [classes.card, projectsToShow, page]);
 
@@ -93,6 +96,13 @@ function FindAProjectPage() {
 
     return (
         <div>
+            <Backdrop
+                className={classes.backdrop}
+                open={loading}>
+                <CircularProgress
+                    color="inherit"
+                    variant="indeterminate"/>
+            </Backdrop>
             <Grid
                 container
                 justify="center"
@@ -141,6 +151,10 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '100px',
         paddingBottom: '15px',
         textAlign:'left',
+    },
+    backdrop: {
+        zIndex: 100,
+        color: '#fff',
     },
     card: {
         minWidth: '250px',

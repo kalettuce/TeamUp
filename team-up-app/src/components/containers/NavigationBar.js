@@ -11,11 +11,8 @@ import { CardMedia } from '@material-ui/core';
 
 export default function LoginBar(props) {
     const classes = useStyles();
-
     const { currentUser, logout } = useAuth();
-
     const [userProfile, setUserProfile] = useState(null);
-
     const [anchorEl, setAnchorEl] = useState(null);
     const showPopover = Boolean(anchorEl);
 
@@ -31,7 +28,6 @@ export default function LoginBar(props) {
         try {
             setAnchorEl(null);
             await logout()
-          //history.push("/login")
         } catch {
         }
       }
@@ -62,7 +58,7 @@ export default function LoginBar(props) {
     }
 
     const handleProfile = () => {
-        console.log(userProfile);
+        //console.log(userProfile);
         changeRoute("/users/" + currentUser.uid);
         setAnchorEl(null);
     }
@@ -79,27 +75,32 @@ export default function LoginBar(props) {
         <div>
             <Grid
                 container
-                className={classes.root}
-            >
+                className={classes.root}>
                 <Grid item
                     xs={6}
-                    className={classes.leftgrid}
-                >
-                    <Button onClick={() => handleLandingPage()} className={classes.loginbutton}>
+                    className={classes.leftgrid}>
+                    <Button
+                        onClick={() => handleLandingPage()}
+                        className={classes.loginbutton}>
                         TEAM UP
                     </Button>
-                    <Button onClick={() => handleProjects()} className={classes.projectuserbutton} variant="outlined" endIcon={<ExpandMoreIcon />}>
+                    <Button
+                        onClick={() => handleProjects()}
+                        className={classes.projectuserbutton}
+                        variant="outlined">
                         PROJECTS
                     </Button>
-                    <Button onClick={() => handlePeople()} className={classes.projectuserbutton} variant="outlined" endIcon={<ExpandMoreIcon />}>
+                    <Button
+                        onClick={() => handlePeople()}
+                        className={classes.projectuserbutton}
+                        variant="outlined">
                         PEOPLE
                     </Button>
                 </Grid>
                 {!userProfile && 
                     <Grid item
                         xs={6}
-                        className={classes.rightgrid}
-                    >
+                        className={classes.rightgrid}>
                         <Button onClick={() => handleLogin()}
                                 className={classes.loginbutton}>
                             LOG IN
@@ -114,14 +115,15 @@ export default function LoginBar(props) {
                 {userProfile && 
                     <Grid item
                         xs={6}
-                        className={classes.rightgrid}
-                    >
-                        <Button onClick={() => handleLogout()}
-                                className={classes.signupbutton}
-                                variant="outlined">
-                            LOG OUT
-                        </Button>
-                        <Button onClick={(event) => handleProfilePopover(event)} className={classes.name}>
+                        className={classes.rightgrid}>
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                        />  
+                        <Button
+                            onClick={(event) => handleProfilePopover(event)}
+                            className={classes.name}
+                            endIcon={<ExpandMoreIcon />}>
                             {userProfile.name}
                         </Button>
                     </Grid>
@@ -140,19 +142,25 @@ export default function LoginBar(props) {
                     transformOrigin={{
                         vertical: 'top',
                         horizontal: 'center',
-                    }}
-                >
-                    <Grid container direction="row" alignItems="center" justify="center" className={classes.mediaParent}>
-                        <CardMedia
-                            className={classes.cardMedia}
-                            image={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
-                        />  
-                        <Button className={classes.popoverButtons} onClick={(event) => handleProfile()}>
-                            View Profile
+                    }}>
+                    <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        justify="center"
+                        className={classes.mediaParent}>
+                        <Button
+                            className={classes.popoverButtons}
+                            onClick={() => handleProfile()}>
+                            Profile
                         </Button>  
                         <Button className={classes.popoverButtons}>
-                            View Involved Projects
+                            My Projects
                         </Button> 
+                        <Button onClick={() => handleLogout()}
+                                className={classes.logoutbutton}>
+                            Log out
+                        </Button>
                     </Grid> 
                 </Popover>
             }
@@ -205,6 +213,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-end'
     },
     loginbutton: {
+        whiteSpace: 'nowrap',
         marginTop: '5px',
         marginBottom: '5px',
         fontSize: 20,
@@ -218,6 +227,12 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: '#FFFFFF'
         },
+    },
+    logoutbutton: {
+        fontWeight: 700,
+        width: '100%',
+        marginBottom: '10px',
+        color: 'red',
     },
     signupbutton: {
         marginTop: '5px',
@@ -252,15 +267,15 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 0,
     },
     cardMedia: {
-        paddingTop: '75%',
+        paddingTop: '5%',
         borderRadius: '50%',
-        width: '75%',
-        marginTop: '20px',
-        marginBottom: '10px',
+        width: '5%',
+        margin: '5px',
     },
     mediaParent: {
+        paddingTop: '20px',
         minHeight: '150px',
-        minWidth: '150px',
+        width: '150px',
     },
     popoverButtons: {
         fontWeight: 700,

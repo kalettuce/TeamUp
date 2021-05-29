@@ -5,22 +5,27 @@ function StyledTags(props) {
     const classes = useStyles();
 
     var dom = []
-    var i = 0;
+    var key = 0;
     for (const tag of props.tagList) {
+        if (!tag) {
+            break;
+        }
+
         dom.push(
             <span
-                key={i}
+                key={key}
                 className={classes.tag}
                 variant="body1">
                 {tag}
             </span>
         );
-        i++;
+
+        key++;
     }
 
     return (
         <div className={classes.tagsList}>
-            {dom}
+            {dom.length === 0 ? 'No tags specified' : dom}
         </div>
     );
 }
