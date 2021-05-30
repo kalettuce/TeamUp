@@ -83,7 +83,7 @@ function JoinAProjectDialog(props) {
                 variant={'body1'}>
                     By pressing 'Submit', I confirm that I would like to request to join
                     this project and the information I have provided will be shared with
-                    the creator ({props.ownerName}).
+                    the creator (<b>{props.ownerName}</b>).
             </Typography>
             <DialogActions>
                 <Button

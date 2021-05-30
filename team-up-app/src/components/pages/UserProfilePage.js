@@ -2,8 +2,7 @@ import { useParams, useHistory } from 'react-router-dom';
 //import { useAuth } from '../../utils/AuthContext';
 import { fetchUserById } from '../../utils/FindUsers.js';
 import React, { useState, useEffect } from "react";
-import Paper from '@material-ui/core/Paper';
-import { Typography, CardMedia, Grid, Button } from '@material-ui/core';
+import { Typography, Grid, Button, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from "react-bootstrap";
 import { regionToFlag } from '../containers/RegionSelect';
@@ -54,9 +53,9 @@ function UserProfilePage() {
                                 direction="row"
                                 alignItems="center"
                                 justify="center">
-                                <CardMedia
-                                    className={classes.cardMedia}
-                                    image={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                                <Avatar
+                                    className={classes.avatar}
+                                    src={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
                                 />    
                             </Grid> 
                             <Typography className={classes.title}>{userProfile.name}</Typography>
@@ -97,14 +96,6 @@ function UserProfilePage() {
 export default UserProfilePage;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        paddingLeft: '20px',
-        paddingRight: '20px',
-        width: '30%',
-        margin: 'none',
-        background: '#FFFFFF',
-    },
     title: {
         fontWeight: 700,
         color: '#000000',
@@ -135,10 +126,9 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '20px',
         paddingBottom: '20px',
     },
-    cardMedia: {
-        paddingTop: '30%',
-        borderRadius: '50%',
-        width: '30%',
+    avatar: {
+        height: theme.spacing(23),
+        width: theme.spacing(23),
         marginTop: '20px',
     },
     editprofilebutton: {

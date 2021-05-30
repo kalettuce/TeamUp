@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { WithContext as ReactTags } from 'react-tag-input';
 import '../../TagsInputFieldStyles.css';
 

@@ -13,6 +13,7 @@ import StyledTags from "../presentation/StyledTags.js";
 import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindJoinRequests.js";
 import DeleteProjectDialog from '../containers/DeleteProjectDialog';
 import { NOT_FOUND } from './NotFoundPage';
+import MiniUserCard from "../presentation/MiniUserCard";
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -182,15 +183,14 @@ function ProjectDetailsPage() {
                                     onClick={buttonFunc}>
                                         {buttonLabel}
                                 </Button>
+                                <MiniUserCard
+                                    name={owner.name}
+                                    uid={project.owner}/>
+                                <br/>
                                 <Typography variant={'h6'}>Region</Typography>
                                 <Typography variant={'body1'}>
                                 <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
                                     {project.region ? project.region[0] : "Global"}
-                                </Typography>
-                                <br/>
-                                <Typography variant={'h6'}>Creator</Typography>
-                                <Typography variant={'body1'}>
-                                    {isCurrUserProject ? 'You created this project' : owner.name}
                                 </Typography>
                                 <br/>
                                 <Typography variant={'h6'}>Tags</Typography>

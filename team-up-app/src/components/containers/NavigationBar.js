@@ -7,7 +7,7 @@ import { useRouteChanger } from '../../utils/RouteChanger';
 import { useAuth } from '../../utils/AuthContext';
 import { fetchUserById } from '../../utils/FindUsers.js'
 import Popover from '@material-ui/core/Popover';
-import { CardMedia } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 
 export default function LoginBar(props) {
     const classes = useStyles();
@@ -116,14 +116,17 @@ export default function LoginBar(props) {
                     <Grid item
                         xs={6}
                         className={classes.rightgrid}>
-                        <CardMedia
-                            className={classes.cardMedia}
-                            image={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
-                        />  
                         <Button
                             onClick={(event) => handleProfilePopover(event)}
                             className={classes.name}
+                            startIcon={
+                                <Avatar
+                                className={classes.avatar}
+                                src={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
+                            />  
+                            }
                             endIcon={<ExpandMoreIcon />}>
+
                             {userProfile.name}
                         </Button>
                     </Grid>
@@ -266,11 +269,8 @@ const useStyles = makeStyles((theme) => ({
         },
         borderRadius: 0,
     },
-    cardMedia: {
-        paddingTop: '5%',
-        borderRadius: '50%',
-        width: '5%',
-        margin: '5px',
+    avatar: {
+        marginRight: '7px',
     },
     mediaParent: {
         paddingTop: '20px',

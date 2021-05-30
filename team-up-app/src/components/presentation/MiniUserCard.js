@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Avatar, CardActionArea } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouteChanger } from '../../utils/RouteChanger';
 import Grid from '@material-ui/core/Grid';
@@ -15,14 +15,11 @@ function UserInfoCard(props) {
         <Card
             className={classes.card}
             elevation={0}
-            variant="outlined"
             onClick={() => changeRoute(`/users/${props.uid}`)}>
-            <CardActionArea>
                 <CardContent className={classes.cardContent}>
                     <Grid container >
                         <Grid
                             item xs={1}
-                            
                             align={"center"}
                             className={classes.mediaGrid}>
                             <Avatar
@@ -31,22 +28,17 @@ function UserInfoCard(props) {
                             />
                         </Grid>
                         <Grid
-                            item xs={10}
+                            item xs={5}
                             className={classes.details}>
-                            <Typography
-                                variant="body1">
-                                    <b>{props.name}</b> {props.userIsCreator ? '(Creator)' : ''}
+                            <Typography variant="body1">
+                                    <b>{props.name}</b>
                             </Typography>
-                            <Typography
-                                className={classes.description}
-                                variant="body2"
-                                color="textSecondary">
-                                {props.description}
+                            <Typography variant="body2" color="textSecondary">
+                                Creator
                             </Typography>
                         </Grid>
                     </Grid>
                 </CardContent>
-            </CardActionArea>
         </Card>
     );
 }
@@ -55,8 +47,11 @@ export default UserInfoCard;
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        marginTop: '10px',
-        width: '100%',
+        marginTop: 30,
+        cursor: 'pointer',
+    },
+    cardContent: {
+        padding: "0 !important",
     },
     description: {
         whiteSpace: 'pre-wrap',
@@ -70,9 +65,5 @@ const useStyles = makeStyles((theme) => ({
     mediaGrid: {
         marginRight: 10,
         minWidth: theme.spacing(6),
-    },
-    avatar: {
-        width: theme.spacing(6),
-        height: theme.spacing(6),
     },
 }));

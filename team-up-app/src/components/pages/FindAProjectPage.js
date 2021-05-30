@@ -74,6 +74,7 @@ function FindAProjectPage() {
             const options = {
                 findAllMatches: true,
                 threshold: 0.1,
+                ignoreLocation: true,
                 keys: [
                     {
                         name: "name",
