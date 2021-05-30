@@ -17,7 +17,7 @@ function UserInfoCard(props) {
             elevation={0}
             onClick={() => changeRoute(`/users/${props.uid}`)}>
                 <CardContent className={classes.cardContent}>
-                    <Grid container >
+                    <Grid container wrap='nowrap'>
                         <Grid
                             item xs={1}
                             align={"center"}
@@ -28,13 +28,15 @@ function UserInfoCard(props) {
                             />
                         </Grid>
                         <Grid
-                            item xs={5}
+                            item xs={9}
                             className={classes.details}>
-                            <Typography variant="body1">
-                                    <b>{props.name}</b>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary">
+                                {props.description}
                             </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                Creator
+                            <Typography variant="body1">
+                                <b>{props.name}</b>
                             </Typography>
                         </Grid>
                     </Grid>
@@ -47,7 +49,6 @@ export default UserInfoCard;
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        marginTop: 30,
         cursor: 'pointer',
     },
     cardContent: {
@@ -60,7 +61,8 @@ const useStyles = makeStyles((theme) => ({
     details: {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center"
+        justifyContent: "center",
+        wordWrap: "break-word",
     },
     mediaGrid: {
         marginRight: 10,

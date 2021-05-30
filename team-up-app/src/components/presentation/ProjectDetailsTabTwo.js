@@ -27,7 +27,7 @@ function ProjectDetailsTabTwo(props) {
                 <UserInfoCard
                     key={member.uid}
                     userIsCreator={project.owner === member.uid}
-                    image={member.image_url}
+                    image={member.info.image_url}
                     uid={member.uid}
                     name={member.info.name}
                     description={member.info.email} />

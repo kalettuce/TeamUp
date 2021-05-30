@@ -184,10 +184,12 @@ function ProjectDetailsPage() {
                                         {buttonLabel}
                                 </Button>
                                 <MiniUserCard
-                                    name={owner.name}
-                                    uid={project.owner}/>
+                                    name={isCurrUserProject ? "You" : owner.name}
+                                    uid={project.owner}
+                                    image={owner.image_url}
+                                    description={"Submitted by"}/>
                                 <br/>
-                                <Typography variant={'h6'}>Region</Typography>
+                                <Typography variant={'h6'}>Project Region</Typography>
                                 <Typography variant={'body1'}>
                                 <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
                                     {project.region ? project.region[0] : "Global"}
@@ -255,7 +257,7 @@ const useStyles = makeStyles((theme) => ({
         background:'#FFFFFF',
         border: '1px solid',
         borderRadius: 0,
-        marginBottom: 20,
+        marginBottom: 50,
     },
     buttonDelete: {
         width: '100%',
@@ -265,7 +267,7 @@ const useStyles = makeStyles((theme) => ({
         background:'#e74f4e',
         border: '1px solid black',
         borderRadius: 0,
-        marginBottom: 20,
+        marginBottom: 50,
         "&:hover": {
             background: '#e74f4e',
         }

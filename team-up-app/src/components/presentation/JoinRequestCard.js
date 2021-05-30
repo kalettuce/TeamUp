@@ -6,7 +6,8 @@ import { Button, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { fetchUserById } from '../../utils/FindUsers';
-import { acceptRequest, rejectRequest } from '../../utils/HandleRequests.js';
+import { acceptRequest, rejectRequest } from '../../utils/HandleRequests';
+import MiniUserCard from './MiniUserCard';
 
 function JoinRequestCard(props) {
     const classes = useStyles();
@@ -15,38 +16,43 @@ function JoinRequestCard(props) {
     const [dom, setDom] = useState("");
 
     useEffect(() => {
-        fetchUserById(props.info.from, user => setUser(user.name));
+        fetchUserById(props.info.from, setUser);
     }, [props.info.from]);
 
     useEffect(() => {
         if (user) {
-            setDom(<div>
-                <CardContent>
-                <Typography
-                    variant="body2"
-                    color="textSecondary">{`${user} has requested to join`}
-                </Typography>
-                <Typography
-                    className={classes.description}
-                    variant="body1">
-                    {props.info.message}
-                </Typography>
-            </CardContent>
-            <CardActions>
-            <Button
-                size={"small"}
-                onClick={() => acceptRequest(props.info.key, () => history.go(0))}>
-                Accept
-            </Button>
-            <Button
-                size={"small"}
-                onClick={() => rejectRequest(props.info.key, () => history.go(0))}>
-                Reject
-            </Button>
-            </CardActions>
-            </div>)
+            console.log(user)
+            setDom(
+                <div>
+                    <CardContent>
+                        <MiniUserCard 
+                            uid={props.info.from}
+                            image={user.image_url}
+                            name={""}
+                            description={`${user.name} has requested to join`}/>
+                        <Typography
+                            className={classes.description}
+                            hidden={props.info.message.length === 0}
+                            variant="body1">
+                            {props.info.message}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button
+                            size={"small"}
+                            onClick={() => acceptRequest(props.info.key, () => history.go(0))}>
+                            Accept
+                        </Button>
+                        <Button
+                            size={"small"}
+                            onClick={() => rejectRequest(props.info.key, () => history.go(0))}>
+                            Reject
+                        </Button>
+                    </CardActions>
+                </div>
+            )
         }
-    }, [user, classes.description, props.info.message, props.info.key, history])
+    }, [user, classes.description, props.info, history])
 
     return (
         <Card
@@ -63,6 +69,9 @@ function JoinRequestCard(props) {
 export default JoinRequestCard;
 
 const useStyles = makeStyles((theme) => ({
+    userLink: {
+        display: "flex",
+    },
     card: {
         marginTop: '10px',
     },

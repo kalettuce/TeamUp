@@ -19,10 +19,9 @@ function UserInfoCard(props) {
             onClick={() => changeRoute(`/users/${props.uid}`)}>
             <CardActionArea>
                 <CardContent className={classes.cardContent}>
-                    <Grid container >
+                    <Grid container wrap='nowrap'>
                         <Grid
                             item xs={1}
-                            
                             align={"center"}
                             className={classes.mediaGrid}>
                             <Avatar
@@ -65,7 +64,8 @@ const useStyles = makeStyles((theme) => ({
     details: {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center"
+        justifyContent: "center",
+        wordBreak: 'break-word',
     },
     mediaGrid: {
         marginRight: 10,
