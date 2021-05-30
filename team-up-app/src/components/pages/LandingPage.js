@@ -44,7 +44,7 @@ function LandingPage() {
                     <Button onClick={() => handlePostAProject()}
                             className={classes.button}
                             variant="outlined">
-                        CREATE A PROJECT
+                        SUBMIT A PROJECT
                     </Button>
                 </Grid>
                 <Grid

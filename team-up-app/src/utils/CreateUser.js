@@ -5,7 +5,9 @@ const database = firebase.database();
 
 // Adds a new user to the database
 // Will modify node values if they already exist
-export function createUser(userUID, description, email, name, region, picture) {
+export function createUser(userUID, description, email, name, tags, region, picture) {
+    const tagList = tags.map((tag) => tag.text.trim());
+
     database.ref('/users/')
             .child(userUID)
             .set({
@@ -17,7 +19,7 @@ export function createUser(userUID, description, email, name, region, picture) {
                 region: region,
                 owned_projects: [],
                 requests_sent: [],
-                tags: []
+                tags: tagList,
     });
     setUserImage(userUID, picture, () => {});
 }

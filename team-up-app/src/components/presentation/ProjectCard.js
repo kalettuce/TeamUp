@@ -32,7 +32,7 @@ function ProjectCard(props) {
                     </Typography>
                     <Typography
                         variant="body1"
-                        color="textPrimary"
+                        color="textSecondary"
                         component="p">
                         {props.projectTagline}
                     </Typography>
