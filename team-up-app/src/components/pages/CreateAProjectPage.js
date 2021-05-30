@@ -29,6 +29,7 @@ function CreateAProjectPage() {
     // TODO: restyle error messages
 
     const handleConfirmation = () => {
+        
         if (name.length === 0) {
             alert('Project name is required');
         } else if (tagline.length === 0) {

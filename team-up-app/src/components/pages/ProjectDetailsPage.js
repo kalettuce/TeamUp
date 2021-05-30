@@ -196,7 +196,7 @@ function ProjectDetailsPage() {
                                 </Typography>
                                 <br/>
                                 <Typography variant={'h6'} style={{paddingBottom: 8}}>Tags</Typography>
-                                <StyledTags tagList={project.tags}/>
+                                <StyledTags tagList={project.tags || []}/>
                             </Grid>
                         </Grid>
                         <br/>
