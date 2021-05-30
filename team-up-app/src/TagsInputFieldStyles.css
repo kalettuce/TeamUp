@@ -10,7 +10,9 @@
 
 .ReactTags__tagInput input.ReactTags__tagInputField,
 .ReactTags__tagInput input.ReactTags__tagInputField:focus {
-    box-sizing: border-box;         /* Opera/IE 8+ */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 1rem;
     letter-spacing: 0.00938em;
@@ -36,7 +38,8 @@
     font-family: Inconsolata, monospace;
     background-color: #f2f2f2;
     border-radius: 4px;
-    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     margin-right: 8px;
     margin-bottom: 10px;
     color: #555;
