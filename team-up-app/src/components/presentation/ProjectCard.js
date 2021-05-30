@@ -10,7 +10,6 @@ import placeholder from '../../placeholder.jpg';
 
 function ProjectCard(props) {
     const changeRoute = useRouteChanger();
-
     return (
         <Card 
             elevation={0}

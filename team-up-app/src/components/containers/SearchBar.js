@@ -43,8 +43,7 @@ export default SearchBar;
 
 const useStyles = makeStyles((theme) => ({
     searchBar: {
-        marginTop: 40,
-        marginBottom: 40,
+        margin: '0 !important',
     },
     iconButton: {
       padding: 10,

@@ -109,9 +109,8 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 700,
         color: '#000000',
         fontSize: 40,
-        paddingTop: '100px',
-        paddingBottom: '15px',
-        textAlign:'left',
+        paddingTop: '150px',
+        paddingBottom: '40px',
     },
     backdrop: {
         zIndex: 100,
