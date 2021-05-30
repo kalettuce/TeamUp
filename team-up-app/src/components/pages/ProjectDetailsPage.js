@@ -195,7 +195,7 @@ function ProjectDetailsPage() {
                                     {project.region ? project.region[0] : "Global"}
                                 </Typography>
                                 <br/>
-                                <Typography variant={'h6'}>Tags</Typography>
+                                <Typography variant={'h6'} style={{paddingBottom: 8}}>Tags</Typography>
                                 <StyledTags tagList={project.tags}/>
                             </Grid>
                         </Grid>

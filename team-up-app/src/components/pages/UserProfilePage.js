@@ -73,7 +73,7 @@ function UserProfilePage() {
                                     className={classes.descSect}>
                                     <Typography className={classes.main}>Bio:</Typography>
                                     <Typography className={classes.sub}>{userProfile.description}</Typography>
-                                    <Typography className={classes.main}>Interests:</Typography>
+                                    <Typography className={classes.main} style={{paddingBottom: 8}}>Interests:</Typography>
                                     <StyledTags
                                         className={classes.sub}
                                         tagList={userProfile.tags ? userProfile.tags : []}/>
