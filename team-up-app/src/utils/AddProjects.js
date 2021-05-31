@@ -26,7 +26,7 @@ export function addAProject(name, ownerID, tagline, region,
   const newPid = database.ref().child('projects').push(projData).key;
 
   // Update user to include owned project
-  database.ref('/users/' + ownerID + '/owned_projects/').push(newPid);
+  database.ref('/users/' + ownerID + '/owned_projects/').child(newPid).set(true);
 
   // Upload picture and callback
   if (picture.length !== 0) {
