@@ -37,7 +37,7 @@ function ProjectCard(props) {
                     </Typography>
                 </CardContent>
                 <div style={{paddingLeft: 16, paddingBottom: 8, paddingTop: 8}}>
-                    <StyledTags tagList={props.projectTags} />
+                    <StyledTags tagList={props.projectTags || []} />
                 </div>
             </CardActionArea>
         </Card>

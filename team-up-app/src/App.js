@@ -10,11 +10,11 @@ function App(props) {
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>
-        <div className={"main"}>
         <NavigationBar />
-        <Router />
-        <Footer />
+        <div className={"main"}>
+          <Router />
         </div>
+        <Footer />
       </ThemeProvider>
     </AuthProvider>
   );

@@ -19,6 +19,7 @@ export default Footer;
 
 const useStyles = makeStyles((theme) => ({
     footer: {
+        marginTop: 'auto',
         backgroundColor: '#f2f2f2',
         height: '12vh',
         color: '#999',
