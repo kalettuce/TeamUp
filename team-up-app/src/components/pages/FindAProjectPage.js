@@ -8,13 +8,18 @@ import SearchBar from '../containers/SearchBar';
 import { fetchAllProjects } from '../../utils/FindProjects.js'
 import { fetchUserById } from '../../utils/FindUsers'
 import Fuse from 'fuse.js';
-import { Backdrop, CircularProgress } from "@material-ui/core";
+import { Backdrop, Button, CircularProgress } from "@material-ui/core";
 import { useAuth } from '../../utils/AuthContext';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import AddIcon from '@material-ui/icons/Add';
+import { useRouteChanger } from '../../utils/RouteChanger';
 
 function FindAProjectPage() {
     const classes = useStyles();
+    const changeRoute = useRouteChanger();
+    const { currentUser } = useAuth();
+
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [filterByUserTags, setFilterByUserTags] = useState(false);
@@ -26,7 +31,6 @@ function FindAProjectPage() {
     const [loading, setLoading] = useState(true);
     const [userProfile, setUserProfile] = useState(null);
     const [queryInput, setQueryInput] = useState('');
-    const { currentUser } = useAuth();
 
     const itemsPerPage = 6;
     const title = "EXPLORE PROJECTS";
@@ -177,9 +181,8 @@ function FindAProjectPage() {
                         </Typography>
                         <br/>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={2}>
                         <ToggleButtonGroup
-                            className={classes.filterButtons}
                             hidden={!currentUser}>
                             <ToggleButton
                                 value={"check"}
@@ -189,8 +192,17 @@ function FindAProjectPage() {
                                 }}
                                 >
                                 Filter my interests
-                                </ToggleButton>
+                            </ToggleButton>
                         </ToggleButtonGroup>
+                    </Grid>
+                    <Grid item xs={5} align={"right"}>
+                        <Button 
+                            size="medium"
+                            style={{fontWeight: 700}}
+                            startIcon={<AddIcon />}
+                            onClick={() => changeRoute("/createproject")}>
+                            new project
+                        </Button>
                     </Grid>
                 </Grid>
                 <Grid
@@ -232,9 +244,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 40,
         paddingTop: '150px',
         paddingBottom: '40px',
-    },
-    filterButtons: {
-        margin: '0 !important',
     },
     backdrop: {
         zIndex: 100,

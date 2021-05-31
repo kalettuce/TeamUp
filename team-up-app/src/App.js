@@ -3,6 +3,7 @@ import { AuthProvider } from "./utils/AuthContext";
 import NavigationBar from "./components/containers/NavigationBar";
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme } from "./ThemePalette";
+import Footer from "./components/presentation/Footer";
 
 function App(props) {
   return (
@@ -10,6 +11,7 @@ function App(props) {
       <ThemeProvider theme={theme}>
         <NavigationBar />
         <Router />
+        <Footer />
       </ThemeProvider>
     </AuthProvider>
   );
