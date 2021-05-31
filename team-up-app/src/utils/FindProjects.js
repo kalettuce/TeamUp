@@ -27,7 +27,7 @@ export function fetchProjectsByOwner(uid, callback) {
     database.ref('/users/' + uid + '/owned_projects/')
             .once('value')
             .then((snapshot) => {
-                const pids = snapshot.val();
+                const pids = Object.values(snapshot.val());
 
                 if (pids === null) {
                     return [];
@@ -52,7 +52,7 @@ export function fetchProjectsByMember(uid, callback) {
     database.ref('/users/' + uid + '/joined_projects/')
             .once('value')
             .then((snapshot) => {
-                const pids = snapshot.val();
+                const pids = Object.values(snapshot.val());
 
                 if (pids === null) {
                     return [];
