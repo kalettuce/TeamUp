@@ -11,6 +11,7 @@ import Login from "../components/pages/LoginPage";
 import NavigationBar from '../components/containers/NavigationBar';
 import CreateAProjectPage from '../components/pages/CreateAProjectPage';
 import NotFoundPage from '../components/pages/NotFoundPage';
+import JoinedProjects from '../components/pages/JoinedProjects';
 
 // Import page component and add its routes here.
 // URL parameters are denoted by colon (:)
@@ -38,6 +39,9 @@ function Router(props) {
                 <Route
                     exact path='/users/:uid'
                     component={UserProfilePage}/>
+                <Route
+                    exact path='/joinedprojects/:uid'
+                    component={JoinedProjects}/>
                 <Route
                     exact path='/signup'
                     component={Signup}/>
