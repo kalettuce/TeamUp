@@ -7,7 +7,7 @@ const database = firebase.database();
 // deletes a project from the DB, also deletes the project folder in storage
 // pid: project id
 // callback: the procedure to execute after the deletion
-export function removeProject(pid, callback) {
+export function removeProject(uid, pid, callback) {
     const projectRef = database.ref(`/projects/${pid}/`);
 
     projectRef.child('image_url').once('value').then((snapshot) => {
@@ -15,6 +15,8 @@ export function removeProject(pid, callback) {
             removeProjectFolder(pid);
         }
     });
+
+    database.ref(`users/${uid}/owned_projects/${pid}`).remove();
 
     // remove all pending requests
     projectRef.child('requests_received').once('value')

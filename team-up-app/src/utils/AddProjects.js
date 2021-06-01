@@ -23,6 +23,9 @@ export function addAProject(name, ownerID, tagline, region,
   };
 
   const newPid = database.ref().child('projects').push().key;
+
+  database.ref('users').child(ownerID).child('owned_projects').child(newPid).set(true);
+
   let updates = {};
   updates['/projects/' + newPid] = projData;
   database.ref().update(updates);
