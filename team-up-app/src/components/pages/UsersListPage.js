@@ -4,9 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import UserCard from '../presentation/UserCard';
 import Pagination from '@material-ui/lab/Pagination';
-//import SearchBar from '../containers/SearchBar';
+import SearchBar from '../containers/SearchBar';
 import { fetchAllUsers } from '../../utils/FindUsers.js'
-//import Fuse from 'fuse.js';
+import Fuse from 'fuse.js';
 
 function UsersListPage() {
     const classes = useStyles();
@@ -65,6 +65,32 @@ function UsersListPage() {
         setPage(newPage);
     };
 
+    const handleSearch = (query) => {
+        if (!query && users !== null && userKeys !== null) {
+            setUsersToShow(Object.entries(users));
+        } else {
+            const options = {
+                findAllMatches: true,
+                threshold: 0.1,
+                keys: [
+                    {
+                        name: "name",
+                        weight: 2
+                    },
+                ]
+            };
+    
+            const fuse = new Fuse(users, options);
+            const resultUsers = [];
+            Object.entries(fuse.search(query))
+                               .map((result) => 
+                resultUsers.push(
+                    [userKeys[(result[1].refIndex).toString()], result[1].item])
+            )
+            setUsersToShow(resultUsers);
+        }
+    }
+
     return (
         <div>
             <Grid
@@ -72,6 +98,9 @@ function UsersListPage() {
                 justify="center"
                 className={classes.root}>
                 <Typography className={classes.title}>{title}</Typography>
+                <SearchBar
+                    placeholder="Search for users"
+                    onSearch={handleSearch}/>
                 <Grid
                     container
                     alignItems="stretch"
