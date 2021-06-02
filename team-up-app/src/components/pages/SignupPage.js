@@ -38,11 +38,11 @@ export default function Signup() {
 
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
             return setError("Passwords do not match.");
-        } else if (description === 0) {
+        } else if (description.length === 0) {
             return setError("Bio is required.");
-        } else if (email === 0) {
+        } else if (email.length === 0) {
             return setError("Email is required.");
-        } else if (name === 0) {
+        } else if (name.length === 0) {
             return setError("Name is required.");
         } else if (region.length === 0) {
             return setError("Region is required.");
