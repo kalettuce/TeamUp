@@ -5,22 +5,20 @@ function StyledTags(props) {
     const classes = useStyles();
 
     var dom = []
-    var key = 0;
-    for (const tag of props.tagList) {
-        if (!tag) {
-            break;
+    var i = 0;
+
+    if (props.tagList != null) {
+        for (const tag of props.tagList) {
+            dom.push(
+                <span
+                    key={i}
+                    className={classes.tag}
+                    variant="body1">
+                    {tag}
+                </span>
+            );
+            i++;
         }
-
-        dom.push(
-            <span
-                key={key}
-                className={classes.tag}
-                variant="body1">
-                {tag}
-            </span>
-        );
-
-        key++;
     }
 
     return (

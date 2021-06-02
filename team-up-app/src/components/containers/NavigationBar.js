@@ -58,8 +58,17 @@ export default function LoginBar(props) {
     }
 
     const handleProfile = () => {
-        //console.log(userProfile);
         changeRoute("/users/" + currentUser.uid);
+        setAnchorEl(null);
+    }
+
+    const handleJoinedProjects = () => {
+        changeRoute("/joinedprojects/" + currentUser.uid);
+        setAnchorEl(null);
+    }
+
+    const handleOwnedProjects = () => {
+        changeRoute("/ownedprojects/" + currentUser.uid);
         setAnchorEl(null);
     }
 
@@ -157,8 +166,14 @@ export default function LoginBar(props) {
                             onClick={() => handleProfile()}>
                             Profile
                         </Button>  
-                        <Button className={classes.popoverButtons}>
-                            My Projects
+                        <Button
+                            className={classes.popoverButtons}
+                            onClick={(event) => handleOwnedProjects()}>
+                            Owned Projects
+                        </Button>
+                        <Button className={classes.popoverButtons}
+                                onClick={(event) => handleJoinedProjects()}>
+                            Joined Projects
                         </Button> 
                         <Button onClick={() => handleLogout()}
                                 className={classes.logoutbutton}>

@@ -12,7 +12,7 @@ function DeleteProjectDialog(props) {
     const history = useHistory();
 
     const handleDelete = () => {
-        removeProject(props.pid, () => {
+        removeProject(props.uid, props.pid, () => {
             history.push('/projects/');
         });
         props.open(false);

@@ -134,6 +134,7 @@ function ProjectDetailsPage() {
                             Confirm delete
                         </DialogTitle>
                         <DeleteProjectDialog 
+                            uid={project.owner}
                             pid={pid}
                             open={setDeleteProjectOpen}/>
                     </Dialog>

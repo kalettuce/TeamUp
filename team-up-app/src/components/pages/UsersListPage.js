@@ -6,6 +6,8 @@ import UserCard from '../presentation/UserInfoCard';
 import Pagination from '@material-ui/lab/Pagination';
 import { fetchAllUsers } from '../../utils/FindUsers.js'
 import { Backdrop, CircularProgress } from "@material-ui/core";
+import SearchBar from '../containers/SearchBar';
+import Fuse from 'fuse.js';
 
 function UsersListPage() {
     const classes = useStyles();
@@ -60,6 +62,32 @@ function UsersListPage() {
         setPage(newPage);
     };
 
+    const handleSearch = (query) => {
+        if (!query && users !== null && userKeys !== null) {
+            setUsersToShow(Object.entries(users));
+        } else {
+            const options = {
+                findAllMatches: true,
+                threshold: 0.1,
+                keys: [
+                    {
+                        name: "name",
+                        weight: 2
+                    },
+                ]
+            };
+    
+            const fuse = new Fuse(users, options);
+            const resultUsers = [];
+            Object.entries(fuse.search(query))
+                               .map((result) => 
+                resultUsers.push(
+                    [userKeys[(result[1].refIndex).toString()], result[1].item])
+            )
+            setUsersToShow(resultUsers);
+        }
+    }
+
     return (
         <div>
             <Backdrop
@@ -74,6 +102,9 @@ function UsersListPage() {
                 justify="center"
                 className={classes.root}>
                 <Typography className={classes.title}>{title}</Typography>
+                <SearchBar
+                    placeholder="Search for users"
+                    onSearch={handleSearch}/>
                 <Grid
                     container>
                     {dom}
