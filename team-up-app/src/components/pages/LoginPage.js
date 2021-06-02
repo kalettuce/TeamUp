@@ -38,7 +38,7 @@ export default function Login() {
             style={{ minHeight: "100vh" }}
             >
                 <div className="w-100" style={{ maxWidth: "400px" }}>
-                    <Card className={classes.card}>
+                    <Card variant={"outlined"} className={classes.card}>
                             <h2 className="text-center mb-4">LOG IN</h2>
                             {error && <Alert variant="danger">{error}</Alert>}
                             <Form onSubmit={handleLogin}>

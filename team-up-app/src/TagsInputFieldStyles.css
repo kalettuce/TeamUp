@@ -1,0 +1,60 @@
+.ReactTags__tags {
+    display: relative;
+}
+
+/* Styles for the input */
+.ReactTags__tagInput {
+    width: 100%;
+    display: inline-block;
+}
+
+.ReactTags__tagInput input.ReactTags__tagInputField,
+.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.00938em;
+    margin-bottom: 10px;
+    padding: 15px 14px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    outline: none;
+}
+
+.ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
+    opacity: 0.40;
+}
+
+.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+    border: 2px solid black;
+}
+
+/* Styles for selected tags */
+.ReactTags__selected span.ReactTags__tag {
+    cursor: default !important;
+    font-family: Inconsolata, monospace;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    color: #555;
+    line-height: 2;
+    display: inline-block;
+}
+.ReactTags__selected a.ReactTags__remove {
+    color: #aaa;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.ReactTags__remove {
+    border: none;
+    cursor: pointer;
+    background: none;
+    color:#e74f4e;
+}

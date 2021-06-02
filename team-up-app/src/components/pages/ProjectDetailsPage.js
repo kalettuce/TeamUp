@@ -13,6 +13,7 @@ import StyledTags from "../presentation/StyledTags.js";
 import { fetchRequestsByProject, fetchRequestsBySender } from "../../utils/FindJoinRequests.js";
 import DeleteProjectDialog from '../containers/DeleteProjectDialog';
 import { NOT_FOUND } from './NotFoundPage';
+import MiniUserCard from "../presentation/MiniUserCard";
 
 function ProjectDetailsPage() {
     const classes = useStyles();
@@ -183,19 +184,20 @@ function ProjectDetailsPage() {
                                     onClick={buttonFunc}>
                                         {buttonLabel}
                                 </Button>
-                                <Typography variant={'h6'}>Region</Typography>
+                                <MiniUserCard
+                                    name={isCurrUserProject ? "You" : owner.name}
+                                    uid={project.owner}
+                                    image={owner.image_url}
+                                    description={"Submitted by"}/>
+                                <br/>
+                                <Typography variant={'h6'}>Project Region</Typography>
                                 <Typography variant={'body1'}>
                                 <span>{project.region ? regionToFlag(project.region[1]) : ''} </span>
                                     {project.region ? project.region[0] : "Global"}
                                 </Typography>
                                 <br/>
-                                <Typography variant={'h6'}>Creator</Typography>
-                                <Typography variant={'body1'}>
-                                    {isCurrUserProject ? 'You created this project' : owner.name}
-                                </Typography>
-                                <br/>
-                                <Typography variant={'h6'}>Tags</Typography>
-                                <StyledTags tagList={project.tags}/>
+                                <Typography variant={'h6'} style={{paddingBottom: 8}}>Tags</Typography>
+                                <StyledTags tagList={project.tags || []}/>
                             </Grid>
                         </Grid>
                         <br/>
@@ -256,7 +258,7 @@ const useStyles = makeStyles((theme) => ({
         background:'#FFFFFF',
         border: '1px solid',
         borderRadius: 0,
-        marginBottom: 20,
+        marginBottom: 50,
     },
     buttonDelete: {
         width: '100%',
@@ -266,7 +268,7 @@ const useStyles = makeStyles((theme) => ({
         background:'#e74f4e',
         border: '1px solid black',
         borderRadius: 0,
-        marginBottom: 20,
+        marginBottom: 50,
         "&:hover": {
             background: '#e74f4e',
         }

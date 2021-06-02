@@ -25,9 +25,9 @@ function JoinedProjects() {
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
-    const [projects, setProjects] = useState(null);
-    const [projectKeys, setProjectKeys] = useState(null);
-    const [projectsToShow, setProjectsToShow] = useState(null);
+    const [projects, setProjects] = useState([]);
+    const [projectKeys, setProjectKeys] = useState([]);
+    const [projectsToShow, setProjectsToShow] = useState([]);
 
     const itemsPerPage = 6;
     const title = "JOINED PROJECTS";
@@ -124,7 +124,7 @@ function JoinedProjects() {
                     "tags",
                 ]
             };
-    
+            console.log(projects)
             const fuse = new Fuse(projects, options);
             const resultProjects = [];
             Object.entries(fuse.search(query))

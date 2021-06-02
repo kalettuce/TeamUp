@@ -39,12 +39,12 @@ function LandingPage() {
                     <Button onClick={() => handleFindAProject()}
                             className={classes.button}
                             variant="outlined">
-                        FIND A PROJECT
+                        EXPLORE PROJECTS
                     </Button>
                     <Button onClick={() => handlePostAProject()}
                             className={classes.button}
                             variant="outlined">
-                        POST A PROJECT
+                        SUBMIT A PROJECT
                     </Button>
                 </Grid>
                 <Grid
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '20px',
         paddingRight: '100px',
         paddingLeft: '100px',
-        height: '100%',
+        height: '100vh',
         width: '100%',
         background: '#FFFFFF',
     },

@@ -6,29 +6,56 @@ import ProjectCard from '../presentation/ProjectCard';
 import Pagination from '@material-ui/lab/Pagination';
 import SearchBar from '../containers/SearchBar';
 import { fetchAllProjects } from '../../utils/FindProjects.js'
+import { fetchUserById } from '../../utils/FindUsers'
 import Fuse from 'fuse.js';
+import { Backdrop, Button, CircularProgress } from "@material-ui/core";
+import { useAuth } from '../../utils/AuthContext';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import AddIcon from '@material-ui/icons/Add';
+import { useRouteChanger } from '../../utils/RouteChanger';
 
 function FindAProjectPage() {
     const classes = useStyles();
+    const changeRoute = useRouteChanger();
+    const { currentUser } = useAuth();
+
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
+    const [filterByUserTags, setFilterByUserTags] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
     const [projects, setProjects] = useState(null);
+    const [projectsForSearch, setProjectsForSearch] = useState(null);
     const [projectKeys, setProjectKeys] = useState(null);
     const [projectsToShow, setProjectsToShow] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [userProfile, setUserProfile] = useState(null);
+    const [queryInput, setQueryInput] = useState('');
 
     const itemsPerPage = 6;
     const title = "EXPLORE PROJECTS";
     
+    const handleChange = (newPage) => {
+        setPage(newPage);
+    };
+
     // Fetches projects list and number of projects
     useEffect(() => {
         fetchAllProjects((projectsList) => {
-            console.log(projectsList);
-            setProjects(Object.values(projectsList));
-            setProjectKeys(Object.keys(projectsList));
+            setProjects(Object.entries(projectsList));
+            setProjectsForSearch(Object.values(projectsList));
             setProjectsToShow(Object.entries(projectsList));
+            setProjectKeys(Object.keys(projectsList));
         });
     }, []);
+
+    useEffect(() => {
+        if (currentUser !== null) {
+            fetchUserById(currentUser.uid, setUserProfile);
+        } else {
+            setUserProfile(null);
+        }
+    }, [currentUser]);
 
     // Sets total number of pages for pagination; updates
     // whenever the list of projects to show changes
@@ -58,50 +85,126 @@ function FindAProjectPage() {
                 />
             </Grid>
             )));
+            setLoading(false);
         }
     }, [classes.card, projectsToShow, page]);
 
-    const handleChange = (newPage) => {
-        setPage(newPage);
-    };
+    useEffect(() => {
+        if (projects && projectsForSearch && projectKeys) {
+            var resultProjects, tagsQuery = [];
+            var keys = null;
+            var query;
+            if (userProfile && userProfile.tags) {
+                tagsQuery = userProfile.tags.map((tag) => {
+                    return { tags: tag }
+                });
+            }
 
-    const handleSearch = (query) => {
-        if (!query && projects !== null && projectKeys !== null) {
-            setProjectsToShow(Object.entries(projects));
-        } else {
-            const options = {
-                findAllMatches: true,
-                threshold: 0.1,
-                keys: [
-                    {
-                        name: "name",
-                        weight: 2
-                    },
-                    "tags",
-                ]
-            };
-    
-            const fuse = new Fuse(projects, options);
-            const resultProjects = [];
-            Object.entries(fuse.search(query))
-                               .map((result) => 
-                resultProjects.push(
-                    [projectKeys[(result[1].refIndex).toString()], result[1].item])
-            )
+            if (queryInput || filterByUserTags) {
+                if (queryInput && filterByUserTags) {
+                    tagsQuery.push({ tags: queryInput })
+                    query = {
+                        $and: [
+                            { name: queryInput },
+                            { $or: tagsQuery },
+                        ],
+                    }
+                } else if (filterByUserTags) {
+                    query = { $or: tagsQuery }
+                    keys = ["tags"];
+                } else {
+                    query = queryInput;
+                }
+
+                resultProjects = performSearch(query, keys);
+            } else {
+                resultProjects = projects;
+            }
             setProjectsToShow(resultProjects);
         }
+    // eslint-disable-next-line
+    }, [queryInput, filterByUserTags, projectKeys,
+        projects, projectsForSearch, userProfile]);
+
+    function performSearch(query, keyOption) {
+        const resultProjects = [];
+        var options = {
+            findAllMatches: true,
+            threshold: 0.1,
+            ignoreLocation: true,
+            keys: keyOption || [
+                { 
+                    name: "name", 
+                    weight: 2 
+                }, 
+                "tags"
+            ]
+        };
+
+        const fuse = new Fuse(projectsForSearch, options);
+        Object.entries(fuse.search(query))
+                           .map((result) => 
+            resultProjects.push(
+                [projectKeys[(result[1].refIndex).toString()], result[1].item])
+        )
+
+        return resultProjects;
     }
 
     return (
         <div>
+            <Backdrop
+                className={classes.backdrop}
+                open={loading}>
+                <CircularProgress
+                    color="inherit"
+                    variant="indeterminate"/>
+            </Backdrop>
+            <Grid
+                container
+                justify="center">
+                <Typography className={classes.title}>{title}</Typography>
+            </Grid>
             <Grid
                 container
                 justify="center"
                 className={classes.root}>
-                <Typography className={classes.title}>{title}</Typography>
-                <SearchBar
-                    placeholder="Search for projects"
-                    onSearch={handleSearch}/>
+                <Grid container spacing={3}>
+                    <Grid item xs={5}>
+                        <SearchBar
+                        placeholder="Search for projects by name or tags"
+                        onSearch={setQueryInput}/>
+                        <Typography
+                            className={classes.numResults}
+                            variant={"body2"}>
+                            {`${projectsToShow ? projectsToShow.length : 0} projects found`}
+                        </Typography>
+                        <br/>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <ToggleButtonGroup
+                            hidden={!currentUser}>
+                            <ToggleButton
+                                value={"check"}
+                                selected={filterByUserTags}
+                                onClick={() => {
+                                    setFilterByUserTags(!filterByUserTags)
+                                }}
+                                >
+                                Filter my interests
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                    </Grid>
+                    <Grid item xs={5} align={"right"}>
+                        <Button 
+                            size="medium"
+                            style={{fontWeight: 700}}
+                            startIcon={<AddIcon />}
+                            onClick={() => changeRoute("/createproject")}>
+                            new project
+                        </Button>
+                    </Grid>
+                </Grid>
                 <Grid
                     container
                     alignItems="stretch"
@@ -139,9 +242,15 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 700,
         color: '#000000',
         fontSize: 40,
-        paddingTop: '100px',
-        paddingBottom: '15px',
-        textAlign:'left',
+        paddingTop: '150px',
+        paddingBottom: '40px',
+    },
+    backdrop: {
+        zIndex: 100,
+        color: '#fff',
+    },
+    numResults: {
+        paddingTop: 10,
     },
     card: {
         minWidth: '250px',

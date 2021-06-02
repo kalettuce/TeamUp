@@ -23,7 +23,7 @@ function StyledTags(props) {
 
     return (
         <div className={classes.tagsList}>
-            {dom}
+            {dom.length === 0 ? 'No tags specified' : dom}
         </div>
     );
 }

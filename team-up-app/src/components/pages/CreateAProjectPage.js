@@ -9,6 +9,7 @@ import { useAuth } from '../../utils/AuthContext';
 import { useRouteChanger } from '../../utils/RouteChanger';
 import ImageUploaderElement from '../containers/ImageUploaderElement';
 import RegionSelect from '../containers/RegionSelect';
+import TagsInputField from '../containers/TagsInputField';
 
 function CreateAProjectPage() {
     const classes = useStyles();
@@ -19,15 +20,16 @@ function CreateAProjectPage() {
     const [region, setRegion] = useState('');
     const [description, setDescription] = useState('');
     const [application, setApplication] = useState('');
-    const [tags, setTags] = useState('');
+    const [tags, setTags] = useState([]);
     const [pid, setPid] = useState('');
     const [picture, setPicture] = useState([]);
     
     const changeRoute = useRouteChanger();
 
     // TODO: restyle error messages
-    // TODO: try https://betterstack.dev/projects/react-tag-input/ for tags input
+
     const handleConfirmation = () => {
+        
         if (name.length === 0) {
             alert('Project name is required');
         } else if (tagline.length === 0) {
@@ -41,7 +43,7 @@ function CreateAProjectPage() {
                 addAProject(name, currentUser.uid, tagline,
                     region, description, application, tags, picture, setPid);
             } catch {
-                console.log("Project creation failed");
+                alert("Project creation failed");
             }
         }
     }
@@ -55,34 +57,46 @@ function CreateAProjectPage() {
 
     return (
         <div className={classes.root}>
-            <Typography className={classes.title}>CREATE A PROJECT</Typography>
+            <Typography className={classes.title}>SUBMIT A PROJECT</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <TextField
-                    required
-                    id="name"
-                    name="name"
-                    inputProps={{ maxLength: 30 }}
-                    helperText={'30 characters max'}
-                    label="Project name"
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                    fullWidth
+                        required
+                        id="name"
+                        name="name"
+                        inputProps={{
+                            maxLength: 30,
+                            style: {
+                                fontSize: 30,
+                                fontWeight: 700
+                            }
+                        }}
+                        InputLabelProps={{
+                            style: {
+                                fontSize: 30
+                            }
+                        }}
+                        helperText={'30 characters max'}
+                        placeholder="Project name"
+                        onChange={(e) => {
+                        setName(e.target.value);
+                        }}
+                        fullWidth
                     />
                 </Grid>
                 <Grid item xs={12} sm={9}>
                     <TextField
-                    required
-                    id="tagline"
-                    name="tagline"
-                    inputProps={{ maxLength: 50 }}
-                    helperText={'50 characters max'}
-                    label="Brief summary of the project"
-                    onChange={(e) => {
-                      setTagline(e.target.value);
-                    }}
-                    fullWidth
+                        required
+                        id="tagline"
+                        name="tagline"
+                        inputProps={{ maxLength: 50 }}
+                        helperText={'50 characters max'}
+                        placeholder="Brief summary of the project *"
+                        variant="outlined"
+                        onChange={(e) => {
+                        setTagline(e.target.value);
+                        }}
+                        fullWidth
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
@@ -90,50 +104,47 @@ function CreateAProjectPage() {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                    required
-                    multiline
-                    id="desc"
-                    name="desc"
-                    placeholder="What's the project about? What types of people would fit the team?"
-                    onChange={(e) => {
-                      setDescription(e.target.value);
-                    }}
-                    variant={"outlined"}
-                    rows={4}
-                    fullWidth
+                        required
+                        multiline
+                        id="desc"
+                        name="desc"
+                        placeholder="What's the project about? What skills are you looking for? *"
+                        onChange={(e) => {
+                        setDescription(e.target.value);
+                        }}
+                        variant={"outlined"}
+                        rows={4}
+                        fullWidth
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                    id="application"
-                    name="application"
-                    label="Include a question for applicants to respond to."
-                    onChange={(e) => {
-                      setApplication(e.target.value);
-                    }}
-                    fullWidth
+                        id="application"
+                        name="application"
+                        placeholder="Question for applicants to respond to"
+                        variant="outlined"
+                        onChange={(e) => {
+                        setApplication(e.target.value);
+                        }}
+                        fullWidth
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField
-                    id="tags"
-                    name="tags"
-                    label="Add tags separated by semicolons (;)"
-                    onChange={(e) => {
-                      setTags(e.target.value);
-                    }}
-                    fullWidth
-                    />
+                    <TagsInputField
+                        tags={tags}
+                        setTags={setTags}/>
                 </Grid>
                 <ImageUploaderElement onDrop={(e) => {
                     setPicture(e[0]);
                 }}/>
             </Grid>
-            <Button
-                variant="outlined"
-                className={classes.button}
-                onClick={handleConfirmation}
-            >Create</Button>
+            <div className={classes.buttonDiv}>
+                <Button
+                    variant="outlined"
+                    className={classes.button}
+                    onClick={handleConfirmation}
+                >Submit</Button>
+            </div>
         </div>
     );
 }
@@ -155,8 +166,12 @@ const useStyles = makeStyles((theme) => ({
         color: '#000000',
         fontSize: 40,
         paddingTop: '100px',
-        paddingBottom: '15px',
+        paddingBottom: '60px',
         textAlign:'center',
+    },
+    buttonDiv: {
+        textAlign: 'right',
+        marginBottom: '20px',
     },
     button: {
         marginTop: '30px',

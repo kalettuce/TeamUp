@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import UserCard from '../presentation/UserCard';
+import UserCard from '../presentation/UserInfoCard';
 import Pagination from '@material-ui/lab/Pagination';
-import SearchBar from '../containers/SearchBar';
 import { fetchAllUsers } from '../../utils/FindUsers.js'
+import { Backdrop, CircularProgress } from "@material-ui/core";
+import SearchBar from '../containers/SearchBar';
 import Fuse from 'fuse.js';
 
 function UsersListPage() {
@@ -13,9 +14,8 @@ function UsersListPage() {
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
-    // eslint-disable-next-line
+    const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState(null);
-    // eslint-disable-next-line
     const [userKeys, setUserKeys] = useState(null);
     const [usersToShow, setUsersToShow] = useState(null);
 
@@ -49,7 +49,7 @@ function UsersListPage() {
                 className={classes.card}
                 key={uid}
                 item
-                xs={3}>
+                xs={12}>
                 <UserCard
                     image={user.image_url}
                     uid={uid}
@@ -58,6 +58,7 @@ function UsersListPage() {
                 />
             </Grid>
             )));
+            setLoading(false);
         }
     }, [classes.card, usersToShow, page]);
 
@@ -93,6 +94,13 @@ function UsersListPage() {
 
     return (
         <div>
+            <Backdrop
+                className={classes.backdrop}
+                open={loading}>
+                <CircularProgress
+                    color="inherit"
+                    variant="indeterminate"/>
+            </Backdrop>
             <Grid
                 container
                 justify="center"
@@ -102,9 +110,7 @@ function UsersListPage() {
                     placeholder="Search for users"
                     onSearch={handleSearch}/>
                 <Grid
-                    container
-                    alignItems="stretch"
-                    spacing={3}>
+                    container>
                     {dom}
                 </Grid>
                 <Pagination
@@ -128,23 +134,27 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         paddingTop: '20px',
-        paddingLeft: '200px',
-        paddingRight: '200px',
         height: '100%',
-        width: '100%',
+        width: '40%',
         background: '#FFFFFF',
+        textAlign: 'center',
+        margin: '0 auto',
     },
     title: {
         fontWeight: 700,
         color: '#000000',
         fontSize: 40,
-        paddingTop: '100px',
-        paddingBottom: '15px',
-        textAlign:'left',
+        paddingTop: '150px',
+        paddingBottom: '40px',
+    },
+    backdrop: {
+        zIndex: 100,
+        color: '#fff',
     },
     card: {
         minWidth: '250px',
         display: 'flex',
+        textAlign:'left',
     },
     pagination: {
         marginTop: '20px',

@@ -10,13 +10,12 @@ import placeholder from '../../placeholder.jpg';
 
 function ProjectCard(props) {
     const changeRoute = useRouteChanger();
-
     return (
         <Card 
             elevation={0}
             variant="outlined"
             onClick={() => changeRoute(`/projects/${props.projectID}`)}
-            style={{width: '100%'}}
+            style={{width: '100%', position: 'relative'}}
             height="500">
             <CardActionArea>
                 <CardMedia
@@ -26,21 +25,21 @@ function ProjectCard(props) {
                 <CardContent>
                     <Typography
                         gutterBottom
-                        variant="h5"
-                        component="h2">
+                        variant="h6"
+                        style={{fontWeight: 700}}>
                         {props.projectTitle}
                     </Typography>
                     <Typography
                         variant="body1"
-                        color="textPrimary"
+                        color="textSecondary"
                         component="p">
                         {props.projectTagline}
                     </Typography>
                 </CardContent>
+                <div style={{paddingLeft: 16, paddingBottom: 8, paddingTop: 8}}>
+                    <StyledTags tagList={props.projectTags || []} />
+                </div>
             </CardActionArea>
-            <CardContent>
-            <StyledTags tagList={props.projectTags} />
-            </CardContent>
         </Card>
     );
 }

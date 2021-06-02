@@ -8,26 +8,29 @@ function ProjectDetailsTabTwo(props) {
 
     var dom = []
     if (joinedMembers.length === 0) {
-        dom = <Typography
+        dom = 
+            <Typography
                 variant={"body1"}
                 color={"textSecondary"}>
                     There are currently no members in this project.
-                </Typography>
+            </Typography>
     } else if (!currUserHasJoined) {
-        dom = <Typography
+        dom =
+            <Typography
                 variant={"body1"}
                 color={"textSecondary"}>
                     Join this project to view its members.
-                </Typography>
+            </Typography>
     } else {
         for (const member of joinedMembers) {
             dom.push(
                 <UserInfoCard
                     key={member.uid}
                     userIsCreator={project.owner === member.uid}
-                    id={member.uid}
+                    image={member.info.image_url}
+                    uid={member.uid}
                     name={member.info.name}
-                    email={member.info.email} />
+                    description={member.info.email} />
             );
         }
     }

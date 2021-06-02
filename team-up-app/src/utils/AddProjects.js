@@ -9,7 +9,8 @@ export function addAProject(name, ownerID, tagline, region,
                             description, joinProjectQuestion,
                             tags, picture, callback) {
 
-  const tagList = tags.split(';').map((tag) => tag.trim());
+  const tagList = tags.map((tag) => tag.text.trim());
+  
   const projData =  {
     name: name,
     owner: ownerID,

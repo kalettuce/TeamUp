@@ -6,12 +6,23 @@ function ImageUploaderElement(props) {
         <ImageUploader
             withIcon={false}
             buttonStyles={{
-                fontSize: '1rem',
+                fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                textTransform: "uppercase",
+                letterSpacing: "0.02857em",
+                fontSize: '0.875rem',
                 fontWeight: 700,
                 color: "black",
                 background: '#FFFFFF',
                 border: '1px solid',
                 borderRadius: 0,
+            }}
+            labelStyles={{
+                fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                letterSpacing: "0.02857em",
+                opacity: 0.6,
+            }}
+            fileContainerStyle={{
+                boxShadow: 'none',
             }}
             withPreview={true}
             label={"Accepted types: JPG, PNG"}
