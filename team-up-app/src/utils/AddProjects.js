@@ -22,6 +22,7 @@ export function addAProject(name, ownerID, tagline, region,
     invitations_sent: []
   };
 
+
   // Add project
   const newPid = database.ref().child('projects').push(projData).key;
 

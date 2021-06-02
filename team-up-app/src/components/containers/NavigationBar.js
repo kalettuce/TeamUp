@@ -62,8 +62,17 @@ export default function LoginBar(props) {
     }
 
     const handleProfile = () => {
-        console.log(userProfile);
         changeRoute("/users/" + currentUser.uid);
+        setAnchorEl(null);
+    }
+
+    const handleJoinedProjects = () => {
+        changeRoute("/joinedprojects/" + currentUser.uid);
+        setAnchorEl(null);
+    }
+
+    const handleOwnedProjects = () => {
+        changeRoute("/ownedprojects/" + currentUser.uid);
         setAnchorEl(null);
     }
 
@@ -148,10 +157,13 @@ export default function LoginBar(props) {
                             image={userProfile.image_url || "https://i.pinimg.com/originals/28/e0/9a/28e09af09026c705aa6973f343d710d3.jpg"}
                         />  
                         <Button className={classes.popoverButtons} onClick={(event) => handleProfile()}>
-                            View Profile
+                            Profile
                         </Button>  
-                        <Button className={classes.popoverButtons}>
-                            View Involved Projects
+                        <Button className={classes.popoverButtons} onClick={(event) => handleOwnedProjects()}>
+                            Owned Projects
+                        </Button>
+                        <Button className={classes.popoverButtons} onClick={(event) => handleJoinedProjects()}>
+                            Joined Projects
                         </Button> 
                     </Grid> 
                 </Popover>

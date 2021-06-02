@@ -1,15 +1,27 @@
+import { NOT_FOUND } from './NotFoundPage';
+import { useParams, useHistory } from 'react-router-dom';
+import { fetchUserById } from '../../utils/FindUsers.js';
 import React, { useState, useEffect } from "react";
+import { fetchProjectById } from '../../utils/FindProjects.js'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ProjectCard from '../presentation/ProjectCard';
 import Pagination from '@material-ui/lab/Pagination';
 import SearchBar from '../containers/SearchBar';
-import { fetchAllProjects } from '../../utils/FindProjects.js'
+import { useAuth } from '../../utils/AuthContext';
 import Fuse from 'fuse.js';
 
-function FindAProjectPage() {
+function OwnedProjects() {
     const classes = useStyles();
+
+    const history = useHistory();
+    const {uid} = useParams();
+
+    const {currentUser} = useAuth();
+
+    const [userProfile, setUserProfile] = useState(null);
+    const [projectsList, setProjectsList] = useState({});
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
@@ -18,17 +30,49 @@ function FindAProjectPage() {
     const [projectsToShow, setProjectsToShow] = useState(null);
 
     const itemsPerPage = 6;
-    const title = "EXPLORE PROJECTS";
-    
-    // Fetches projects list and number of projects
+    const title = "OWNED PROJECTS";
+
     useEffect(() => {
-        fetchAllProjects((projectsList) => {
-            console.log(projectsList);
-            setProjects(Object.values(projectsList));
-            setProjectKeys(Object.keys(projectsList));
-            setProjectsToShow(Object.entries(projectsList));
-        });
-    }, []);
+        if (currentUser == null || currentUser.uid !== uid) {
+            history.push("/" + NOT_FOUND);
+        } else if (uid != null) {
+            fetchUserById(uid, setUserProfile);
+        } else {
+            setUserProfile(null);
+        }
+        // eslint-disable-next-line
+    }, [uid, currentUser]);
+
+
+    function updateProjects(pid, details) {
+        let p = projectsList;
+        p[pid] = details;
+        setProjectsList(p);
+
+        console.log(projectsList);
+
+        setProjects(Object.values(projectsList));
+        setProjectKeys(Object.keys(projectsList));
+        setProjectsToShow(Object.entries(projectsList));
+    }
+
+    useEffect(() => {
+        // Send to NotFoundPage (404) if a user cannot be found
+        if (userProfile === NOT_FOUND) {
+            history.push("/" + NOT_FOUND);
+        } else if (userProfile != null) {
+            const ownedIDs = userProfile.owned_projects;
+
+            if (ownedIDs != null) {
+                for (const pid of Object.keys(ownedIDs)) {
+                    if (userProfile.owned_projects[pid]) {
+                        fetchProjectById(pid, (details) => updateProjects(pid, details));
+                    }
+                }
+            }
+        }
+    // eslint-disable-next-line
+    }, [userProfile]);
 
     // Sets total number of pages for pagination; updates
     // whenever the list of projects to show changes
@@ -123,7 +167,7 @@ function FindAProjectPage() {
     );
 }
 
-export default FindAProjectPage;
+export default OwnedProjects;
 
 const useStyles = makeStyles((theme) => ({
     root: {
