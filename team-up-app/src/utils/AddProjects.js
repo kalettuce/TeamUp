@@ -22,10 +22,13 @@ export function addAProject(name, ownerID, tagline, region,
     invitations_sent: []
   };
 
-  const newPid = database.ref().child('projects').push().key;
-  let updates = {};
-  updates['/projects/' + newPid] = projData;
-  database.ref().update(updates);
+  // Add project
+  const newPid = database.ref().child('projects').push(projData).key;
+
+  // Update user to include owned project
+  database.ref('/users/' + ownerID + '/owned_projects/').child(newPid).set(true);
+
+  // Upload picture and callback
   if (picture.length !== 0) {
     setProjectImage(newPid, picture, () => callback(newPid));
   } else {
