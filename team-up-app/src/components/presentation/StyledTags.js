@@ -7,18 +7,19 @@ function StyledTags(props) {
     var dom = []
     var i = 0;
 
-    if (props.tagList != null) {
-        for (const tag of props.tagList) {
-            dom.push(
-                <span
-                    key={i}
-                    className={classes.tag}
-                    variant="body1">
-                    {tag}
-                </span>
-            );
-            i++;
+    for (const tag of props.tagList) {
+        if (!tag) {
+            break;
         }
+        dom.push(
+            <span
+                key={i}
+                className={classes.tag}
+                variant="body1">
+                {tag}
+            </span>
+        );
+        i++;
     }
 
     return (

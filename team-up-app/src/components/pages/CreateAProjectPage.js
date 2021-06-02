@@ -14,7 +14,8 @@ import TagsInputField from '../containers/TagsInputField';
 function CreateAProjectPage() {
     const classes = useStyles();
     const { currentUser } = useAuth();
-
+    const changeRoute = useRouteChanger();
+    
     const [name, setName] = useState('');
     const [tagline, setTagline] = useState('');
     const [region, setRegion] = useState('');
@@ -23,20 +24,19 @@ function CreateAProjectPage() {
     const [tags, setTags] = useState([]);
     const [pid, setPid] = useState('');
     const [picture, setPicture] = useState([]);
-    
-    const changeRoute = useRouteChanger();
-
-    // TODO: restyle error messages
 
     const handleConfirmation = () => {
-        
-        if (name.length === 0) {
+        const nameToSubmit = name.trim();
+        const taglineToSubmit = tagline.trim();
+        const descriptionToSubmit = description.trim();
+
+        if (nameToSubmit.length === 0) {
             alert('Project name is required');
-        } else if (tagline.length === 0) {
+        } else if (taglineToSubmit.length === 0) {
             alert('Project summary is required');
         } else if (region.length === 0) {
             alert('Time zone is required');
-        } else if (description.length === 0) {
+        } else if (descriptionToSubmit.length === 0) {
             alert('Project description is required');
         } else {
             try {
