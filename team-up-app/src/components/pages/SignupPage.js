@@ -30,13 +30,19 @@ export default function Signup() {
     async function handleSignup(e) {
         e.preventDefault();
 
+
+        const email = emailRef.current.value.trim();
+        const name = nameRef.current.value.trim();
+        const description = descriptionRef.current.value.trim();
+
+
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
             return setError("Passwords do not match.");
-        } else if (descriptionRef.current.value.length === 0) {
+        } else if (description === 0) {
             return setError("Bio is required.");
-        } else if (emailRef.current.value.length === 0) {
+        } else if (email === 0) {
             return setError("Email is required.");
-        } else if (nameRef.current.value.length === 0) {
+        } else if (name === 0) {
             return setError("Name is required.");
         } else if (region.length === 0) {
             return setError("Region is required.");
@@ -46,10 +52,10 @@ export default function Signup() {
             setError("");
             setLoading(true);
             const ret = await signup(
-                emailRef.current.value, passwordRef.current.value);
+                email, passwordRef.current.value);
             const userUID = ret.user.uid;
-            createUser(userUID, descriptionRef.current.value, 
-                       emailRef.current.value, nameRef.current.value,
+            createUser(userUID, description, 
+                       email, name,
                        tags, region, picture);
             history.goBack();
         } catch (error) {

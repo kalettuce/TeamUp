@@ -147,6 +147,7 @@ function OwnedProjects() {
                     placeholder="Search for projects"
                     onSearch={handleSearch}/>
                 <Grid
+                    className={classes.over}
                     container
                     alignItems="stretch"
                     spacing={3}>
@@ -194,5 +195,8 @@ const useStyles = makeStyles((theme) => ({
     pagination: {
         marginTop: '20px',
         marginBottom: '30px',
+    },
+    over: {
+        paddingTop: '20px',
     }
 }));
