@@ -14,8 +14,10 @@ function UsersListPage() {
     const [page, setPage] = useState(1);
     const [dom, setDom] = useState('');
     const [totalPages, setTotalPages] = useState(0);
-    const [usersToShow, setUsersToShow] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState(null);
+    const [userKeys, setUserKeys] = useState(null);
+    const [usersToShow, setUsersToShow] = useState(null);
 
     const itemsPerPage = 8;
     const title = "PEOPLE";
@@ -23,6 +25,8 @@ function UsersListPage() {
     // Fetches user list and number of users
     useEffect(() => {
         fetchAllUsers((usersList) => {
+            setUsers(Object.values(usersList));
+            setUserKeys(Object.keys(usersList));
             setUsersToShow(Object.entries(usersList));
         });
     }, []);
