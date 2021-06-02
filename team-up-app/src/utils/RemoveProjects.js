@@ -10,16 +10,17 @@ const database = firebase.database();
 export function removeProject(uid, pid, callback) {
     const projectRef = database.ref(`/projects/${pid}/`);
 
-    projectRef.child('image_url').once('value').then((snapshot) => {
-        if (snapshot.val() !== null) {
-            removeProjectFolder(pid);
-        }
-    });
+    const removeFilesPromise = projectRef.child('image_url').once('value')
+        .then((snapshot) => {
+            if (snapshot.val() !== null) {
+                removeProjectFolder(pid);
+            }
+        });
 
     database.ref(`users/${uid}/owned_projects/${pid}`).remove();
 
     // remove all pending requests
-    projectRef.child('requests_received').once('value')
+    const removeRequestsPromise = projectRef.child('requests_received').once('value')
         .then((snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -27,19 +28,28 @@ export function removeProject(uid, pid, callback) {
                     deleteRequest(pid, uid, rid);
                 });
             }
-        })
+        });
+
+    // remove entries of joined_projects for members
+    const removeMembersPromise = projectRef.child('members').once('value')
+        .then((snapshot) => {
+            const data = snapshot.val();
+            Object.values(data).forEach((uid) => {
+                database.ref(`/users/${uid}/joined_projects/${pid}`).remove();
+            });
+        });
+
+    // remove entries of owned_projects for owner
+    const removeOwnerPromise = projectRef.child('owner').once('value')
+        .then((snapshot) => {
+            const uid = snapshot.val();
+            database.ref(`/users/${uid}/owned_projects/${pid}`).remove();
+        });
+
+    // remove the project from the DB after everything else is done
+    Promise.all([removeFilesPromise, removeRequestsPromise, removeMembersPromise, removeOwnerPromise])
         .then(() => {
-            // remove entries of joined_projects for members
-            projectRef.child('members').once('value')
-                .then((snapshot) => {
-                    const data = snapshot.val();
-                    Object.values(data).forEach((uid) =>  {
-                        database.ref(`/users/${uid}/joined_projects/${pid}`).remove();
-                    });
-                })
-                .then(() => {
-                    // actually removing the DB entry
-                    projectRef.remove().then(callback);
-                })
+            // actually removing the DB entry
+            projectRef.remove().then(callback);
         });
 }
